@@ -149,6 +149,7 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                               .selectAccount
                                               .username,
                                           username: state.username,
+                                          context: context,
                                         );
                                       },
                                       text: LocaleKeys.checkPaymentButton.tr(),

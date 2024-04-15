@@ -6,7 +6,6 @@ import 'package:tmed_kiosk/core/utils/my_function.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/accounts_entity.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/user_set/region_sel.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
-import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
 
 class AccountsViewModel {
   TextEditingController phone = TextEditingController();
@@ -78,7 +77,6 @@ class AccountsViewModel {
     isCreat = false;
     regionEntity = null;
     professionEntity = null;
-    context.read<CartBloc>().add(RemoveCupon());
     context.read<AccountsBloc>().add(DelSelectionAcccount());
   }
 }

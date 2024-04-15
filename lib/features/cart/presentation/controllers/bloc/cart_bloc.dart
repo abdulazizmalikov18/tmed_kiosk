@@ -125,6 +125,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         emit(state.copyWith(status: FormzSubmissionStatus.success));
         event.onSuccess(result.right);
         add(CartRemove());
+        add(RemoveCupon());
       } else {
         event.onError((result.left as ServerFailure).errorMessage);
         emit(state.copyWith(status: FormzSubmissionStatus.failure));

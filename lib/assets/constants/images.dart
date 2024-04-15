@@ -31,4 +31,7 @@ class AppImages {
   static const logoMpd = "assets/images/logo_mpd.png";
   static const back_1 = "assets/images/back_1.png";
   static const back_2 = "assets/images/back_2.png";
+  static const payme = "assets/images/payme.png";
+  static const click = "assets/images/click.png";
+  static const cash = "assets/images/cash.png";
 }
