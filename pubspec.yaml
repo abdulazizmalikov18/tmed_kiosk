@@ -18,10 +18,10 @@ dependencies:
   shimmer: ^3.0.0
   json_annotation: ^4.8.1
   carousel_slider: ^4.2.1
-  image_picker: ^1.0.7
-  cached_network_image: ^3.3.0
+  image_picker: ^1.1.0
+  cached_network_image: ^3.3.1
   hive_flutter: ^1.1.0
-  shared_preferences: ^2.2.2
+  shared_preferences: ^2.2.3
   path: ^1.9.0
   image: ^4.1.7
   web_socket_channel: ^2.4.4
@@ -34,7 +34,7 @@ dependencies:
   lottie: ^3.0.0
   qr_code_scanner: ^1.0.1
   keyboard_dismisser: ^3.0.0
-  get_it: ^7.6.7
+  get_it: ^7.7.0
   printing: ^5.12.0
   pdf: ^3.10.8
   syncfusion_flutter_sliders: ^25.1.35
@@ -59,7 +59,7 @@ dependencies:
   visibility_detector: ^0.4.0+2
   flutter_barcode_listener: ^0.1.4
   qr_flutter: ^4.1.0
-#  flutter_tts: ^4.0.2
+  #  flutter_tts: ^4.0.2
   kiosk_mode: ^0.5.0+2
   # camera_windows:
   #   git:
@@ -73,7 +73,7 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   build_runner: ^2.4.6
   json_serializable: ^6.7.1
-  rename: ^3.0.1
+  rename: ^3.0.2
 
 flutter:
   uses-material-design: true

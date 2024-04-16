@@ -20,6 +20,7 @@ flutter run --no-sound-null-safety
 
 build apk with low size:
 flutter build apk --split-per-abi
+flutter build apk --release
 
 build appbundle:
 flutter build appbundle --release --build-name=1.0.7 --build-number=9
@@ -28,8 +29,8 @@ build runner:
 flutter pub run build_runner build --delete-conflicting-outputs
 
 rename app:
-rename setAppName --targets ios,android,macos,windows --value "T-MED"  
-rename setBundleId --targets ios,android,macos,windows --value "com.dwed.dwedkassa"
+rename setAppName --targets android --value "T-MED"  
+rename setBundleId --targets android --value "com.tmed.tmedkiosk"
 
 generation eyse:
 flutter pub run easy_localization:generate -f keys -o locale_keys.g.dart --source-dir ./lib/assets/strings/
