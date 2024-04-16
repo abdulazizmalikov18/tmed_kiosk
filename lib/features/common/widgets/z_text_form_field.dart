@@ -153,6 +153,7 @@ class _ZTextFormFieldState extends State<ZTextFormField>
           SizedBox(
             height: widget.height ?? 48,
             child: TextFormField(
+              onTap: widget.onTap,
               enabled: widget.enabled,
               controller: widget.controller,
               readOnly: widget.readOnly,

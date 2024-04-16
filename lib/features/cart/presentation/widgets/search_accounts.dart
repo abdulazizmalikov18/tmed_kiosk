@@ -1,14 +1,18 @@
+import 'package:formz/formz.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
+import 'package:tmed_kiosk/core/utils/formatters.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
-import 'package:tmed_kiosk/features/common/repo/log_service.dart';
+import 'package:tmed_kiosk/features/common/widgets/dialog_title.dart';
+import 'package:tmed_kiosk/features/common/widgets/w_button.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_scale_animation.dart';
+import 'package:tmed_kiosk/features/common/widgets/w_textfield.dart';
 import 'package:tmed_kiosk/features/common/widgets/z_text_form_field.dart';
 import 'package:tmed_kiosk/features/main/presentation/controllers/bloc/navigator_bloc.dart';
 import 'package:tmed_kiosk/generated/locale_keys.g.dart';
@@ -24,25 +28,38 @@ class SearchAccount extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AccountsBloc, AccountsState>(
       builder: (context, state) {
-        return Focus(
-          onFocusChange: (focused) {
-            if (focused) {
-              Log.w("Bir");
-              context.read<MyNavigatorBloc>().add(NavId(6));
-            }
-            if (!state.isFocused &&
-                context.read<CartBloc>().state.isOrder.isEmpty) {
-              Log.w("Ikki");
-              context.read<AccountsBloc>().add(IsFocused(isFocused: focused));
-            }
+        return InkWell(
+          onTap: () {
+            final TextEditingController controller = TextEditingController();
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                backgroundColor: context.color.backGroundColor,
+                title: const DialogTitle(
+                  title: "PNFl yoki telefon raqamni tering",
+                ),
+                content: SearchUserPNFL(controller: controller),
+                actions: [
+                  WButton(
+                    onTap: () {
+                      if (controller.text.length >= 13) {
+                        context
+                            .read<AccountsBloc>()
+                            .add(AccountsGet(search: controller.text));
+                      }
+                    },
+                    isLoading: state.statusAccounts.isInProgress,
+                    text: LocaleKeys.adduser_search.tr(),
+                  )
+                ],
+              ),
+            );
           },
           child: Container(
             height: 40,
             constraints: const BoxConstraints(maxWidth: 300),
             child: ZTextFormField(
-              onChanged: (value) {
-                context.read<AccountsBloc>().add(AccountsGet(search: value));
-              },
+              onChanged: (value) {},
               fillColor: context.color.whiteBlack,
               prefixIcon: IconButton(
                 onPressed: () {},
@@ -50,7 +67,7 @@ class SearchAccount extends StatelessWidget {
               ),
               controller: vm.controller,
               suffixIcon: "a",
-              enabled: context.read<CartBloc>().state.isOrder.isEmpty,
+              enabled: false,
               suffix: state.isFocused ||
                       state.selectAccount.selectAccount.id != 0 &&
                           context.read<CartBloc>().state.isOrder.isEmpty
@@ -62,42 +79,15 @@ class SearchAccount extends StatelessWidget {
                             .add(IsFocused(isFocused: false));
                         vm.clearAccount(context);
                       },
-                      child: const Icon(Icons.close_rounded, color: white50,),
+                      child: const Icon(
+                        Icons.close_rounded,
+                        color: white50,
+                      ),
                     )
                   : null,
               hintText: LocaleKeys.adduser_search.tr(),
             ),
           ),
-          // child: Container(
-          //   constraints: const BoxConstraints(maxWidth: 360),
-          //   child: TextField(
-          //     controller: vm.controller,
-          //     enabled: context.read<CartBloc>().state.isOrder.isEmpty,
-          //     decoration: InputDecoration(
-          //       hintText: LocaleKeys.adduserSearch.tr(),
-          //       hintStyle: Theme.of(context).textTheme.bodyLarge,
-          //       border: InputBorder.none,
-          //       prefixIcon: IconButton(
-          //         onPressed: () {},
-          //         icon: AppIcons.search.svg(),
-          //       ),
-          //       contentPadding: const EdgeInsets.only(top: 16),
-          //       prefixIconConstraints: const BoxConstraints(maxWidth: 70),
-          //       suffixIcon: state.isFocused || state.selectAccount.selectAccount.name.isNotEmpty
-          //           ? WScaleAnimation(
-          //               onTap: () {
-          //                 context.read<AccountsBloc>().add(IsFocused(isFocused: false));
-          //                 vm.clearAccount(context);
-          //               },
-          //               child: const Icon(Icons.close_rounded))
-          //           : null,
-          //     ),
-          //     maxLines: 1,
-          //     onChanged: (value) {
-          //       context.read<AccountsBloc>().add(AccountsGet(search: value));
-          //     },
-          //   ),
-          // ),
         );
       },
       listener: (context, state) {
@@ -106,6 +96,56 @@ class SearchAccount extends StatelessWidget {
               "${state.selectAccount.selectAccount.name} ${state.selectAccount.selectAccount.lastname}";
         }
       },
+    );
+  }
+}
+
+class SearchUserPNFL extends StatefulWidget {
+  const SearchUserPNFL({super.key, required this.controller});
+  final TextEditingController controller;
+
+  @override
+  State<SearchUserPNFL> createState() => _SearchUserPNFLState();
+}
+
+class _SearchUserPNFLState extends State<SearchUserPNFL> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 56,
+      width: 500,
+      child: WTextField(
+        height: 48,
+        fillColor: context.color.borderColor,
+        maxLength: widget.controller.text.contains('+') ? 13 : 14,
+        keyboardType: TextInputType.phone,
+        controller: widget.controller,
+        inputFormatters: [Formatters.pnflFormat],
+        prefix: widget.controller.text.isEmpty
+            ? const SizedBox(width: 12)
+            : widget.controller.text[0] == '+' ||
+                    widget.controller.text.startsWith("998")
+                ? Padding(
+                    padding: const EdgeInsets.only(
+                      left: 12,
+                      right: 8,
+                    ),
+                    child: AppIcons.call.svg(),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.only(
+                      left: 12,
+                      right: 8,
+                    ),
+                    child: AppIcons.personalcard.svg(),
+                  ),
+        onChanged: (value) {
+          setState(() {});
+        },
+        hintText: 'phone_or_jshir'.tr(),
+        hintStyle: const TextStyle(color: white50),
+        style: TextStyle(color: context.color.white),
+      ),
     );
   }
 }

@@ -74,7 +74,8 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             color: context.color.whiteBlack,
-                            border: Border.all(color: context.color.white.withOpacity(.1)),
+                            border: Border.all(
+                                color: context.color.white.withOpacity(.1)),
                           ),
                           margin: const EdgeInsets.all(16),
                           padding: const EdgeInsets.all(12),
@@ -83,13 +84,17 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                             children: [
                               Text(
                                 LocaleKeys.cart_price_total.tr(),
-                                style: AppTheme.bodyMedium.copyWith(color: context.color.white),
+                                style: AppTheme.bodyMedium
+                                    .copyWith(color: context.color.white),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                               ),
-                              Divider(height: 24, color: context.color.white.withOpacity(.1)),
+                              Divider(
+                                  height: 24,
+                                  color: context.color.white.withOpacity(.1)),
                               InfoPriceRow(
-                                name: '${LocaleKeys.pay_total_price_total.tr()}:',
+                                name:
+                                    '${LocaleKeys.pay_total_price_total.tr()}:',
                                 price: state.discount < 0
                                     ? state.allPrice - (state.discount * -1)
                                     : state.allPrice,
@@ -132,15 +137,15 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                 children: [
                                   Expanded(
                                     child: WButton(
-                                      height: 100,
+                                      height: 80,
                                       onTap: () {
                                         widget.vmA.clearAccount(context);
                                         context
                                             .read<CartBloc>()
                                             .add(CartRemove());
                                       },
-                                      text:
-                                          LocaleKeys.cart_order_cancel_button.tr(),
+                                      text: LocaleKeys.cart_order_cancel_button
+                                          .tr(),
                                       textStyle: const TextStyle(fontSize: 32),
                                       color: red,
                                     ),
@@ -148,7 +153,7 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                   const SizedBox(width: 16),
                                   Expanded(
                                     child: WButton(
-                                      height: 100,
+                                      height: 80,
                                       onTap: () {
                                         checkUser(
                                           cartMap: state.cartMap,
@@ -160,7 +165,8 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                           context: context,
                                         );
                                       },
-                                      text: LocaleKeys.check_payment_button.tr(),
+                                      text:
+                                          LocaleKeys.check_payment_button.tr(),
                                       textStyle: const TextStyle(fontSize: 32),
                                       isLoading: state.status.isInProgress,
                                     ),
@@ -250,7 +256,8 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                           vm.controllerComment.clear();
                                           vm.task.clear();
                                         },
-                                        text: LocaleKeys.cart_order_cancel_button
+                                        text: LocaleKeys
+                                            .cart_order_cancel_button
                                             .tr(),
                                         color: red,
                                       ),
