@@ -1,3 +1,4 @@
+import 'package:kiosk_mode/kiosk_mode.dart';
 import 'package:tmed_kiosk/features/common/controllers/price_bloc/price_bloc.dart';
 import 'package:tmed_kiosk/features/main/presentation/widgets/selection_account.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -24,6 +25,7 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   String lenguage = StorageRepository.getString('language');
+  late final Stream<KioskMode> _currentMode = watchKioskMode();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,6 +102,35 @@ class _ProfileViewState extends State<ProfileView> {
                           value: state.isPrice,
                           onChanged: (value) {
                             context.read<PriceBloc>().add(const ChangePrise());
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 8),
+                DecoratedBox(
+                  decoration: wdecoration,
+                  child: StreamBuilder(
+                    stream: _currentMode,
+                    builder: (context, snapshot) {
+                      final mode = snapshot.data;
+                      final message = mode == null
+                          ? 'Can\'t determine the mode'
+                          : 'Current mode: $mode';
+
+                      return ListTile(
+                        leading: AppIcons.wallet.svg(),
+                        title: Text(message),
+                        trailing: CupertinoSwitch(
+                          activeColor: blue,
+                          value: mode == KioskMode.enabled,
+                          onChanged: (value) {
+                            if (value) {
+                              startKioskMode();
+                            } else {
+                              stopKioskMode();
+                            }
                           },
                         ),
                       );
