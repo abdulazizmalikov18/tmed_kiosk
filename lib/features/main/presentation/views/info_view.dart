@@ -63,12 +63,12 @@ class InfoView extends StatelessWidget {
                       ),
                       const SizedBox(height: 56),
                       Text(
-                        "Добро пожаловать в T-MED",
+                        "welcome".tr(),
                         style: TextStyle(fontSize: 56, fontWeight: FontWeight.w600,color: context.color.white ),
                       ),
-                      const Text(
-                        "Запишитесь на электронную очередь",
-                        style: TextStyle(
+                      Text(
+                        "sign_up_electronic_queue".tr(),
+                        style: const TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.w400,
                           color: white50,
@@ -172,32 +172,32 @@ class InfoView extends StatelessWidget {
                     ],
                   ),
                 ),
-                floatingActionButton: BlocBuilder<PriceBloc, PriceState>(
-                  builder: (context, state) {
-                    return WButton(
-                      height: 40,
-                      width: 40,
-                      borderRadius: 12,
-                      onTap: () {
-                        context
-                            .read<PriceBloc>()
-                            .add(ModeControllerEvent(themeMode: !state.isMode));
-                        AppScope.update(
-                          context,
-                          AppScope(
-                              themeMode:
-                              AppScope.of(context).themeMode == ThemeMode.light
-                                  ? ThemeMode.dark
-                                  : ThemeMode.light),
-                        );
-                      },
-                      color: context.color.white.withOpacity(.1),
-                      child: state.isMode
-                          ? AppIcons.icMoon.svg(color: greyText)
-                          : AppIcons.icSun.svg(color: orang),
-                    );
-                  },
-                ),
+                // floatingActionButton: BlocBuilder<PriceBloc, PriceState>(
+                //   builder: (context, state) {
+                //     return WButton(
+                //       height: 40,
+                //       width: 40,
+                //       borderRadius: 12,
+                //       onTap: () {
+                //         context
+                //             .read<PriceBloc>()
+                //             .add(ModeControllerEvent(themeMode: !state.isMode));
+                //         AppScope.update(
+                //           context,
+                //           AppScope(
+                //               themeMode:
+                //               AppScope.of(context).themeMode == ThemeMode.light
+                //                   ? ThemeMode.dark
+                //                   : ThemeMode.light),
+                //         );
+                //       },
+                //       color: context.color.white.withOpacity(.1),
+                //       child: state.isMode
+                //           ? AppIcons.icMoon.svg(color: greyText)
+                //           : AppIcons.icSun.svg(color: orang),
+                //     );
+                //   },
+                // ),
               ),
             ),
           ],

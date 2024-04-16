@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 
 class PspShimmer extends StatelessWidget {
   const PspShimmer({super.key});
@@ -11,7 +12,7 @@ class PspShimmer extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         boxShadow: wboxShadow,
-        color: contColor,
+        color: context.color.contColor,
       ),
       width: MediaQuery.of(context).size.width - 64,
       padding: const EdgeInsets.all(12),

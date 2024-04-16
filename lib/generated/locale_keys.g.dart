@@ -305,6 +305,8 @@ abstract class  LocaleKeys {
   static const number = 'number';
   static const monthly_payments = 'monthly_payments';
   static const expenses = 'expenses';
+  static const welcome = 'welcome';
+  static const sign_up_electronic_queue = 'sign_up_electronic_queue';
   static const my_scores = 'my_scores';
 
 }

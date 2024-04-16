@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/add_user_iteam_phone.dart';
 import 'package:tmed_kiosk/features/common/navigation/routs_contact.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,7 @@ import 'package:tmed_kiosk/features/common/widgets/w_tab_bar.dart';
 import 'package:tmed_kiosk/features/main/presentation/widgets/no_data_cart.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:tmed_kiosk/generated/locale_keys.g.dart';
 
 class UserInfoView extends StatefulWidget {
   const UserInfoView({super.key, required this.vm, this.isPhone = false});
@@ -46,17 +49,17 @@ class _UserInfoViewState extends State<UserInfoView> {
       length: 3,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        color: contColor,
+        color: context.color.contColor,
         child: Column(
           children: [
-            const SizedBox(
+            SizedBox(
               height: 48,
               width: double.infinity,
               child: WTabBar(
                 tabs: [
-                  Text("User info"),
-                  Text("User history"),
-                  Text("User retsept"),
+                  Text(LocaleKeys.user_info.tr()),
+                  Text(LocaleKeys.user_history.tr()),
+                  Text(LocaleKeys.user_retsept.tr()),
                 ],
               ),
             ),
@@ -94,7 +97,7 @@ class _UserInfoViewState extends State<UserInfoView> {
                               child: ListView.builder(
                                 itemCount: 8,
                                 padding:
-                                    const EdgeInsets.symmetric(horizontal: 16),
+                                const EdgeInsets.symmetric(horizontal: 16),
                                 itemBuilder: (context, index) => Container(
                                   height: 94,
                                   margin: const EdgeInsets.only(bottom: 16),
@@ -118,9 +121,13 @@ class _UserInfoViewState extends State<UserInfoView> {
                           itemCount: state.historys.length,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           separatorBuilder: (context, index) =>
-                              const SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           itemBuilder: (context, index) => Container(
-                            decoration: wdecoration2,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: context.color.whiteBlack,
+                              border: Border.all(color: context.color.white.withOpacity(0.3)),
+                            ),
                             padding: const EdgeInsets.all(12),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -130,7 +137,7 @@ class _UserInfoViewState extends State<UserInfoView> {
                                   width: double.infinity,
                                   child: Text(
                                     state.historys[index].name,
-                                    style: AppTheme.bodyMedium,
+                                    style: AppTheme.bodyMedium.copyWith(color: context.color.white),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                   ),
@@ -144,7 +151,7 @@ class _UserInfoViewState extends State<UserInfoView> {
                                       fontWeight: FontWeight.w400),
                                 ),
                                 Divider(
-                                    color: white.withOpacity(.1), height: 24),
+                                    color: context.color.white.withOpacity(.1), height: 24),
                                 SizedBox(
                                   width: double.infinity,
                                   height: 20,
@@ -157,23 +164,23 @@ class _UserInfoViewState extends State<UserInfoView> {
                                             state.historys[index].fullCost
                                                 .toString(),
                                           )} UZS",
-                                          style: AppTheme.bodyLarge,
+                                          style: AppTheme.bodyLarge.copyWith(color: context.color.white),
                                         ),
                                       ),
                                       Expanded(
                                         flex: 1,
                                         child: RichText(
                                           text: TextSpan(
-                                            text: "Soni: ",
-                                            style: AppTheme.bodyLarge,
+                                            text: "${LocaleKeys.soni.tr()}: ",
+                                            style: AppTheme.bodyLarge.copyWith(color: context.color.white),
                                             children: [
                                               TextSpan(
                                                 text:
-                                                    "x${state.historys[index].order.status}",
+                                                "x${state.historys[index].order.status}",
                                                 style: AppTheme.bodyLarge
                                                     .copyWith(
-                                                        color: white
-                                                            .withOpacity(.5)),
+                                                    color: context.color.white
+                                                        .withOpacity(.5)),
                                               )
                                             ],
                                           ),
@@ -183,11 +190,11 @@ class _UserInfoViewState extends State<UserInfoView> {
                                         flex: 1,
                                         child: Text(
                                           state.historys[index].order.createDate
-                                                  .isNotEmpty
+                                              .isNotEmpty
                                               ? MyFunctions.getformDate(state
-                                                  .historys[index]
-                                                  .order
-                                                  .createDate)
+                                              .historys[index]
+                                              .order
+                                              .createDate)
                                               : '--/------',
                                           style: AppTheme.labelSmall
                                               .copyWith(fontSize: 16),
@@ -202,10 +209,10 @@ class _UserInfoViewState extends State<UserInfoView> {
                           ),
                         );
                       } else {
-                        return const Center(
+                        return Center(
                           child: NoDataCart(
                             image: AppIcons.noData,
-                            title: 'Nothing have',
+                            title: LocaleKeys.nothing_have.tr(),
                             isButton: false,
                           ),
                         );
@@ -218,16 +225,20 @@ class _UserInfoViewState extends State<UserInfoView> {
                         return const Center(child: CircularProgressIndicator());
                       } else {
                         return Container(
-                          decoration: wdecoration2,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: context.color.whiteBlack,
+                            border: Border.all(color: context.color.white.withOpacity(0.3)),
+                          ),
                           margin: const EdgeInsets.symmetric(vertical: 16),
                           padding: const EdgeInsets.all(12),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Retsept",
+                                LocaleKeys.retsept.tr(),
                                 style: AppTheme.displaySmall
-                                    .copyWith(fontWeight: FontWeight.w600),
+                                    .copyWith(fontWeight: FontWeight.w600,color: context.color.white),
                               ),
                               Divider(color: white.withOpacity(.1), height: 24),
                               Expanded(
@@ -237,41 +248,45 @@ class _UserInfoViewState extends State<UserInfoView> {
                                       context
                                           .read<CartBloc>()
                                           .add(CartAddRecommendation(
-                                            products: state
-                                                .recommendations[index]
-                                                .products,
-                                            onSuccess: () {
-                                              context.go(RoutsContact.goods);
-                                            },
-                                            onError: (error) {
-                                              context.read<ShowPopUpBloc>().add(
-                                                  ShowPopUp(
-                                                      message:
-                                                          "Malumot topilmadi",
-                                                      status:
-                                                          PopStatus.warning));
-                                            },
-                                          ));
+                                        products: state
+                                            .recommendations[index]
+                                            .products,
+                                        onSuccess: () {
+                                          context.go(RoutsContact.goods);
+                                        },
+                                        onError: (error) {
+                                          context.read<ShowPopUpBloc>().add(
+                                              ShowPopUp(
+                                                  message:
+                                                  LocaleKeys.no_information_found.tr(),
+                                                  status:
+                                                  PopStatus.warning));
+                                        },
+                                      ));
                                     },
                                     child: Container(
-                                      decoration: wdecoration3,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: context.color.borderColor,
+                                        border: Border.all(color: context.color.white.withOpacity(0.3)),
+                                      ),
                                       padding: const EdgeInsets.all(8),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           Expanded(
                                             flex: 5,
                                             child: Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   "${state.recommendations[index].specialist.name} ${state.recommendations[index].specialist.lastname}",
-                                                  style: AppTheme.displayLarge,
+                                                  style: AppTheme.displayLarge.copyWith(color: context.color.white),
                                                   maxLines: 1,
                                                   overflow:
-                                                      TextOverflow.ellipsis,
+                                                  TextOverflow.ellipsis,
                                                 ),
                                                 const SizedBox(height: 4),
                                                 Text(
@@ -279,11 +294,11 @@ class _UserInfoViewState extends State<UserInfoView> {
                                                       .specialist.job,
                                                   style: AppTheme.labelSmall
                                                       .copyWith(
-                                                          color: white
-                                                              .withOpacity(.5)),
+                                                      color: context.color.white
+                                                          .withOpacity(.5)),
                                                   maxLines: 1,
                                                   overflow:
-                                                      TextOverflow.ellipsis,
+                                                  TextOverflow.ellipsis,
                                                 ),
                                               ],
                                             ),
@@ -292,14 +307,14 @@ class _UserInfoViewState extends State<UserInfoView> {
                                             flex: 2,
                                             child: Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "${state.recommendations[index].products.length} retsept",
-                                                  style: AppTheme.displayLarge,
+                                                  "${state.recommendations[index].products.length} ${LocaleKeys.retsept.tr()}",
+                                                  style: AppTheme.displayLarge.copyWith(color: context.color.white),
                                                   maxLines: 1,
                                                   overflow:
-                                                      TextOverflow.ellipsis,
+                                                  TextOverflow.ellipsis,
                                                 ),
                                                 const SizedBox(height: 4),
                                                 Text(
@@ -308,11 +323,11 @@ class _UserInfoViewState extends State<UserInfoView> {
                                                       .createDate),
                                                   style: AppTheme.labelSmall
                                                       .copyWith(
-                                                          color: white
-                                                              .withOpacity(.5)),
+                                                      color: context.color.white
+                                                          .withOpacity(.5)),
                                                   maxLines: 1,
                                                   overflow:
-                                                      TextOverflow.ellipsis,
+                                                  TextOverflow.ellipsis,
                                                 ),
                                               ],
                                             ),
@@ -322,7 +337,7 @@ class _UserInfoViewState extends State<UserInfoView> {
                                     ),
                                   ),
                                   separatorBuilder: (context, index) =>
-                                      const SizedBox(height: 12),
+                                  const SizedBox(height: 12),
                                   itemCount: state.recommendations.length,
                                 ),
                               ),

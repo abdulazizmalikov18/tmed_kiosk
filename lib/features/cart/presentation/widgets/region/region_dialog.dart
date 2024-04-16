@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:formz/formz.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/region/region_list_view.dart';
@@ -12,6 +13,7 @@ import 'package:tmed_kiosk/features/common/widgets/dialog_title.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_scale_animation.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_textfield.dart';
 import 'package:tmed_kiosk/generated/locale_keys.g.dart';
+
 
 class RegionDialog extends StatefulWidget {
   const RegionDialog({super.key, required this.vm});
@@ -39,7 +41,7 @@ class _RegionDialogState extends State<RegionDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const DialogTitle(title: "Vazifa jarayoni"),
+              DialogTitle(title: "task_process".tr()),
               const SizedBox(height: 8),
               WTextField(
                 onChanged: (value) {
@@ -50,6 +52,8 @@ class _RegionDialogState extends State<RegionDialog> {
                   padding: const EdgeInsets.only(right: 8),
                   child: SvgPicture.asset(AppIcons.search),
                 ),
+                fillColor: context.color.whiteBlack,
+                style: TextStyle(color: context.color.white),
               ),
               const SizedBox(height: 24),
               if (widget.vm.pageInTitle.isNotEmpty)
@@ -82,7 +86,7 @@ class _RegionDialogState extends State<RegionDialog> {
                   child: Container(
                     height: 24,
                     margin: const EdgeInsets.only(bottom: 16),
-                    child: AppIcons.arrowLeft.svg(color: white),
+                    child: AppIcons.arrowLeft.svg(color: greyText),
                   ),
                 ),
               Container(

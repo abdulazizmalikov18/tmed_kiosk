@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -147,7 +148,7 @@ class _ShowSelectState extends State<ShowSelect> {
                       }
                       Navigator.pop(context);
                     },
-                    text: 'Tanlang',
+                    text: 'specialist_category'.tr(),
                     isDisabled: !widget.isProduct &&
                             !selction &&
                             widget.selectIndex != null

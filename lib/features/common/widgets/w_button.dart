@@ -1,4 +1,5 @@
 import 'package:tmed_kiosk/assets/colors/colors.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/my_function.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_scale_animation.dart';
 import 'package:flutter/cupertino.dart';
@@ -64,7 +65,7 @@ class WButton extends StatelessWidget {
         padding: padding ?? EdgeInsets.zero,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: isDisabled ? white.withOpacity(.1) : color ?? blue,
+          color: isDisabled ? context.color.blue.withOpacity(.1) : color ?? blue,
           borderRadius: BorderRadius.circular(borderRadius),
           // gradient: isDisabled
           //     ? null

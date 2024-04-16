@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/goods/presentation/controllers/bloc/goods_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
@@ -42,11 +44,12 @@ class GoodsViewModel {
           showDialog(
             context: context,
             builder: (ctx) => AlertDialog(
+              backgroundColor: context.color.backGroundColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
               contentPadding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
-              title: const DialogTitle(title: "Специальные параментры"),
+              title: DialogTitle(title: "special_parameters".tr()),
               content: ShowSelect(
                 isProduct: isProduct,
                 isDiscount: product.prices.isEmpty

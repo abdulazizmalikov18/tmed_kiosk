@@ -132,6 +132,7 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                 children: [
                                   Expanded(
                                     child: WButton(
+                                      height: 100,
                                       onTap: () {
                                         widget.vmA.clearAccount(context);
                                         context
@@ -140,12 +141,14 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                       },
                                       text:
                                           LocaleKeys.cart_order_cancel_button.tr(),
+                                      textStyle: const TextStyle(fontSize: 32),
                                       color: red,
                                     ),
                                   ),
                                   const SizedBox(width: 16),
                                   Expanded(
                                     child: WButton(
+                                      height: 100,
                                       onTap: () {
                                         checkUser(
                                           cartMap: state.cartMap,
@@ -158,6 +161,7 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                         );
                                       },
                                       text: LocaleKeys.check_payment_button.tr(),
+                                      textStyle: const TextStyle(fontSize: 32),
                                       isLoading: state.status.isInProgress,
                                     ),
                                   ),

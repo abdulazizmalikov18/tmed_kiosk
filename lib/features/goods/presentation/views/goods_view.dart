@@ -200,11 +200,13 @@ class _GoodsViewState extends State<GoodsView> {
             builder: (context, cartMap) {
               if (cartMap.isNotEmpty) {
                 return WButton(
+                  height: 100,
                   margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                   onTap: () {
                     context.push(RoutsContact.cart);
                   },
                   text: "Xizmatlar soni / ${cartMap.length} ta",
+                  textStyle: TextStyle(fontSize: 32),
                 );
               }
               return const SizedBox();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 
 class WTabBar extends StatelessWidget {
   final TabController? tabController;
@@ -18,7 +19,11 @@ class WTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: wdecoration2,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: context.color.whiteBlack,
+        border: Border.all(color: context.color.white.withOpacity(0.1)),
+      ),
       child: TabBar(
         dividerColor: Colors.transparent,
         padding: padding ?? const EdgeInsets.all(4),
@@ -28,14 +33,14 @@ class WTabBar extends StatelessWidget {
             BoxShadow(
                 blurRadius: 1,
                 offset: const Offset(0, 3),
-                color: const Color(0xff000000).withOpacity(0.04)),
+                color: context.color.black.withOpacity(0.04)),
             BoxShadow(
                 blurRadius: 8,
                 offset: const Offset(0, 3),
-                color: const Color(0xff000000).withOpacity(0.12)),
+                color:context.color.black.withOpacity(0.12)),
           ],
           shape: RoundedRectangleBorder(
-            side: BorderSide(color: const Color(0xff000000).withOpacity(0.04)),
+            side: BorderSide(color: context.color.black.withOpacity(0.04)),
             borderRadius: BorderRadius.circular(8),
           ),
           gradient: const LinearGradient(
@@ -52,9 +57,9 @@ class WTabBar extends StatelessWidget {
             .displayLarge!
             .copyWith(fontSize: 13, fontWeight: FontWeight.w600),
         labelStyle: Theme.of(context).textTheme.displayLarge!.copyWith(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-            ),
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+        ),
         unselectedLabelColor: shuttleGrey,
         labelColor: white,
         tabs: tabs,

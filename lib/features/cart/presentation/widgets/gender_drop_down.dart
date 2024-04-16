@@ -1,3 +1,4 @@
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/enums.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -49,7 +50,11 @@ class _GenderDropDownState extends State<GenderDropDown> {
                   },
             child: Container(
               padding: const EdgeInsets.fromLTRB(0, 12, 12, 12),
-              decoration: wdecoration2,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: context.color.whiteBlack,
+                border: Border.all(color: context.color.white.withOpacity(.1)),
+              ),
               child: Row(
                 children: [
                   CupertinoCheckbox(
@@ -68,7 +73,7 @@ class _GenderDropDownState extends State<GenderDropDown> {
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: white.withOpacity(.5),
+                          color: context.color.white.withOpacity(.5),
                         ),
                   )
                 ],
@@ -89,7 +94,11 @@ class _GenderDropDownState extends State<GenderDropDown> {
                   },
             child: Container(
               padding: const EdgeInsets.fromLTRB(0, 12, 12, 12),
-              decoration: wdecoration2,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: context.color.whiteBlack,
+                border: Border.all(color: context.color.white.withOpacity(.1)),
+              ),
               child: Row(
                 children: [
                   CupertinoCheckbox(
@@ -108,7 +117,7 @@ class _GenderDropDownState extends State<GenderDropDown> {
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: white.withOpacity(.5),
+                          color: context.color.white.withOpacity(.5),
                         ),
                   )
                 ],

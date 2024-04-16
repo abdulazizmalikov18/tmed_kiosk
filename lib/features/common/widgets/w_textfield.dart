@@ -3,6 +3,7 @@ import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/common/widgets/stroke_paint.dart';
 
 class WTextField extends StatefulWidget {
@@ -144,10 +145,10 @@ class _WTextFieldState extends State<WTextField>
             textInputAction: widget.textInputAction,
             style: widget.style ??
                 Theme.of(context).textTheme.displayLarge!.copyWith(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: widget.textColor ?? white,
-                    ),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: widget.textColor ?? context.color.white,
+                ),
             inputFormatters: widget.inputFormatters,
             maxLength: widget.maxLength,
             maxLines: widget.isObscure ? 1 : widget.maxLines,
@@ -171,65 +172,65 @@ class _WTextFieldState extends State<WTextField>
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(
-                      color: widget.hasError ? red : greyText,
+                      color: widget.hasError ? red : context.color.white.withOpacity(0.3),
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide:
-                        BorderSide(color: widget.hasError ? red : inputBlue),
+                    BorderSide(color: widget.hasError ? red : inputBlue),
                   ),
                   hintText: widget.hintText,
                   hintStyle: widget.hintStyle ??
                       Theme.of(context).textTheme.headlineMedium!.copyWith(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color:
-                                widget.hasError ? red : white.withOpacity(.5),
-                          ),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color:
+                        widget.hasError ? red : context.color.white.withOpacity(.5),
+                      ),
                   contentPadding: widget.contentPadding,
                   suffixIconConstraints:
-                      BoxConstraints(maxWidth: widget.suffixMaxWidth),
+                  BoxConstraints(maxWidth: widget.suffixMaxWidth),
                   suffixIcon: widget.hasSuffixIcon
                       ? widget.suffix ?? const SizedBox()
                       : Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                isObscure = !isObscure;
-                              });
-                              if (isObscure) {
-                                animationController.forward();
-                              } else {
-                                animationController.reverse();
-                              }
-                            },
-                            behavior: HitTestBehavior.opaque,
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: Center(
-                                child: AnimatedBuilder(
-                                  animation: animationController,
-                                  child: SvgPicture.asset(AppIcons.eye),
-                                  builder: (context, child) => SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CustomPaint(
-                                      foregroundPainter: StrokePaint(
-                                          animationController.value),
-                                      child: child,
-                                    ),
-                                  ),
-                                ),
+                    padding: const EdgeInsets.only(right: 10),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isObscure = !isObscure;
+                        });
+                        if (isObscure) {
+                          animationController.forward();
+                        } else {
+                          animationController.reverse();
+                        }
+                      },
+                      behavior: HitTestBehavior.opaque,
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Center(
+                          child: AnimatedBuilder(
+                            animation: animationController,
+                            child: SvgPicture.asset(AppIcons.eye),
+                            builder: (context, child) => SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CustomPaint(
+                                foregroundPainter: StrokePaint(
+                                    animationController.value),
+                                child: child,
                               ),
                             ),
                           ),
                         ),
+                      ),
+                    ),
+                  ),
                   fillColor: widget.fillColor,
                   filled: true,
                   prefixIconConstraints:
-                      BoxConstraints(maxWidth: widget.prefixMaxWidth),
+                  BoxConstraints(maxWidth: widget.prefixMaxWidth),
                   prefixIcon: widget.prefix,
                   counterText: widget.counterText,
                   counterStyle: widget.counterStyle ??

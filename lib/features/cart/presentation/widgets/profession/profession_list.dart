@@ -1,3 +1,4 @@
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/common/repo/log_service.dart';
 import 'package:flutter/material.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
@@ -76,9 +77,9 @@ class _ProfessionListViewState extends State<ProfessionListView> {
                                   const SizedBox(),
                             ),
                     ),
-                    Expanded(child: Text(widget.profession[index].name)),
+                    Expanded(child: Text(widget.profession[index].name, style: TextStyle(color: context.color.white),)),
                     if (widget.profession[index].isParent)
-                      AppIcons.arrowRight.svg(color: white),
+                      AppIcons.arrowRight.svg(color: context.color.white),
                   ],
                 ),
               ),

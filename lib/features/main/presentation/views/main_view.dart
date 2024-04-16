@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_barcode_listener/flutter_barcode_listener.dart';
 import 'package:tmed_kiosk/assets/colors/theme_changer.dart';
 import 'package:tmed_kiosk/assets/themes/theme.dart';
@@ -75,7 +76,7 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
   void _startTimer() {
     // Start a timer to navigate to the home page after 15 seconds of inactivity
     _timer = Timer(const Duration(seconds: 30), () {
-      context.go(RoutsContact.infoView);
+      // context.go(RoutsContact.infoView);
     });
   }
 
@@ -140,66 +141,97 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                 ),
                 bottomNavigationBar: BlocBuilder<InternetBloc, InternetState>(
                   builder: (context, stateInternet) {
-                    return GestureDetector(
-                      onLongPressStart: _handleLongPressStart,
-                      onLongPressEnd: _handleLongPressEnd,
-                      child: BottomNavigationBar(
-                        showUnselectedLabels: false,
-                        showSelectedLabels: false,
-                        backgroundColor: context.color.contColor,
-                        selectedItemColor: green,
-                        elevation: 10,
-                        type: BottomNavigationBarType.fixed,
-                        currentIndex: widget.navigationShell.currentIndex,
-                        onTap: (value) {
-                          widget.navigationShell.goBranch(
-                            value,
-                            initialLocation:
-                                value == widget.navigationShell.currentIndex,
-                          );
-                        },
-                        items: [
-                          BottomNavigationBarItem(
-                            activeIcon: AppIcons.home.svg(color: blue),
-                            icon: AppIcons.home.svg(color: greyText),
-                            label: "Niumadir",
+                    return Stack(
+                      children: [
+                        GestureDetector(
+                          onLongPressStart: _handleLongPressStart,
+                          onLongPressEnd: _handleLongPressEnd,
+                          child: BottomNavigationBar(
+                            showUnselectedLabels: false,
+                            showSelectedLabels: false,
+                            backgroundColor: context.color.contColor,
+                            selectedItemColor: green,
+                            elevation: 10,
+                            type: BottomNavigationBarType.fixed,
+                            currentIndex: widget.navigationShell.currentIndex,
+                            onTap: (value) {
+                              widget.navigationShell.goBranch(
+                                value,
+                                initialLocation:
+                                    value == widget.navigationShell.currentIndex,
+                              );
+                            },
+                            items: [
+                              BottomNavigationBarItem(
+                                activeIcon: AppIcons.home.svg(color: blue),
+                                icon: AppIcons.home.svg(color: greyText),
+                                label: "Niumadir",
+                              ),
+                              BottomNavigationBarItem(
+                                activeIcon: AppIcons.personend.svg(color: blue),
+                                icon: AppIcons.personend.svg(color: greyText),
+                                label: "Niumadir",
+                              ),
+                            ],
                           ),
-                          BottomNavigationBarItem(
-                            activeIcon: AppIcons.personend.svg(color: blue),
-                            icon: AppIcons.personend.svg(color: greyText),
-                            label: "Niumadir",
-                          ),
-                        ],
-                      ),
+                        ),
+                        BlocBuilder<PriceBloc, PriceState>(
+                          builder: (context, state) {
+                            return WButton(
+                              margin: const EdgeInsets.only(left: 16, top: 10,bottom: 10),
+                              height: 40,
+                              width: 40,
+                              borderRadius: 12,
+                              onTap: () {
+                                context
+                                    .read<PriceBloc>()
+                                    .add(ModeControllerEvent(themeMode: !state.isMode));
+                                AppScope.update(
+                                  context,
+                                  AppScope(
+                                      themeMode:
+                                      AppScope.of(context).themeMode == ThemeMode.light
+                                          ? ThemeMode.dark
+                                          : ThemeMode.light),
+                                );
+                              },
+                              color: context.color.white.withOpacity(.1),
+                              child: state.isMode
+                                  ? AppIcons.icMoon.svg(color: greyText)
+                                  : AppIcons.icSun.svg(color: orang),
+                            );
+                          },
+                        ),
+                      ],
                     );
                   },
                 ),
-                floatingActionButton: BlocBuilder<PriceBloc, PriceState>(
-                  builder: (context, state) {
-                    return WButton(
-                      height: 40,
-                      width: 40,
-                      borderRadius: 12,
-                      onTap: () {
-                        context
-                            .read<PriceBloc>()
-                            .add(ModeControllerEvent(themeMode: !state.isMode));
-                        AppScope.update(
-                          context,
-                          AppScope(
-                              themeMode:
-                              AppScope.of(context).themeMode == ThemeMode.light
-                                  ? ThemeMode.dark
-                                  : ThemeMode.light),
-                        );
-                      },
-                      color: context.color.white.withOpacity(.1),
-                      child: state.isMode
-                          ? AppIcons.icMoon.svg(color: greyText)
-                          : AppIcons.icSun.svg(color: orang),
-                    );
-                  },
-                ),
+                // floatingActionButton: BlocBuilder<PriceBloc, PriceState>(
+                //   builder: (context, state) {
+                //     return WButton(
+                //       height: 40,
+                //       width: 40,
+                //       borderRadius: 12,
+                //       onTap: () {
+                //         context
+                //             .read<PriceBloc>()
+                //             .add(ModeControllerEvent(themeMode: !state.isMode));
+                //         AppScope.update(
+                //           context,
+                //           AppScope(
+                //               themeMode:
+                //               AppScope.of(context).themeMode == ThemeMode.light
+                //                   ? ThemeMode.dark
+                //                   : ThemeMode.light),
+                //         );
+                //       },
+                //       color: context.color.white.withOpacity(.1),
+                //       child: state.isMode
+                //           ? AppIcons.icMoon.svg(color: greyText)
+                //           : AppIcons.icSun.svg(color: orang),
+                //     );
+                //   },
+                // ),
               ),
             ),
           ),

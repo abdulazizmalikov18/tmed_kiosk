@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:formz/formz.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/profession/profession_list.dart';
@@ -38,7 +39,7 @@ class _ProfessionDialogState extends State<ProfessionDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const DialogTitle(title: "Select your profession"),
+              DialogTitle(title: "select_your_profession".tr()),
               const SizedBox(height: 8),
               WTextField(
                 onChanged: (value) {
@@ -51,6 +52,8 @@ class _ProfessionDialogState extends State<ProfessionDialog> {
                   padding: const EdgeInsets.only(right: 8),
                   child: SvgPicture.asset(AppIcons.search),
                 ),
+                fillColor: context.color.whiteBlack,
+                style: TextStyle(color: context.color.white),
               ),
               const SizedBox(height: 16),
               if (widget.vm.professionList.isNotEmpty)
@@ -69,7 +72,7 @@ class _ProfessionDialogState extends State<ProfessionDialog> {
                   child: Container(
                     height: 24,
                     margin: const EdgeInsets.only(bottom: 16),
-                    child: AppIcons.arrowLeft.svg(color: white),
+                    child: AppIcons.arrowLeft.svg(color: context.color.white),
                   ),
                 ),
               Container(

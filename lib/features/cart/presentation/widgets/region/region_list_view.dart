@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/region_entity.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_scale_animation.dart';
@@ -64,9 +65,9 @@ class _RegionListViewState extends State<RegionListView> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(widget.regions[index].name),
+                    Text(widget.regions[index].name, style: TextStyle(color: context.color.white),),
                     if (widget.regions[index].isParent)
-                      AppIcons.arrowRight.svg(color: white),
+                      AppIcons.arrowRight.svg(color: context.color.white),
                   ],
                 ),
               ),

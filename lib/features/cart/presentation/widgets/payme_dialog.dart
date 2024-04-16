@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/constants/images.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/my_function.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
@@ -55,7 +56,7 @@ class _PaymeDialogState extends State<PaymeDialog> {
               width: double.infinity,
               decoration: BoxDecoration(
                 color:
-                    index == 0 ? blue.withOpacity(.1) : white.withOpacity(.1),
+                    index == 0 ? blue.withOpacity(.1) : context.color.white.withOpacity(.1),
                 borderRadius: BorderRadius.circular(12),
                 border: index == 0 ? Border.all(color: blue) : null,
               ),
@@ -64,9 +65,9 @@ class _PaymeDialogState extends State<PaymeDialog> {
                 children: [
                   Image.asset(AppImages.payme),
                   const SizedBox(height: 12),
-                  const Text(
+                  Text(
                     "Payment via Pay Me",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: context.color.white),
                   ),
                   if (index == 0)
                     Padding(
@@ -75,12 +76,12 @@ class _PaymeDialogState extends State<PaymeDialog> {
                         data: 'https://payme.uz',
                         version: QrVersions.auto,
                         size: 200.0,
-                        eyeStyle: const QrEyeStyle(
-                          color: white,
+                        eyeStyle: QrEyeStyle(
+                          color: context.color.white,
                           eyeShape: QrEyeShape.square,
                         ),
-                        dataModuleStyle: const QrDataModuleStyle(
-                          color: white,
+                        dataModuleStyle: QrDataModuleStyle(
+                          color: context.color.white,
                           dataModuleShape: QrDataModuleShape.square,
                         ),
                       ),
@@ -105,7 +106,7 @@ class _PaymeDialogState extends State<PaymeDialog> {
               width: double.infinity,
               decoration: BoxDecoration(
                 color:
-                    index == 1 ? blue.withOpacity(.1) : white.withOpacity(.1),
+                    index == 1 ? blue.withOpacity(.1) : context.color.white.withOpacity(.1),
                 borderRadius: BorderRadius.circular(12),
                 border: index == 1 ? Border.all(color: blue) : null,
               ),
@@ -114,9 +115,9 @@ class _PaymeDialogState extends State<PaymeDialog> {
                 children: [
                   Image.asset(AppImages.click),
                   const SizedBox(height: 12),
-                  const Text(
+                  Text(
                     "Payment via Click",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400,color: context.color.white),
                   ),
                   if (index == 1)
                     Padding(
@@ -125,12 +126,12 @@ class _PaymeDialogState extends State<PaymeDialog> {
                         data: 'https://click.uz/',
                         version: QrVersions.auto,
                         size: 200.0,
-                        eyeStyle: const QrEyeStyle(
-                          color: white,
+                        eyeStyle: QrEyeStyle(
+                          color: context.color.white,
                           eyeShape: QrEyeShape.square,
                         ),
-                        dataModuleStyle: const QrDataModuleStyle(
-                          color: white,
+                        dataModuleStyle: QrDataModuleStyle(
+                          color: context.color.white,
                           dataModuleShape: QrDataModuleShape.square,
                         ),
                       ),
@@ -175,7 +176,7 @@ class _PaymeDialogState extends State<PaymeDialog> {
               width: double.infinity,
               decoration: BoxDecoration(
                 color:
-                    index == 2 ? blue.withOpacity(.1) : white.withOpacity(.1),
+                    index == 2 ? blue.withOpacity(.1) : context.color.white.withOpacity(.1),
                 borderRadius: BorderRadius.circular(12),
                 border: index == 2 ? Border.all(color: blue) : null,
               ),
@@ -184,9 +185,9 @@ class _PaymeDialogState extends State<PaymeDialog> {
                 children: [
                   Image.asset(AppImages.cash),
                   const SizedBox(height: 12),
-                  const Text(
+                  Text(
                     "Payment by cash",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400,color: context.color.white),
                   )
                 ],
               ),

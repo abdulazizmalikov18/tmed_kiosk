@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,25 +39,29 @@ class _CreatePhJshState extends State<CreatePhJsh> {
         }
         return Container(
           padding: const EdgeInsets.all(12),
-          decoration: wdecoration2,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: context.color.whiteBlack,
+            border: Border.all(color: context.color.white.withOpacity(.1)),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                "Create account",
-                style: AppTheme.displayLarge.copyWith(fontSize: 20),
+                "create_account".tr(),
+                style: AppTheme.displayLarge.copyWith(fontSize: 20,color: context.color.white),
               ),
               const SizedBox(height: 12),
-              const Divider(),
+              Divider(color: context.color.white.withOpacity(.1),),
               const SizedBox(height: 12),
-              const Text(
-                'Enter phone number with + or pasport JSHShIR without +',
-                style: TextStyle(
+              Text(
+                'jshshir'.tr(),
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
-                  color: greyText,
+                  color: white50,
                 ),
               ),
               Padding(
@@ -66,7 +72,7 @@ class _CreatePhJshState extends State<CreatePhJsh> {
                       flex: 5,
                       child: WTextField(
                         height: 48,
-                        fillColor: borderColor,
+                        fillColor: context.color.borderColor,
                         maxLength: first == '+' ? 13 : 14,
                         keyboardType: TextInputType.phone,
                         controller: widget.vm.phone,
@@ -104,7 +110,9 @@ class _CreatePhJshState extends State<CreatePhJsh> {
 
                           setState(() {});
                         },
-                        hintText: 'Phone or JSHIR*',
+                        hintText: 'phone_or_jshir'.tr(),
+                        hintStyle: const TextStyle(color: white50),
+                        style: TextStyle(color: context.color.white),
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -116,11 +124,13 @@ class _CreatePhJshState extends State<CreatePhJsh> {
                                 : widget.vm.phone.text.length == 14) ||
                             widget.vm.isChek,
                         onTap: widget.onTap,
-                        text: "Create",
+                        color: context.color.white.withOpacity(.3),
+                        text: "adduser_phone_button".tr(),
                         isLoading: state.status.isInProgress,
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
+                          color: context.color.white
                         ),
                       ),
                     ),

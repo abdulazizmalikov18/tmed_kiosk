@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/formatters.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/cupon_entity.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/profession_entity.dart';
@@ -128,9 +129,11 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                           },
                           inputFormatters: [Formatters.lotinFormat],
                           enabled:
-                              state.selectAccount.selectAccount.status != 2,
-                          hintText: "Name*",
+                          state.selectAccount.selectAccount.status != 2,
+                          hintText: "${LocaleKeys.adduser_firstname.tr()}*",
                           controller: widget.vm.name,
+                          fillColor: context.color.whiteBlack,
+                          style: TextStyle(color: context.color.white),
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -138,7 +141,7 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                         child: WTextField(
                           height: 56,
                           enabled:
-                              state.selectAccount.selectAccount.status != 2,
+                          state.selectAccount.selectAccount.status != 2,
                           onChanged: (value) {
                             widget.vm.latname.value = TextEditingValue(
                               text: Formatters.capitalize(value),
@@ -147,9 +150,11 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                             changeInfo();
                           },
                           inputFormatters: [Formatters.lotinFormat],
-                          hintText: "Surname*",
+                          hintText: "${LocaleKeys.adduser_lastname.tr()}*",
                           textCapitalization: TextCapitalization.words,
                           controller: widget.vm.latname,
+                          fillColor: context.color.whiteBlack,
+                          style: TextStyle(color: context.color.white),
                         ),
                       ),
                     ],
@@ -169,9 +174,9 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                               },
                               child: WTextField(
                                 height: 56,
-                                enabled:
-                                    state.selectAccount.selectAccount.status !=
-                                        2,
+                                enabled: state
+                                    .selectAccount.selectAccount.status !=
+                                    2,
                                 onTap: () {
                                   _selectDate(context);
                                 },
@@ -195,13 +200,15 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                                     return null;
                                   }
                                 },
-                                hintText: "Age*",
+                                hintText: "${LocaleKeys.age.tr()}*",
                                 controller: widget.vm.age,
                                 keyboardType: TextInputType.datetime,
                                 suffix: Padding(
                                   padding: const EdgeInsets.only(right: 12),
-                                  child: SvgPicture.asset(AppIcons.calendar),
+                                  child: SvgPicture.asset(AppIcons.calendar, color: greyText,),
                                 ),
+                                fillColor: context.color.whiteBlack,
+                                style: TextStyle(color: context.color.white),
                               ),
                             ),
                           ),
@@ -230,12 +237,14 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                       changeInfo();
                     },
                     controller: widget.vm.region,
-                    hintText: "Region",
+                    hintText: LocaleKeys.adduser_region.tr(),
                     readOnly: true,
                     enabled: state.selectAccount.selectAccount.status != 2,
                     onTap: () {
                       getRegionDialog();
                     },
+                    fillColor: context.color.whiteBlack,
+                    style: TextStyle(color: context.color.white),
                   ),
                   const SizedBox(height: 12),
                   WTextField(
@@ -247,9 +256,11 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                       changeInfo();
                     },
                     controller: widget.vm.profession,
-                    hintText: "Profession",
+                    hintText: LocaleKeys.check_profession.tr(),
                     enabled: state.selectAccount.selectAccount.status != 2,
                     readOnly: true,
+                    fillColor: context.color.whiteBlack,
+                    style: TextStyle(color: context.color.white),
                   ),
                   const SizedBox(height: 24),
                   Row(
