@@ -35,4 +35,5 @@ class StorageKeys {
   static const ProcessStatus = 'processtatus';
   static const CUPONS = 'cupons';
   static const ISPRICE = 'isprice';
+  static const THEMEISDARK = 'theme_is_dark';
 }

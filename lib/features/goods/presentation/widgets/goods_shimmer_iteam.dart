@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 
 class GoodsShimmerIteam extends StatelessWidget {
   const GoodsShimmerIteam({super.key});
@@ -9,7 +10,11 @@ class GoodsShimmerIteam extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: wdecoration,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: context.color.contColor,
+        boxShadow: wboxShadow,
+      ),
       child: Stack(
         children: [
           Positioned(

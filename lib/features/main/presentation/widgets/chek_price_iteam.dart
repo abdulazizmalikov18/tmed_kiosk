@@ -81,7 +81,7 @@ class _ChekPriceIteamState extends State<ChekPriceIteam>
                     Expanded(
                       flex: 2,
                       child: Text(
-                        LocaleKeys.cartPriceTotal.tr(),
+                        LocaleKeys.cart_price_total.tr(),
                         style: AppTheme.bodyMedium,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
@@ -100,8 +100,8 @@ class _ChekPriceIteamState extends State<ChekPriceIteam>
                             setState(() {});
                           },
                           tabs: [
-                            Text(LocaleKeys.payOrderPaymentButton.tr()),
-                            Text(LocaleKeys.payOrderPrepaidExpense.tr()),
+                            Text(LocaleKeys.pay_order_payment_button.tr()),
+                            Text(LocaleKeys.pay_order_prepaid_expense.tr()),
                           ],
                         ),
                       ),
@@ -111,19 +111,19 @@ class _ChekPriceIteamState extends State<ChekPriceIteam>
               ),
               const Divider(height: 24, color: greyText),
               InfoPriceRow(
-                name: '${LocaleKeys.payTotalPriceTotal.tr()}:',
+                name: '${LocaleKeys.pay_total_price_total.tr()}:',
                 price: state.discount < 0
                     ? state.allPrice - (state.discount * -1)
                     : state.allPrice,
                 type: '',
               ),
               InfoPriceRow(
-                name: '${LocaleKeys.payTotalPriceVat.tr()}:',
+                name: '${LocaleKeys.pay_total_price_vat.tr()}:',
                 price: (widget.allPrice * (widget.vat / 100)).toInt(),
                 type: '${widget.vat} %',
               ),
               InfoPriceRow(
-                name: '${LocaleKeys.payDiscount.tr()}:',
+                name: '${LocaleKeys.pay_discount.tr()}:',
                 price: state.discount,
                 type: '',
                 isDiscount: true,
@@ -136,13 +136,13 @@ class _ChekPriceIteamState extends State<ChekPriceIteam>
                       .id !=
                   0)
                 InfoPriceRow(
-                  name: '${LocaleKeys.adduserCoupon.tr()}:',
+                  name: '${LocaleKeys.adduser_coupon.tr()}:',
                   price: 0,
                   type: '0 %',
                 ),
               if (widget.avans != 0)
                 InfoPriceRow(
-                  name: '${LocaleKeys.payOrderPrepaidExpense.tr()}:',
+                  name: '${LocaleKeys.pay_order_prepaid_expense.tr()}:',
                   price: widget.avans,
                   type: '',
                 ),
@@ -157,7 +157,7 @@ class _ChekPriceIteamState extends State<ChekPriceIteam>
                 type: '',
               ),
               InfoPriceRow(
-                name: '${LocaleKeys.payTotalPriceShortChange.tr()}:',
+                name: '${LocaleKeys.pay_total_price_short_change.tr()}:',
                 price: widget.moneyEntered - widget.allPrice > 0
                     ? widget.moneyEntered - widget.allPrice
                     : 0,
@@ -166,16 +166,16 @@ class _ChekPriceIteamState extends State<ChekPriceIteam>
               InfoPriceRow(
                 name: 'To’lov turi:',
                 subName: widget.tabIndex.index == 0
-                    ? LocaleKeys.checkPaymentButton.tr()
-                    : LocaleKeys.payOrderPrepaidExpense.tr(),
+                    ? LocaleKeys.check_payment_button.tr()
+                    : LocaleKeys.pay_order_prepaid_expense.tr(),
                 type: '',
                 price: 0,
               ),
               InfoPriceRow(
-                name: '${LocaleKeys.adduserRegion.tr()}:',
+                name: '${LocaleKeys.adduser_region.tr()}:',
                 subName: widget.isDeliveriy
-                    ? LocaleKeys.orderTypeDelivery.tr()
-                    : LocaleKeys.orderTypeOnplace.tr(),
+                    ? LocaleKeys.order_type_delivery.tr()
+                    : LocaleKeys.order_type_onplace.tr(),
                 type: '',
                 price: 0,
               ),
@@ -187,7 +187,7 @@ class _ChekPriceIteamState extends State<ChekPriceIteam>
                       onTap: () {
                         context.read<MyNavigatorBloc>().add(NavId(0));
                       },
-                      text: LocaleKeys.cartOrderCancelButton.tr(),
+                      text: LocaleKeys.cart_order_cancel_button.tr(),
                       color: red,
                     ),
                   ),
@@ -199,7 +199,7 @@ class _ChekPriceIteamState extends State<ChekPriceIteam>
                       onTap: () {
                         checkStatus(state);
                       },
-                      text: LocaleKeys.checkPaymentButton.tr(),
+                      text: LocaleKeys.check_payment_button.tr(),
                     ),
                   ),
                 ],

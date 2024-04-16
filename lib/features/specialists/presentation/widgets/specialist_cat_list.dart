@@ -1,13 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/themes/theme.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/common/pagination/presentation/paginator_list.dart';
 import 'package:tmed_kiosk/features/specialists/domain/entity/specialist_entity.dart';
 import 'package:tmed_kiosk/features/specialists/presentation/controllers/bloc/specialists_bloc.dart';
 
 class SpecialistCatList extends StatefulWidget {
   const SpecialistCatList({super.key, this.padding, this.onTap});
+
   final EdgeInsets? padding;
   final Function(List<SpecialistsEntity> specialistsList)? onTap;
 
@@ -46,18 +49,18 @@ class _SpecialistCatListState extends State<SpecialistCatList> {
                   padding: const EdgeInsets.only(left: 16, right: 8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: white.withOpacity(.1)),
-                    color: state.selection == -1 ? blue : contColor,
+                    border: Border.all(color: context.color.white.withOpacity(.1)),
+                    color: state.selection == -1 ? blue : null,
                   ),
                   alignment: Alignment.center,
                   child: Row(
                     children: [
                       Text(
-                        "ALL",
+                        "all".tr(),
                         style: AppTheme.labelSmall.copyWith(
                           color: state.selection == -1
                               ? white
-                              : white.withOpacity(.5),
+                              : context.color.white.withOpacity(.5),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -67,7 +70,7 @@ class _SpecialistCatListState extends State<SpecialistCatList> {
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: state.selection == -1 ? white : blue,
+                            color: state.selection == -1 ? context.color.categoryColor : blue,
                           ),
                           alignment: Alignment.center,
                           child: Text(
@@ -100,10 +103,10 @@ class _SpecialistCatListState extends State<SpecialistCatList> {
                 padding: const EdgeInsets.only(left: 16, right: 8),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: white.withOpacity(.1)),
+                  border: Border.all(color: context.color.white.withOpacity(.1)),
                   color: state.selection == state.specialCatrs[index - 1].id
                       ? blue
-                      : contColor,
+                      : null,
                 ),
                 alignment: Alignment.center,
                 child: Row(
@@ -116,7 +119,7 @@ class _SpecialistCatListState extends State<SpecialistCatList> {
                         color:
                             state.selection == state.specialCatrs[index - 1].id
                                 ? white
-                                : white.withOpacity(.5),
+                                : context.color.white.withOpacity(.5),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -128,7 +131,7 @@ class _SpecialistCatListState extends State<SpecialistCatList> {
                           borderRadius: BorderRadius.circular(20),
                           color: state.selection ==
                                   state.specialCatrs[index - 1].id
-                              ? white
+                              ? null
                               : blue,
                         ),
                         alignment: Alignment.center,

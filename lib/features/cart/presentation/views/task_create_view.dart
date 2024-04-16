@@ -223,7 +223,7 @@ class _TaskCreateViewState extends State<TaskCreateView> {
                     Navigator.pop(context);
                   }
                 },
-                text: LocaleKeys.cartOrderCancelButton.tr(),
+                text: LocaleKeys.cart_order_cancel_button.tr(),
                 color: red,
               ),
             ),
@@ -237,7 +237,7 @@ class _TaskCreateViewState extends State<TaskCreateView> {
                     Navigator.pop(context);
                   }
                 },
-                text: LocaleKeys.adduserSave.tr(),
+                text: LocaleKeys.adduser_save.tr(),
                 color: green,
               ),
             ),

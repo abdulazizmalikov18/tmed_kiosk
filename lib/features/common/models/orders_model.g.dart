@@ -13,7 +13,8 @@ OrdersModel _$OrdersModelFromJson(Map<String, dynamic> json) => OrdersModel(
       clientComment: json['client_comment'] as String? ?? '',
       user: json['user'] == null
           ? const OrderUserEntity()
-          : const OrderUserConverter().fromJson(json['user'] as Map<String, dynamic>?),
+          : const OrderUserConverter()
+              .fromJson(json['user'] as Map<String, dynamic>?),
       status: json['status'] as int? ?? 0,
       rates: json['rates'] ?? '',
       payment: json['payment'] as int? ?? 0,
@@ -26,24 +27,29 @@ OrdersModel _$OrdersModelFromJson(Map<String, dynamic> json) => OrdersModel(
       insertedValue: (json['inserted_value'] as num?)?.toDouble() ?? 0,
       creator: json['creator'] == null
           ? const CreatorEntity()
-          : const CreatorConverter().fromJson(json['creator'] as Map<String, dynamic>?),
+          : const CreatorConverter()
+              .fromJson(json['creator'] as Map<String, dynamic>?),
       createDate: json['create_date'] as String? ?? '',
       finishDate: json['finish_date'] as String? ?? '',
       products: (json['products'] as List<dynamic>?)
-              ?.map((e) => const OrderProductConverter().fromJson(e as Map<String, dynamic>?))
+              ?.map((e) => const OrderProductConverter()
+                  .fromJson(e as Map<String, dynamic>?))
               .toList() ??
           const [],
       meetAddress: json['meet_address'],
       organization: json['organization'] == null
           ? const OrganizationEntity()
-          : const OrganizationConverter().fromJson(json['organization'] as Map<String, dynamic>?),
+          : const OrganizationConverter()
+              .fromJson(json['organization'] as Map<String, dynamic>?),
     );
 
-Map<String, dynamic> _$OrdersModelToJson(OrdersModel instance) => <String, dynamic>{
+Map<String, dynamic> _$OrdersModelToJson(OrdersModel instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'number': instance.number,
       'qr_code': instance.qrCode,
-      'organization': const OrganizationConverter().toJson(instance.organization),
+      'organization':
+          const OrganizationConverter().toJson(instance.organization),
       'meet_address': instance.meetAddress,
       'client_comment': instance.clientComment,
       'user': const OrderUserConverter().toJson(instance.user),
@@ -60,5 +66,6 @@ Map<String, dynamic> _$OrdersModelToJson(OrdersModel instance) => <String, dynam
       'creator': const CreatorConverter().toJson(instance.creator),
       'create_date': instance.createDate,
       'finish_date': instance.finishDate,
-      'products': instance.products.map(const OrderProductConverter().toJson).toList(),
+      'products':
+          instance.products.map(const OrderProductConverter().toJson).toList(),
     };

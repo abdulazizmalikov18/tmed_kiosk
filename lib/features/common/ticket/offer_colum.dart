@@ -23,13 +23,13 @@ class OfferColum extends pw.StatelessWidget {
         if (product.responsible.id != 0) ...[
           if (index != 0) PdfLine(length: 47),
           RowTitle(
-            title: LocaleKeys.checkSpecialist.tr(),
+            title: LocaleKeys.check_specialist.tr(),
             subtitle:
                 "${product.responsible.lastname} ${product.responsible.lastname}",
           ),
           pw.SizedBox(height: 2),
           RowTitle(
-            title: LocaleKeys.checkProfession.tr(),
+            title: LocaleKeys.check_profession.tr(),
             subtitle: product.responsible.job,
           ),
           PdfLine(length: 47),

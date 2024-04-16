@@ -133,7 +133,7 @@ class _ProfileViewState extends State<ProfileView> {
                       });
                     },
                     leading: AppIcons.languageSquare.svg(),
-                    title: Text(LocaleKeys.profileLanguage.tr()),
+                    title: Text(LocaleKeys.profile_language.tr()),
                     trailing: AppIcons.arrowRight.svg(color: white50),
                   ),
                 ),
@@ -147,7 +147,7 @@ class _ProfileViewState extends State<ProfileView> {
                       AppIcons.logout.svg(),
                       const SizedBox(width: 12),
                       Text(
-                        LocaleKeys.profileExit.tr(),
+                        LocaleKeys.profile_exit.tr(),
                         style: AppTheme.bodyLarge
                             .copyWith(fontWeight: FontWeight.w400),
                       )

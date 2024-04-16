@@ -46,7 +46,7 @@ class _ProfessionDialogState extends State<ProfessionDialog> {
                       .read<AccountsBloc>()
                       .add(GetProfession(search: value));
                 },
-                hintText: LocaleKeys.offerpageSearch.tr(),
+                hintText: LocaleKeys.offerpage_search.tr(),
                 suffix: Padding(
                   padding: const EdgeInsets.only(right: 8),
                   child: SvgPicture.asset(AppIcons.search),

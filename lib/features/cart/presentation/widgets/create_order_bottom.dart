@@ -29,7 +29,7 @@ class CreateOrderBottom extends StatelessWidget {
           Expanded(
             child: WButton(
               onTap: onTapLeft,
-              text: LocaleKeys.adduserMoveToOrder.tr(),
+              text: LocaleKeys.adduser_move_to_order.tr(),
               color: green,
               isLoading: status.isInProgress,
             ),
@@ -38,7 +38,7 @@ class CreateOrderBottom extends StatelessWidget {
           Expanded(
             child: WButton(
               onTap: onTapRight,
-              text: LocaleKeys.checkPaymentButton.tr(),
+              text: LocaleKeys.check_payment_button.tr(),
             ),
           )
         ],

@@ -1,3 +1,4 @@
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_price_row.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -29,6 +30,7 @@ class WGoodsItem extends StatefulWidget {
     required this.bloc,
     required this.blocCart,
   });
+
   final bool isImage;
   final OrgProductEntity product;
   final bool isLiked;
@@ -54,7 +56,7 @@ class _WGoodsItemState extends State<WGoodsItem> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
         boxShadow: wboxShadow,
-        color: isNull ? contColor : red,
+        color: isNull ? context.color.contColor : red,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,7 +90,7 @@ class _WGoodsItemState extends State<WGoodsItem> {
                             widget.product.product.name,
                             style: AppTheme.bodyMedium.copyWith(
                               fontWeight: FontWeight.w500,
-                              color: isNull ? null : white,
+                              color: isNull ? context.color.white : white,
                             ),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
@@ -99,14 +101,15 @@ class _WGoodsItemState extends State<WGoodsItem> {
                           height: 20,
                           width: 20,
                           child: AppIcons.shoppingCart
-                              .svg(color: widget.isLiked ? blue : white),
+                              .svg(color: widget.isLiked ? blue : greyText),
                         )
                       ],
                     ),
                   ),
                 ),
                 if (widget.isImage)
-                  Divider(color: white.withOpacity(.1), height: 16),
+                  Divider(
+                      color: context.color.white.withOpacity(.1), height: 16),
                 if (widget.isImage)
                   InkWell(
                     onTap: () {
@@ -118,6 +121,7 @@ class _WGoodsItemState extends State<WGoodsItem> {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
+                          backgroundColor: context.color.backGroundColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -128,8 +132,8 @@ class _WGoodsItemState extends State<WGoodsItem> {
                           titlePadding: widget.isPhone
                               ? const EdgeInsets.all(12)
                               : const EdgeInsets.fromLTRB(24, 12, 24, 24),
-                          title: const DialogTitle(
-                            title: "Vazifa xaqida",
+                          title: DialogTitle(
+                            title: "about_the_task".tr(),
                             isBottom: false,
                           ),
                           content: DescriptionDialog(
@@ -159,7 +163,7 @@ class _WGoodsItemState extends State<WGoodsItem> {
               ],
             ),
           ),
-          Divider(color: white.withOpacity(.1), height: 16),
+          Divider(color: context.color.white.withOpacity(.1), height: 16),
           InkWell(
             onTap: () {
               widget.vm.onSelectionCart(
@@ -177,6 +181,7 @@ class _WGoodsItemState extends State<WGoodsItem> {
               children: [
                 if (widget.isPrice)
                   WPriceRow(
+                    color: context.color.white,
                     product: widget.product,
                     count: ListCount(),
                     isPhone: true,
@@ -188,28 +193,35 @@ class _WGoodsItemState extends State<WGoodsItem> {
                   Row(
                     children: [
                       Text(
-                        "${LocaleKeys.offerpageInStock.tr()}: ",
+                        "${LocaleKeys.offerpage_in_stock.tr()}: ",
                         style: AppTheme.labelLarge.copyWith(
-                            color: isNull ? white.withOpacity(.5) : white),
+                            color: isNull
+                                ? context.color.white.withOpacity(.5)
+                                : context.color.white),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),
-                      AppIcons.infinity.svg(height: 14, color: white)
+                      AppIcons.infinity
+                          .svg(height: 14, color: context.color.white)
                     ],
                   )
                 else
                   Text(
-                    "${LocaleKeys.offerpageInStock.tr()}: ${widget.product.remains}",
+                    "${LocaleKeys.offerpage_in_stock.tr()}: ${widget.product.remains}",
                     style: AppTheme.labelLarge.copyWith(
-                        color: isNull ? white.withOpacity(.5) : white),
+                        color: isNull
+                            ? context.color.white.withOpacity(.5)
+                            : context.color.white),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
                 if (widget.product.product.type.name == "offering")
                   Text(
-                    "${LocaleKeys.offerpageDuration.tr()}: ${widget.product.duration == 0 ? "-" : widget.product.duration}",
+                    "${LocaleKeys.offerpage_duration.tr()}: ${widget.product.duration == 0 ? "-" : widget.product.duration}",
                     style: AppTheme.labelLarge.copyWith(
-                        color: isNull ? white.withOpacity(.5) : white),
+                        color: isNull
+                            ? context.color.white.withOpacity(.5)
+                            : context.color.white),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
@@ -220,30 +232,38 @@ class _WGoodsItemState extends State<WGoodsItem> {
                     children: [
                       if (widget.product.expiryDate.isNotEmpty)
                         Text(
-                          "${LocaleKeys.offerpageExpirationDate.tr()}: ${MyFunctions.parseDate(widget.product.expiryDate)}",
+                          "${LocaleKeys.offerpage_expiration_date.tr()}: ${MyFunctions.parseDate(widget.product.expiryDate)}",
                           style: AppTheme.labelLarge.copyWith(
-                              color: isNull ? white.withOpacity(.5) : white),
+                              color: isNull
+                                  ? context.color.white.withOpacity(.5)
+                                  : context.color.white),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
                       Text(
-                        "${LocaleKeys.offerpageManufacturer.tr()}: ${widget.product.product.manufacturer.name.isEmpty ? "-" : widget.product.product.manufacturer.name}",
+                        "${LocaleKeys.offerpage_manufacturer.tr()}: ${widget.product.product.manufacturer.name.isEmpty ? "-" : widget.product.product.manufacturer.name}",
                         style: AppTheme.labelLarge.copyWith(
-                            color: isNull ? white.withOpacity(.5) : white),
+                            color: isNull
+                                ? context.color.white.withOpacity(.5)
+                                : context.color.white),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),
                       Text(
-                        "${LocaleKeys.offerpageOfferPlace.tr()}: ${widget.product.placeDesc.isEmpty ? "-" : widget.product.placeDesc}",
+                        "${LocaleKeys.offerpage_offer_place.tr()}: ${widget.product.placeDesc.isEmpty ? "-" : widget.product.placeDesc}",
                         style: AppTheme.labelLarge.copyWith(
-                            color: isNull ? white.withOpacity(.5) : white),
+                            color: isNull
+                                ? context.color.white.withOpacity(.5)
+                                : context.color.white),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),
                       Text(
-                        "Yaroqlilik mudati: -",
+                        "${LocaleKeys.expiry_date.tr()}: -",
                         style: AppTheme.labelLarge.copyWith(
-                            color: isNull ? white.withOpacity(.5) : white),
+                            color: isNull
+                                ? context.color.white.withOpacity(.5)
+                                : context.color.white),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),

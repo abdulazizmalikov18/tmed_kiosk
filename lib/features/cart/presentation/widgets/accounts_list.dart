@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/accounts_list_tile.dart';
@@ -21,7 +22,7 @@ class AccountsList extends StatelessWidget {
       builder: (context, state) {
         return Container(
           padding: const EdgeInsets.symmetric(vertical: 16),
-          color: contColor,
+          color: context.color.contColor,
           child: Builder(builder: (context) {
             if (state.statusAccounts.isInProgress) {
               return ListView.builder(

@@ -30,3 +30,6 @@ flutter pub run build_runner build --delete-conflicting-outputs
 rename app:
 rename setAppName --targets ios,android,macos,windows --value "T-MED"  
 rename setBundleId --targets ios,android,macos,windows --value "com.dwed.dwedkassa"
+
+generation eyse:
+flutter pub run easy_localization:generate -f keys -o locale_keys.g.dart --source-dir ./lib/assets/strings/

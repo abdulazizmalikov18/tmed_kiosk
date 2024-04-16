@@ -52,7 +52,7 @@ class _LenguageSelectState extends State<LenguageSelect> {
             },
             value: SampleItem.ru,
             child: Text(
-              LocaleKeys.languageRu.tr(),
+              LocaleKeys.language_ru.tr(),
               style: AppTheme.bodyLarge.copyWith(fontWeight: FontWeight.w400),
             ),
           ),
@@ -63,17 +63,18 @@ class _LenguageSelectState extends State<LenguageSelect> {
             },
             value: SampleItem.uz,
             child: Text(
-              LocaleKeys.languageUz.tr(),
+              LocaleKeys.language_uz.tr(),
               style: AppTheme.bodyLarge.copyWith(fontWeight: FontWeight.w400),
             ),
           ),
           DropdownMenuItem<SampleItem>(
             onTap: () {
-              context.setLocale(const Locale('uz'));
+              context.setLocale(const Locale('en'));
+              context.read<AuthenticationBloc>().add(ChangeLanguageEvent('en'));
             },
             value: SampleItem.en,
             child: Text(
-              LocaleKeys.languageEn.tr(),
+              LocaleKeys.language_en.tr(),
               style: AppTheme.bodyLarge.copyWith(fontWeight: FontWeight.w400),
             ),
           ),

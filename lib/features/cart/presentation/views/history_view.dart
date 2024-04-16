@@ -164,7 +164,7 @@ class _HistoryViewState extends State<HistoryView> {
                                 Expanded(
                                   flex: 2,
                                   child: Text(
-                                    "${LocaleKeys.statusOrderStatusAction.tr()}:${state.historys[index].unit.name}",
+                                    "${LocaleKeys.status_order_status_action.tr()}:${state.historys[index].unit.name}",
                                     style: AppTheme.labelSmall
                                         .copyWith(fontSize: 16),
                                   ),

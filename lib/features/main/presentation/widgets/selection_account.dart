@@ -148,7 +148,7 @@ class _SelectionAccountDialogState extends State<SelectionAccountDialog> {
                 (value) => RestartWidget.restartApp(context),
               );
             },
-            text: LocaleKeys.specialistCategory.tr(),
+            text: LocaleKeys.specialist_category.tr(),
           ),
           const SizedBox(height: 16),
         ],

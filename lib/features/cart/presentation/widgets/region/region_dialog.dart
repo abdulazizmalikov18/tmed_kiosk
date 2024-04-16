@@ -45,7 +45,7 @@ class _RegionDialogState extends State<RegionDialog> {
                 onChanged: (value) {
                   context.read<AccountsBloc>().add(GetRegion(search: value));
                 },
-                hintText: LocaleKeys.offerpageSearch.tr(),
+                hintText: LocaleKeys.offerpage_search.tr(),
                 suffix: Padding(
                   padding: const EdgeInsets.only(right: 8),
                   child: SvgPicture.asset(AppIcons.search),

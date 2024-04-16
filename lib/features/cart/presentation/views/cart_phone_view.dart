@@ -223,7 +223,7 @@ class _CartPhoneViewState extends State<CartPhoneView> with CartPhoneMixin {
                                   vm.controllerComment.clear();
                                   Navigator.of(context).pop();
                                 },
-                                text: LocaleKeys.cartOrderCancelButton.tr(),
+                                text: LocaleKeys.cart_order_cancel_button.tr(),
                                 color: red,
                               ),
                             ),

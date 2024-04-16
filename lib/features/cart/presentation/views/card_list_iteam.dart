@@ -1,3 +1,5 @@
+import 'package:path/path.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/cupon/cupon_iteam.dart';
 import 'package:tmed_kiosk/features/goods/presentation/controllers/bloc/goods_bloc.dart';
 import 'package:formz/formz.dart';
@@ -70,28 +72,32 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                             ? CuponIteam(vm: vm)
                             : const SizedBox(),
                         Container(
-                          decoration: wdecoration2,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: context.color.whiteBlack,
+                            border: Border.all(color: context.color.white.withOpacity(.1)),
+                          ),
                           margin: const EdgeInsets.all(16),
                           padding: const EdgeInsets.all(12),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                LocaleKeys.cartPriceTotal.tr(),
-                                style: AppTheme.bodyMedium,
+                                LocaleKeys.cart_price_total.tr(),
+                                style: AppTheme.bodyMedium.copyWith(color: context.color.white),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                               ),
-                              const Divider(height: 24, color: greyText),
+                              Divider(height: 24, color: context.color.white.withOpacity(.1)),
                               InfoPriceRow(
-                                name: '${LocaleKeys.payTotalPriceTotal.tr()}:',
+                                name: '${LocaleKeys.pay_total_price_total.tr()}:',
                                 price: state.discount < 0
                                     ? state.allPrice - (state.discount * -1)
                                     : state.allPrice,
                                 type: '',
                               ),
                               InfoPriceRow(
-                                name: 'Chegirma/Ustama:',
+                                name: '${LocaleKeys.premium.tr()}:',
                                 price: state.discount,
                                 type: '',
                                 isDiscount: true,
@@ -112,13 +118,13 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                               if (stateAccount.selectAccount.selectCupon.id !=
                                   0)
                                 InfoPriceRow(
-                                  name: "Kupon:",
+                                  name: "${LocaleKeys.adduser_coupon.tr()}:",
                                   price: 0,
                                   type:
                                       '${state.cupon.productDiscount.toInt()} %',
                                 ),
                               InfoPriceRow(
-                                name: 'To’lovga:',
+                                name: '${LocaleKeys.payment.tr()}:',
                                 price: state.allPrice - state.avans,
                                 type: '',
                               ),
@@ -134,7 +140,7 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                             .add(CartRemove());
                                       },
                                       text:
-                                          LocaleKeys.cartOrderCancelButton.tr(),
+                                          LocaleKeys.cart_order_cancel_button.tr(),
                                       color: red,
                                     ),
                                   ),
@@ -152,7 +158,7 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                           context: context,
                                         );
                                       },
-                                      text: LocaleKeys.checkPaymentButton.tr(),
+                                      text: LocaleKeys.check_payment_button.tr(),
                                       isLoading: state.status.isInProgress,
                                     ),
                                   ),
@@ -205,8 +211,8 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  "Vazifaga izoh",
+                                Text(
+                                  LocaleKeys.description_of_the_task.tr(),
                                   style: AppTheme.bodyLarge,
                                 ),
                                 const Divider(height: 24),
@@ -241,7 +247,7 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                           vm.controllerComment.clear();
                                           vm.task.clear();
                                         },
-                                        text: LocaleKeys.cartOrderCancelButton
+                                        text: LocaleKeys.cart_order_cancel_button
                                             .tr(),
                                         color: red,
                                       ),
@@ -254,7 +260,7 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                               .read<MyNavigatorBloc>()
                                               .add(NavId(2));
                                         },
-                                        text: "Vazifa berish",
+                                        text: "assignment".tr(),
                                         color: green,
                                         isLoading: state.status.isInProgress,
                                       ),

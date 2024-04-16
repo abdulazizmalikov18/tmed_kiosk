@@ -68,7 +68,7 @@ class _SelectLenguageState extends State<SelectLenguage> {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  LocaleKeys.languageUz.tr(),
+                  LocaleKeys.language_uz.tr(),
                   style:
                       AppTheme.bodyLarge.copyWith(fontWeight: FontWeight.w400),
                 ),
@@ -102,7 +102,7 @@ class _SelectLenguageState extends State<SelectLenguage> {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  LocaleKeys.languageRu.tr(),
+                  LocaleKeys.language_ru.tr(),
                   style:
                       AppTheme.bodyLarge.copyWith(fontWeight: FontWeight.w400),
                 ),
@@ -127,7 +127,7 @@ class _SelectLenguageState extends State<SelectLenguage> {
             onTap: () {
               Navigator.pop(context, slection == 0 ? 'uz' : 'ru');
             },
-            text: LocaleKeys.specialistCategory.tr(),
+            text: LocaleKeys.specialist_category.tr(),
           ),
           const SizedBox(height: 16),
         ],

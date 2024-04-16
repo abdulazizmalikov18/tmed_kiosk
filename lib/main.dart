@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:tmed_kiosk/assets/colors/theme_changer.dart';
 import 'package:tmed_kiosk/assets/constants/storage_keys.dart';
 import 'package:tmed_kiosk/assets/themes/theme.dart';
 import 'package:tmed_kiosk/core/utils/enums.dart';
@@ -39,17 +40,29 @@ void main() async {
   Hive.init(directory.path);
   await Hive.openBox(StorageKeys.PRODUCTS);
   debugRepaintRainbowEnabled = false;
-  runApp(EasyLocalization(
-    supportedLocales: const [
-      Locale('uz'),
-      Locale('ru'),
-    ],
-    path: 'lib/assets/strings',
-    fallbackLocale: const Locale('uz'),
-    startLocale: const Locale('uz'),
-    assetLoader: const CodegenLoader(),
-    child: const RestartWidget(child: AppProvider()),
-  ));
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [
+        Locale('uz'),
+        Locale('ru'),
+        Locale('en'),
+      ],
+      path: 'lib/assets/strings',
+      fallbackLocale: const Locale('uz'),
+      startLocale: const Locale('uz'),
+      // assetLoader: const CodegenLoader(),
+      child: DependencyScope(
+        initialModel: AppScope(
+          themeMode: StorageRepository.getBool(StorageKeys.THEMEISDARK)
+              ? ThemeMode.light
+              : ThemeMode.dark,
+        ),
+        child: const RestartWidget(
+          child: AppProvider(),
+        ),
+      ),
+    ),
+  );
 }
 
 class AppProvider extends StatefulWidget {
@@ -112,8 +125,9 @@ class _MyAppState extends State<MyApp> {
         locale: context.locale,
         title: $appType.appTitle,
         debugShowCheckedModeBanner: false,
-        darkTheme: AppTheme.theme(),
-        themeMode: ThemeMode.dark,
+        darkTheme: AppTheme.darkTheme(),
+        themeMode: AppScope.of(context).themeMode,
+        theme: AppTheme.lightTheme(),
         routerConfig: AppRouts.router,
         builder: (context, child) {
           SizeConfig().init(context);

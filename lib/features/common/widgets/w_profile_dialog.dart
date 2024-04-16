@@ -31,8 +31,8 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
   bool customTileExpanded = false;
   bool selectColor = false;
   Map<String, dynamic> languages = {
-    LocaleKeys.languageUz.tr(): AppImages.uzFlag,
-    LocaleKeys.languageRu.tr(): AppImages.ruFlag,
+    LocaleKeys.language_uz.tr(): AppImages.uzFlag,
+    LocaleKeys.language_ru.tr(): AppImages.ruFlag,
   };
   final all = [const Locale('uz'), const Locale('ru')];
 
@@ -139,9 +139,9 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
                       const SizedBox(width: 8),
                       Text(
                         switch (context.locale.languageCode) {
-                          "uz" => LocaleKeys.languageUz.tr(),
-                          "ru" => LocaleKeys.languageRu.tr(),
-                          _ => LocaleKeys.languageEn.tr(),
+                          "uz" => LocaleKeys.language_uz.tr(),
+                          "ru" => LocaleKeys.language_ru.tr(),
+                          _ => LocaleKeys.language_en.tr(),
                         },
                         style: AppTheme.bodySmall.copyWith(color: white50),
                       ),
@@ -322,7 +322,7 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
                   AppIcons.logout.svg(color: red),
                   const SizedBox(width: 8),
                   Text(
-                    LocaleKeys.profileExit.tr(),
+                    LocaleKeys.profile_exit.tr(),
                     style: AppTheme.bodySmall.copyWith(
                       color: red,
                     ),

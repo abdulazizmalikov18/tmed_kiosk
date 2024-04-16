@@ -126,7 +126,7 @@ class _ShowProfileState extends State<ShowProfile> {
                         });
                       },
                       title: Text(
-                        LocaleKeys.profileStartWork.tr(),
+                        LocaleKeys.profile_start_work.tr(),
                         style: AppTheme.displayLarge,
                       ),
                     ),
@@ -139,7 +139,7 @@ class _ShowProfileState extends State<ShowProfile> {
                           curve: Curves.easeIn,
                         );
                       },
-                      title: LocaleKeys.profileLanguage.tr(),
+                      title: LocaleKeys.profile_language.tr(),
                       isLenguage: true,
                     ),
                     const SizedBox(height: 24),
@@ -152,14 +152,14 @@ class _ShowProfileState extends State<ShowProfile> {
                           curve: Curves.easeIn,
                         );
                       },
-                      title: LocaleKeys.profileCurrency.tr(),
+                      title: LocaleKeys.profile_currency.tr(),
                       isText: true,
                     ),
                     const SizedBox(height: 24),
                     WListSelection(
                       image: AppIcons.infoCircle,
                       onTap: () {},
-                      title: LocaleKeys.profileExit.tr(),
+                      title: LocaleKeys.profile_exit.tr(),
                     ),
                     const SizedBox(height: 24),
                     WButton(
@@ -169,7 +169,7 @@ class _ShowProfileState extends State<ShowProfile> {
                         context.read<CartBloc>().add(CartRemove());
                       },
                       color: red,
-                      text: LocaleKeys.profileExit.tr(),
+                      text: LocaleKeys.profile_exit.tr(),
                     )
                   ],
                 ),

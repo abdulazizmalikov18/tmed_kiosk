@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/search_accounts.dart';
@@ -50,8 +51,8 @@ class CartAppBar extends StatelessWidget {
                       color: stateN.navid == 1 ||
                               stateN.navid == 4 ||
                               state.selectAccount.selectAccount.name.isNotEmpty
-                          ? blue
-                          : white,
+                          ? context.color.white
+                          : white50,
                     ),
                   ),
                 ],

@@ -146,7 +146,7 @@ class _PhoneInputViewState extends State<PhoneInputView> with PhoneInputMixin {
                       !(password.text.isNotEmpty && username.text.isNotEmpty),
                   isLoading: context.watch<AuthenticationBloc>().state.status ==
                       AuthenticationStatus.loading,
-                  text: LocaleKeys.loginRegister.tr(),
+                  text: LocaleKeys.login_register.tr(),
                 ),
               ],
             ),

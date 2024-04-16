@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/size_config.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/cart_view_model.dart';
@@ -8,6 +10,7 @@ import 'package:tmed_kiosk/features/common/navigation/routs_contact.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_button.dart';
 import 'package:tmed_kiosk/features/goods/domain/entity/org_product_entity.dart';
 import 'package:tmed_kiosk/features/goods/presentation/views/goods_phone_view.dart';
+
 // import 'package:tmed_kiosk/features/common/controllers/show_pop_up/show_pop_up_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -38,6 +41,7 @@ class _GoodsViewState extends State<GoodsView> {
   final vm = GoodsViewModel();
   int index = 0;
   TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     if (MediaQuery.sizeOf(context).width < 800) {
@@ -46,8 +50,9 @@ class _GoodsViewState extends State<GoodsView> {
     return BlocBuilder<MyNavigatorBloc, MyNavigatorState>(
       builder: (context, stateN) {
         return Scaffold(
+          backgroundColor: context.color.backGroundColor,
           appBar: NewAppBar(
-            title: "Категория товаров",
+            title: "product_category".tr(),
             action: [
               InkWell(
                 onTap: () {
@@ -57,7 +62,9 @@ class _GoodsViewState extends State<GoodsView> {
                   height: 24,
                   width: 24,
                   child: AppIcons.size.svg(
-                      color: stateN.isImage ? null : white.withOpacity(.5)),
+                      color: stateN.isImage
+                          ? null
+                          : context.color.white.withOpacity(.5)),
                 ),
               ),
             ],
@@ -175,10 +182,10 @@ class _GoodsViewState extends State<GoodsView> {
                         paginatorStatus: state.statusProduct,
                       );
                     } else {
-                      return const Center(
+                      return Center(
                         child: NoDataCart(
                           image: AppIcons.noData,
-                          title: 'Nothing have',
+                          title: 'nothing_have'.tr(),
                           isButton: true,
                         ),
                       );

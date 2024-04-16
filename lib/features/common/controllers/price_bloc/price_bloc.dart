@@ -26,5 +26,8 @@ class PriceBloc extends Bloc<PriceEvent, PriceState> {
         isPrice: event.userType != UserType.administration,
       ));
     });
+    on<ModeControllerEvent>((event, emit) {
+      emit(state.copyWith(isMode: event.themeMode));
+    });
   }
 }

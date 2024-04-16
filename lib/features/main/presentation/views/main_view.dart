@@ -1,13 +1,17 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_barcode_listener/flutter_barcode_listener.dart';
+import 'package:tmed_kiosk/assets/colors/theme_changer.dart';
 import 'package:tmed_kiosk/assets/themes/theme.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/category/presentation/controllers/bloc/category_bloc.dart';
 import 'package:tmed_kiosk/features/common/controllers/price_bloc/price_bloc.dart';
 import 'package:tmed_kiosk/features/common/navigation/routs_contact.dart';
 import 'package:tmed_kiosk/features/common/repo/log_service.dart';
 import 'package:tmed_kiosk/features/common/user_type/user_type.dart';
+import 'package:tmed_kiosk/features/common/widgets/w_button.dart';
 import 'package:tmed_kiosk/features/goods/presentation/controllers/bloc/goods_bloc.dart';
 import 'package:tmed_kiosk/features/main/presentation/controllers/main_view_modal.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
@@ -71,7 +75,7 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
   void _startTimer() {
     // Start a timer to navigate to the home page after 15 seconds of inactivity
     _timer = Timer(const Duration(seconds: 30), () {
-      // context.go(RoutsContact.infoView);
+      context.go(RoutsContact.infoView);
     });
   }
 
@@ -142,7 +146,7 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                       child: BottomNavigationBar(
                         showUnselectedLabels: false,
                         showSelectedLabels: false,
-                        backgroundColor: contColor,
+                        backgroundColor: context.color.contColor,
                         selectedItemColor: green,
                         elevation: 10,
                         type: BottomNavigationBarType.fixed,
@@ -156,17 +160,43 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                         },
                         items: [
                           BottomNavigationBarItem(
-                            activeIcon: AppIcons.home.svg(color: white),
-                            icon: AppIcons.homeend.svg(color: white),
+                            activeIcon: AppIcons.home.svg(color: blue),
+                            icon: AppIcons.home.svg(color: greyText),
                             label: "Niumadir",
                           ),
                           BottomNavigationBarItem(
-                            activeIcon: AppIcons.personend.svg(color: white),
-                            icon: AppIcons.person.svg(color: white),
+                            activeIcon: AppIcons.personend.svg(color: blue),
+                            icon: AppIcons.personend.svg(color: greyText),
                             label: "Niumadir",
                           ),
                         ],
                       ),
+                    );
+                  },
+                ),
+                floatingActionButton: BlocBuilder<PriceBloc, PriceState>(
+                  builder: (context, state) {
+                    return WButton(
+                      height: 40,
+                      width: 40,
+                      borderRadius: 12,
+                      onTap: () {
+                        context
+                            .read<PriceBloc>()
+                            .add(ModeControllerEvent(themeMode: !state.isMode));
+                        AppScope.update(
+                          context,
+                          AppScope(
+                              themeMode:
+                              AppScope.of(context).themeMode == ThemeMode.light
+                                  ? ThemeMode.dark
+                                  : ThemeMode.light),
+                        );
+                      },
+                      color: context.color.white.withOpacity(.1),
+                      child: state.isMode
+                          ? AppIcons.icMoon.svg(color: greyText)
+                          : AppIcons.icSun.svg(color: orang),
                     );
                   },
                 ),
@@ -220,7 +250,7 @@ class CartViewKiosk extends StatelessWidget {
                               ),
                               const SizedBox(width: 12),
                               Text(
-                                "Card",
+                                "card".tr(),
                                 style:
                                     AppTheme.displayLarge.copyWith(color: blue),
                               ),

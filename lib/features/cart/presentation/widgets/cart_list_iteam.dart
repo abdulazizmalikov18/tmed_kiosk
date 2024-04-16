@@ -1,3 +1,4 @@
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/common/controllers/price_bloc/price_bloc.dart';
 import 'package:tmed_kiosk/features/common/controllers/show_pop_up/show_pop_up_bloc.dart';
 import 'package:flutter/material.dart';
@@ -53,10 +54,14 @@ class _CartListIteamState extends State<CartListIteam> {
     return BlocBuilder<CartBloc, CartState>(
       builder: (context, state) {
         return Container(
-          decoration: wdecoration2,
+          decoration:  BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: context.color.whiteBlack,
+            border: Border.all(color: context.color.white.withOpacity(.1)),
+          ),
           child: Material(
             borderRadius: BorderRadius.circular(8),
-            color: whiteBlack,
+            color: context.color.whiteBlack,
             child: InkWell(
               borderRadius: BorderRadius.circular(8),
               onTapDown: (onTabPosition) {
@@ -123,7 +128,7 @@ class _CartListIteamState extends State<CartListIteam> {
                   });
                 }
               },
-              hoverColor: whiteBlack,
+              hoverColor: context.color.whiteBlack,
               splashColor: localPress == SplashColors.red
                   ? red
                   : localPress == SplashColors.blue
@@ -139,7 +144,7 @@ class _CartListIteamState extends State<CartListIteam> {
                       children: [
                         Text(
                           widget.product.product.name,
-                          style: AppTheme.bodyMedium,
+                          style: AppTheme.bodyMedium.copyWith(color: context.color.white),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
@@ -150,13 +155,14 @@ class _CartListIteamState extends State<CartListIteam> {
                                   .counts[widget.index].psp!.specialist.name),
                       ],
                     ),
-                    Divider(color: white.withOpacity(.1)),
+                    Divider(color: context.color.white.withOpacity(.1)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
                           flex: 4,
                           child: WPriceRow(
+                            color: context.color.white,
                             product: widget.product,
                             count: state.counts[widget.index],
                             vm: vm,
@@ -167,7 +173,7 @@ class _CartListIteamState extends State<CartListIteam> {
                           child: Text(
                             'x ${state.counts[widget.index].count} ${widget.product.product.unit.name}',
                             style: AppTheme.bodyLarge
-                                .copyWith(fontWeight: FontWeight.w400),
+                                .copyWith(fontWeight: FontWeight.w400, color: context.color.white),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             textAlign: TextAlign.right,
@@ -185,7 +191,7 @@ class _CartListIteamState extends State<CartListIteam> {
                                         ProductType.task
                                     ? '${MyFunctions.getThousandsSeparatedPrice((state.counts[widget.index].count * state.counts[widget.index].price).toString())} UZS'
                                     : "--",
-                                style: AppTheme.bodyLarge,
+                                style: AppTheme.bodyLarge.copyWith(color: context.color.white),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                               ),
@@ -212,7 +218,7 @@ class _CartListIteamState extends State<CartListIteam> {
                                     });
                                   },
                                   padding: const EdgeInsets.all(0),
-                                  icon: AppIcons.arrowDown.svg(color: white),
+                                  icon: AppIcons.arrowDown.svg(color: context.color.white),
                                 ),
                               ),
                             ],

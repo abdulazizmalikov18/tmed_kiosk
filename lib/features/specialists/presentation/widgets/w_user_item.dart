@@ -1,14 +1,17 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:tmed_kiosk/assets/constants/images.dart';
 import 'package:tmed_kiosk/assets/themes/theme.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/my_function.dart';
 import 'package:tmed_kiosk/features/common/navigation/presentation/navigator.dart';
 import 'package:tmed_kiosk/features/goods/presentation/controllers/bloc/goods_bloc.dart';
 import 'package:tmed_kiosk/features/specialists/domain/entity/specialist_entity.dart';
 import 'package:tmed_kiosk/features/specialists/presentation/views/selection_spec_phone.dart';
 import 'package:tmed_kiosk/features/specialists/presentation/views/selection_specialists_view.dart';
+import 'package:tmed_kiosk/generated/locale_keys.g.dart';
 
 class WUserItem extends StatelessWidget {
   const WUserItem({super.key, this.isAvtion = false, required this.user});
@@ -36,9 +39,9 @@ class WUserItem extends StatelessWidget {
         margin: EdgeInsets.only(bottom: isAvtion ? 16 : 0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: contColor,
+          color: context.color.contColor,
           boxShadow: wboxShadow,
-          border: Border.all(color: white.withOpacity(.1)),
+          border: Border.all(color: context.color.white.withOpacity(.1)),
         ),
         padding: const EdgeInsets.all(12),
         child: Row(
@@ -65,11 +68,11 @@ class WUserItem extends StatelessWidget {
                 children: [
                   Text(
                     "${user.name} ${user.lastname}",
-                    style: AppTheme.displayLarge,
+                    style: AppTheme.displayLarge.copyWith(color: context.color.white),
                   ),
                   Text(
                     user.job.name,
-                    style: AppTheme.labelLarge,
+                    style: AppTheme.labelLarge.copyWith(color: context.color.white50),
                   ),
                   Text(
                     user.phone.isEmpty ? "--" : user.phone,
@@ -78,13 +81,13 @@ class WUserItem extends StatelessWidget {
                   const SizedBox(height: 8),
                   RichText(
                     text: TextSpan(
-                      text: "Ish vaqti:",
+                      text: "${LocaleKeys.working_time.tr()}:",
                       style: AppTheme.labelLarge,
                       children: [
                         TextSpan(
                           text:
                               " ${MyFunctions.clockform(user.todayTimetable.startTime)}-${MyFunctions.clockform(user.todayTimetable.endTime)}",
-                          style: AppTheme.labelSmall.copyWith(color: white),
+                          style: AppTheme.labelSmall.copyWith(color: context.color.white),
                         ),
                       ],
                     ),

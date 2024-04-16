@@ -40,7 +40,7 @@ class UserBottomButton extends StatelessWidget {
                     },
                     margin: const EdgeInsets.only(right: 16),
                     color: red,
-                    text: LocaleKeys.cartOrderCancelButton.tr(),
+                    text: LocaleKeys.cart_order_cancel_button.tr(),
                   ),
                 ),
               Expanded(
@@ -50,7 +50,7 @@ class UserBottomButton extends StatelessWidget {
                   },
                   color: green,
                   isDisabled: state.selectAccount.selectAccount.name.isEmpty,
-                  text: LocaleKeys.adduserMoveToOrder.tr(),
+                  text: LocaleKeys.adduser_move_to_order.tr(),
                 ),
               ),
               const SizedBox(width: 16),
@@ -103,7 +103,7 @@ class UserBottomButton extends StatelessWidget {
                           ),
                         );
                   },
-                  text: LocaleKeys.adduserSave.tr(),
+                  text: LocaleKeys.adduser_save.tr(),
                   isDisabled: (vm.phone.text.isNotEmpty &&
                       vm.latname.text.isEmpty &&
                       vm.name.text.isEmpty),

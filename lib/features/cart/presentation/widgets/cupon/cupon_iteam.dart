@@ -42,7 +42,7 @@ class _CuponIteamState extends State<CuponIteam> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      LocaleKeys.adduserCoupon.tr(),
+                      LocaleKeys.adduser_coupon.tr(),
                       style: AppTheme.displayLarge,
                     ),
                     const SizedBox(height: 8),

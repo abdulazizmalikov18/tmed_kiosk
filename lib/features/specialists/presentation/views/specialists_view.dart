@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/cart_view_model.dart';
 import 'package:tmed_kiosk/features/specialists/presentation/views/specialists_phone_view.dart';
@@ -36,8 +38,9 @@ class _SpecialistsViewState extends State<SpecialistsView> {
       return SpecialistPhoneView(vm: AccountsViewModel(), vmC: CartViewModel());
     }
     return Scaffold(
+      backgroundColor: context.color.backGroundColor,
       appBar: NewAppBar(
-        title: "Specialist",
+        title: "offer_description_specialist".tr(),
         child: Row(
           children: [
             const Expanded(child: SpecialistCatList()),
@@ -72,10 +75,10 @@ class _SpecialistsViewState extends State<SpecialistsView> {
                 );
               } else {
                 if (state.specialistsList.isEmpty) {
-                  return const Center(
+                  return Center(
                     child: NoDataCart(
                       image: AppIcons.noData,
-                      title: 'Nothing have',
+                      title: 'nothing_have'.tr(),
                       isButton: true,
                     ),
                   );

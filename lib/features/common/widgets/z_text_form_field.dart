@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/common/widgets/stroke_paint.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_scale_animation.dart';
 
@@ -167,13 +168,13 @@ class _ZTextFormFieldState extends State<ZTextFormField>
                   Theme.of(context).textTheme.displayLarge!.copyWith(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
-                        color: widget.textColor ?? white,
+                        color: widget.textColor ?? context.color.white,
                       ),
               inputFormatters: widget.textInputFormatters,
               maxLength: widget.maxLength,
               maxLines: isObscure ? 1 : widget.maxLines,
               minLines: widget.minLines,
-              cursorColor: white,
+              cursorColor: context.color.white,
               cursorWidth: 1,
               cursorHeight: 20,
               decoration: InputDecoration(
@@ -190,21 +191,19 @@ class _ZTextFormFieldState extends State<ZTextFormField>
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: widget.hasError ? red : greyText,
-                  ),
+                  borderSide: BorderSide(color: widget.hasError ? red : context.color.white.withOpacity(.1)),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide:
-                      BorderSide(color: widget.hasError ? red : inputBlue),
+                      BorderSide(color: widget.hasError ? red : context.color.white.withOpacity(.1)),
                 ),
                 hintText: widget.hintText,
                 hintStyle: widget.hintTextStyle ??
                     Theme.of(context).textTheme.headlineMedium!.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: widget.hasError ? red : white.withOpacity(.5),
+                          color: widget.hasError ? red : context.color.white.withOpacity(.5),
                         ),
                 contentPadding: widget.contentPadding,
                 fillColor: widget.fillColor,

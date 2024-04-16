@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -5,8 +6,10 @@ import 'package:formz/formz.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
 import 'package:tmed_kiosk/assets/themes/theme.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/goods/presentation/controllers/bloc/goods_bloc.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:tmed_kiosk/generated/locale_keys.g.dart';
 
 class DialogGoodsPsp extends StatelessWidget {
   const DialogGoodsPsp({super.key, required this.bloc});
@@ -20,11 +23,11 @@ class DialogGoodsPsp extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
-              padding: EdgeInsets.only(top: 16),
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
               child: Text(
-                "General information:",
-                style: AppTheme.bodyLarge,
+                "${LocaleKeys.general_information.tr()}:",
+                style: AppTheme.bodyLarge.copyWith(color: context.color.white),
               ),
             ),
             SizedBox(

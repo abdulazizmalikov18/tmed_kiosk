@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/themes/theme.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/category/presentation/controllers/bloc/category_bloc.dart';
 import 'package:tmed_kiosk/features/common/pagination/presentation/paginator_list.dart';
 import 'package:tmed_kiosk/features/goods/presentation/controllers/bloc/goods_bloc.dart';
@@ -52,7 +53,7 @@ class _BottomCategoryListState extends State<BottomCategoryList> {
                   decoration: BoxDecoration(
                     borderRadius:
                         BorderRadius.circular(widget.isPhone ? 8 : 32),
-                    border: Border.all(color: whiteGrey.withOpacity(.1)),
+                    border: Border.all(color: context.color.white.withOpacity(.1)),
                     color: state.selIndex == state.category[index].id
                         ? blue
                         : null,
@@ -63,7 +64,7 @@ class _BottomCategoryListState extends State<BottomCategoryList> {
                     style: AppTheme.labelSmall.copyWith(
                       color: state.selIndex == state.category[index].id
                           ? white
-                          : whiteGrey.withOpacity(.5),
+                          : context.color.whiteGrey.withOpacity(.5),
                     ),
                   ),
                 ),
@@ -98,7 +99,7 @@ class _BottomCategoryListState extends State<BottomCategoryList> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: white.withOpacity(.1)),
+                    border: Border.all(color: context.color.white.withOpacity(.1)),
                     color: state.selIndex == state.category[index].id
                         ? blue
                         : null,
@@ -109,7 +110,7 @@ class _BottomCategoryListState extends State<BottomCategoryList> {
                     style: AppTheme.labelSmall.copyWith(
                       color: state.selIndex == state.category[index].id
                           ? white
-                          : white.withOpacity(.5),
+                          : context.color.white.withOpacity(.5),
                     ),
                   ),
                 ),

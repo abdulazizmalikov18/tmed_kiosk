@@ -1,3 +1,4 @@
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/common/controllers/price_bloc/price_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +27,7 @@ class _SelectSpecialistViewState extends State<SelectSpecialistView> {
     return BlocBuilder<MyNavigatorBloc, MyNavigatorState>(
       builder: (context, stateN) {
         return Scaffold(
+          backgroundColor: context.color.backGroundColor,
           appBar: WAppBar(
             onChanged: (value) {},
             onTapRow: () {

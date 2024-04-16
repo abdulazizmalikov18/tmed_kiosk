@@ -17,3 +17,9 @@ class ChangeUserType extends PriceEvent {
 class InitPrice extends PriceEvent {
   const InitPrice();
 }
+
+class ModeControllerEvent extends PriceEvent {
+  final bool themeMode;
+  const ModeControllerEvent({required this.themeMode});
+}
+

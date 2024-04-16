@@ -120,7 +120,7 @@ class _CategoryViewState extends State<CategoryView> {
                             ),
                             const Spacer(),
                             Text(
-                              '${LocaleKeys.offerDetailQuantity.tr()}: ${stateC.categoryList[index].productNumbers}',
+                              '${LocaleKeys.offer_detail_quantity.tr()}: ${stateC.categoryList[index].productNumbers}',
                               style: AppTheme.labelSmall,
                             )
                           ],

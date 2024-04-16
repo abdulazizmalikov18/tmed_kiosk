@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/themes/theme.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/my_function.dart';
 
 class InfoPriceRow extends StatelessWidget {
@@ -26,7 +27,7 @@ class InfoPriceRow extends StatelessWidget {
           flex: 2,
           child: Text(
             name,
-            style: AppTheme.labelLarge.copyWith(color: white.withOpacity(.5)),
+            style: AppTheme.labelLarge.copyWith(color: context.color.white.withOpacity(.5)),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
@@ -35,7 +36,7 @@ class InfoPriceRow extends StatelessWidget {
           flex: 1,
           child: Text(
             type,
-            style: AppTheme.labelLarge.copyWith(color: white.withOpacity(.5)),
+            style: AppTheme.labelLarge.copyWith(color: context.color.white.withOpacity(.5)),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
@@ -54,8 +55,8 @@ class InfoPriceRow extends StatelessWidget {
                       ? price > 0
                           ? red
                           : green
-                      : null
-                  : null,
+                      : context.color.white
+                  : context.color.white,
             ),
             textAlign: TextAlign.end,
           ),

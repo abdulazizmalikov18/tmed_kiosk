@@ -46,7 +46,7 @@ class _SelectionLenguageState extends State<SelectionLenguage> {
               });
             });
           },
-          title: LocaleKeys.languageRu.tr(),
+          title: LocaleKeys.language_ru.tr(),
           isLenguage: true,
         ),
         const SizedBox(height: 24),
@@ -63,7 +63,7 @@ class _SelectionLenguageState extends State<SelectionLenguage> {
               });
             });
           },
-          title: LocaleKeys.languageUz.tr(),
+          title: LocaleKeys.language_uz.tr(),
           isLenguage: true,
         ),
         const SizedBox(height: 24),
@@ -75,7 +75,7 @@ class _SelectionLenguageState extends State<SelectionLenguage> {
               curve: Curves.easeIn,
             );
           },
-          title: LocaleKeys.languageEn.tr(),
+          title: LocaleKeys.language_en.tr(),
           isLenguage: true,
         ),
       ],

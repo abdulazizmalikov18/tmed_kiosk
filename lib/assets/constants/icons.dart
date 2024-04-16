@@ -90,7 +90,12 @@ class AppIcons {
   static const task = "assets/icons/task.svg";
   static const checkboxNull = "assets/icons/checkbox_null.svg";
   static const icSmsTracking = 'assets/icons/ic_sms_tracking.svg';
-  static const setting = 'assets/icons/setting-2.svg';
+  static const icMoon = "assets/icons/ic_moon.svg";
+  static const icSun = "assets/icons/ic_sun.svg";
+  static const checkboxesOff = "assets/icons/checkbox_base.svg";
+  static const checkboxesOn = "assets/icons/checkboxes.svg";
+  static const icProfileArrowUp = "assets/icons/arrow_up_profile.svg";
+  static const icProfileArrowDown = "assets/icons/arrow_down_profile.svg";
 }
 
 extension SvgExt on String {

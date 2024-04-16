@@ -263,7 +263,7 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                           color: red,
                           isDisabled:
                               context.read<CartBloc>().state.isOrder.isNotEmpty,
-                          text: LocaleKeys.cartOrderCancelButton.tr(),
+                          text: LocaleKeys.cart_order_cancel_button.tr(),
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -274,7 +274,7 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                               context.read<MyNavigatorBloc>().add(NavId(0));
                             },
                             color: green,
-                            text: LocaleKeys.adduserMoveToOrder.tr(),
+                            text: LocaleKeys.adduser_move_to_order.tr(),
                           ),
                         ),
                         if (state.selectAccount.selectAccount.status != 2)
@@ -300,7 +300,7 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                                 }
                               }
                             },
-                            text: LocaleKeys.adduserSave.tr(),
+                            text: LocaleKeys.adduser_save.tr(),
                           ),
                         ),
                     ],

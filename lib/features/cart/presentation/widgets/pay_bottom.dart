@@ -81,7 +81,7 @@ class _PayButtonState extends State<PayButton> {
                           ),
                         );
                   },
-                  text: LocaleKeys.payOrderPrepaidExpense.tr(),
+                  text: LocaleKeys.pay_order_prepaid_expense.tr(),
                   color: green,
                   isLoading: state.status.isInProgress && isAvans,
                 ),
@@ -135,7 +135,7 @@ class _PayButtonState extends State<PayButton> {
                           ),
                         );
                   },
-                  text: LocaleKeys.checkPaymentButton.tr(),
+                  text: LocaleKeys.check_payment_button.tr(),
                 ),
               )
             ],

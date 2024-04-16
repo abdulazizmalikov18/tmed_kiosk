@@ -59,7 +59,7 @@ class _AuthPhoneViewState extends State<AuthPhoneView> {
           ),
           SizedBox(height: MediaQuery.of(context).size.height / 20),
           Text(
-            LocaleKeys.loginAuthText.tr(),
+            LocaleKeys.login_auth_text.tr(),
             style: const TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.w700,
@@ -68,7 +68,7 @@ class _AuthPhoneViewState extends State<AuthPhoneView> {
           ),
           const SizedBox(height: 12),
           Text(
-            LocaleKeys.loginAuthTextDescription.tr(),
+            LocaleKeys.login_auth_text_description.tr(),
             style: const TextStyle(
               fontSize: 18,
               color: greyText,
@@ -91,7 +91,7 @@ class _AuthPhoneViewState extends State<AuthPhoneView> {
               }
               setState(() {});
             },
-            hintText: LocaleKeys.loginUsername.tr(),
+            hintText: LocaleKeys.login_username.tr(),
             hintStyle: AppTheme.bodyLarge
                 .copyWith(fontWeight: FontWeight.w400, color: white),
           ),
@@ -111,7 +111,7 @@ class _AuthPhoneViewState extends State<AuthPhoneView> {
               setState(() {});
             },
             isObscure: true,
-            hintText: LocaleKeys.loginPassword.tr(),
+            hintText: LocaleKeys.login_password.tr(),
             hintTextStyle: AppTheme.bodyLarge
                 .copyWith(fontWeight: FontWeight.w400, color: white),
           ),
@@ -153,7 +153,7 @@ class _AuthPhoneViewState extends State<AuthPhoneView> {
                     );
               }
             },
-            text: LocaleKeys.loginUsername.tr(),
+            text: LocaleKeys.login_username.tr(),
           ),
         ],
       ),

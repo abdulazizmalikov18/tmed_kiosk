@@ -55,7 +55,7 @@ class _CuponDialogState extends State<CuponDialog> {
                 onChanged: (value) {
                   context.read<AccountsBloc>().add(GetCupon(search: value));
                 },
-                hintText: LocaleKeys.offerpageSearch.tr(),
+                hintText: LocaleKeys.offerpage_search.tr(),
                 suffix: Padding(
                   padding: const EdgeInsets.only(right: 8),
                   child: AppIcons.search.svg(),

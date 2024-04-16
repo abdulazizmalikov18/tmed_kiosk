@@ -247,13 +247,13 @@ class MyFunctions {
   static String getType(SampleItem item) {
     switch (item) {
       case SampleItem.en:
-        return LocaleKeys.languageEn.tr();
+        return LocaleKeys.language_en.tr();
       case SampleItem.ru:
-        return LocaleKeys.languageRu.tr();
+        return LocaleKeys.language_ru.tr();
       case SampleItem.uz:
-        return LocaleKeys.languageUz.tr();
+        return LocaleKeys.language_uz.tr();
       case SampleItem.kz:
-        return LocaleKeys.languageEn.tr();
+        return LocaleKeys.language_en.tr();
     }
   }
 

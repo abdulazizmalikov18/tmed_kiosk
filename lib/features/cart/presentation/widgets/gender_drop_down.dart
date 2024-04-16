@@ -64,7 +64,7 @@ class _GenderDropDownState extends State<GenderDropDown> {
                     },
                   ),
                   Text(
-                    LocaleKeys.adduserGenderMan.tr(),
+                    LocaleKeys.adduser_gender_man.tr(),
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
@@ -104,7 +104,7 @@ class _GenderDropDownState extends State<GenderDropDown> {
                     },
                   ),
                   Text(
-                    LocaleKeys.adduserGenderWoman.tr(),
+                    LocaleKeys.adduser_gender_woman.tr(),
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,

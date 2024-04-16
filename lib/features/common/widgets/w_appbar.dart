@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/common/controllers/internet_bloc/internet_bloc.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_scale_animation.dart';
 import 'package:tmed_kiosk/features/common/widgets/z_text_form_field.dart';
@@ -49,13 +50,14 @@ class WAppBar extends StatelessWidget implements PreferredSizeWidget {
               margin: const EdgeInsets.symmetric(horizontal: 16.0),
               decoration: BoxDecoration(
                 boxShadow: wboxShadow,
-                color: white,
+                color: context.color.white,
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(8),
                   bottomRight: Radius.circular(8),
                 ),
               ),
               child: AppBar(
+                backgroundColor: context.color.backGroundColor,
                 titleSpacing: 0,
                 centerTitle: false,
                 title: Container(
@@ -63,13 +65,24 @@ class WAppBar extends StatelessWidget implements PreferredSizeWidget {
                   constraints: const BoxConstraints(maxWidth: 300),
                   margin: const EdgeInsets.only(left: 16),
                   child: ZTextFormField(
+                    fillColor: context.color.whiteBlack,
                     onChanged: onChanged,
                     controller: searchController,
                     prefixIcon: IconButton(
                       onPressed: () {},
-                      icon: SvgPicture.asset(AppIcons.search),
+                      icon: SvgPicture.asset(AppIcons.search,color: white50,),
                     ),
-                    hintText: LocaleKeys.adduserSearch.tr(),
+                    hintText: LocaleKeys.adduser_search.tr(),
+                    hintTextStyle: const TextStyle(color: greyText),
+                  ),
+                ),
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: greyText,
                   ),
                 ),
                 shadowColor: const Color.fromRGBO(38, 38, 38, 0.10),
@@ -83,9 +96,9 @@ class WAppBar extends StatelessWidget implements PreferredSizeWidget {
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          color: contColor,
+                          color: context.color.contColor,
                           boxShadow: wboxShadow,
-                          border: Border.all(color: white.withOpacity(.1)),
+                          border: Border.all(color:  context.color.white.withOpacity(.1)),
                         ),
                         child: SvgPicture.asset(
                           AppIcons.filterRemove,
@@ -105,9 +118,9 @@ class WAppBar extends StatelessWidget implements PreferredSizeWidget {
                         margin: const EdgeInsets.fromLTRB(0, 8, 16, 8),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          color: contColor,
+                          color: context.color.contColor,
                           border: Border.all(
-                            color: white.withOpacity(.1),
+                            color: context.color.white.withOpacity(.1),
                           ),
                         ),
                         child: SvgPicture.asset(

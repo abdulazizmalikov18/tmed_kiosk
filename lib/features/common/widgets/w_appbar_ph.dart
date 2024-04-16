@@ -37,7 +37,7 @@ class WAppBarPhone extends StatelessWidget implements PreferredSizeWidget {
         child: WTextField(
           inputDecoration: InputDecoration(
             border: InputBorder.none,
-            hintText: LocaleKeys.adduserSearch.tr(),
+            hintText: LocaleKeys.adduser_search.tr(),
             contentPadding: const EdgeInsets.fromLTRB(16, 8, 0, 12),
             prefixIconConstraints: const BoxConstraints(maxWidth: 40),
             prefixIcon: IconButton(
@@ -46,7 +46,7 @@ class WAppBarPhone extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
           onChanged: onChanged,
-          hintText: LocaleKeys.adduserSearch.tr(),
+          hintText: LocaleKeys.adduser_search.tr(),
         ),
       ),
       actions: [

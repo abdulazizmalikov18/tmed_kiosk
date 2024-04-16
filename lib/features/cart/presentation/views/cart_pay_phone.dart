@@ -40,23 +40,23 @@ class _CartPayPhoneState extends State<CartPayPhone> {
   List<MyPriceEntity> list = [
     MyPriceEntity(
       controller: TextEditingController(),
-      name: LocaleKeys.payOrderName.tr(),
+      name: LocaleKeys.pay_order_name.tr(),
       method: 1,
     ),
     MyPriceEntity(
       controller: TextEditingController(),
-      name: LocaleKeys.payOrderCash.tr(),
+      name: LocaleKeys.pay_order_cash.tr(),
       method: 1,
     ),
     MyPriceEntity(
       controller: TextEditingController(),
-      name: LocaleKeys.payOrderHumo.tr(),
+      name: LocaleKeys.pay_order_humo.tr(),
       image: AppImages.humo,
       method: 7,
     ),
     MyPriceEntity(
       controller: TextEditingController(),
-      name: LocaleKeys.payOrderUzcard.tr(),
+      name: LocaleKeys.pay_order_uzcard.tr(),
       image: AppImages.uzcard,
       method: 8,
     ),
@@ -64,17 +64,17 @@ class _CartPayPhoneState extends State<CartPayPhone> {
   List<MyPriceEntity> list2 = [
     MyPriceEntity(
       controller: TextEditingController(),
-      name: LocaleKeys.payOrderTransfer.tr(),
+      name: LocaleKeys.pay_order_transfer.tr(),
       method: 6,
     ),
     MyPriceEntity(
       controller: TextEditingController(),
-      name: LocaleKeys.payOrderCashback.tr(),
+      name: LocaleKeys.pay_order_cashback.tr(),
       method: 5,
     ),
     MyPriceEntity(
       controller: TextEditingController(),
-      name: LocaleKeys.payOrderAnor.tr(),
+      name: LocaleKeys.pay_order_anor.tr(),
       image: AppImages.anorbank,
       method: 11,
     ),

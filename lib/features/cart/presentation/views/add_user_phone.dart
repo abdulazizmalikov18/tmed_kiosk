@@ -76,7 +76,7 @@ class _AddUserPhoneState extends State<AddUserPhone> {
                   enabled: state.selectAccount.selectAccount.name.isEmpty,
                   inputDecoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: LocaleKeys.adduserSearch.tr(),
+                    hintText: LocaleKeys.adduser_search.tr(),
                     contentPadding: const EdgeInsets.fromLTRB(16, 10, 0, 12),
                     prefixIconConstraints: const BoxConstraints(maxWidth: 40),
                   ),

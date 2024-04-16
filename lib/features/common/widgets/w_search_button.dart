@@ -1,3 +1,4 @@
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_textfield.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class _WSearchButtonState extends State<WSearchButton> {
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
           width: 1,
-          color: widget.controller.text.isEmpty ? white.withOpacity(0.1) : blue,
+          color: widget.controller.text.isEmpty ? context.color.white.withOpacity(0.1) : blue,
         ),
       ),
       padding: isTextShow
@@ -65,7 +66,7 @@ class _WSearchButtonState extends State<WSearchButton> {
               }
               isTextShow = !isTextShow;
             }),
-            child: AppIcons.search.svg(),
+            child: AppIcons.search.svg(color: greyText),
           )
         ],
       ),
@@ -92,19 +93,23 @@ class SearchTextField extends StatelessWidget {
     return AnimatedContainer(
       height: 44,
       duration: const Duration(milliseconds: 200),
-      child: WTextField(
-        onChanged: onChanged,
-        height: 32,
-        onEditingComplete: onEditingComplete,
+      child: TextField(
+        autofocus: true,
+        style: TextStyle(color: context.color.white),
         controller: controller,
-        maxLines: 1,
-        inputDecoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: LocaleKeys.adduserSearch.tr(),
-          contentPadding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
-          prefixIconConstraints: const BoxConstraints(maxWidth: 40),
+        onEditingComplete: onEditingComplete,
+        onChanged: onChanged,
+        textInputAction: TextInputAction.done,
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.only(bottom: 15),
+          hintText: LocaleKeys.adduser_search.tr(),
+          filled: true,
+          fillColor: Colors.transparent,
+          hintStyle: TextStyle(color: context.color.white.withOpacity(0.3)),
+          border: const UnderlineInputBorder(
+            borderSide: BorderSide.none,
+          ),
         ),
-        hintText: LocaleKeys.adduserSearch.tr(),
       ),
     );
   }

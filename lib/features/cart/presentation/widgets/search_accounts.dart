@@ -1,5 +1,6 @@
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -42,10 +43,10 @@ class SearchAccount extends StatelessWidget {
               onChanged: (value) {
                 context.read<AccountsBloc>().add(AccountsGet(search: value));
               },
-              fillColor: whiteBlack,
+              fillColor: context.color.whiteBlack,
               prefixIcon: IconButton(
                 onPressed: () {},
-                icon: AppIcons.search.svg(),
+                icon: AppIcons.search.svg(color: white50),
               ),
               controller: vm.controller,
               suffixIcon: "a",
@@ -61,10 +62,10 @@ class SearchAccount extends StatelessWidget {
                             .add(IsFocused(isFocused: false));
                         vm.clearAccount(context);
                       },
-                      child: const Icon(Icons.close_rounded),
+                      child: const Icon(Icons.close_rounded, color: white50,),
                     )
                   : null,
-              hintText: LocaleKeys.adduserSearch.tr(),
+              hintText: LocaleKeys.adduser_search.tr(),
             ),
           ),
           // child: Container(

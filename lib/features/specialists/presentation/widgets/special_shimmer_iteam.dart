@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 
 class SpecialShimmerIteam extends StatelessWidget {
   const SpecialShimmerIteam({super.key});
@@ -10,7 +11,7 @@ class SpecialShimmerIteam extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: contColor,
+        color: context.color.contColor,
         boxShadow: wboxShadow,
         border: Border.all(color: white.withOpacity(.1)),
       ),

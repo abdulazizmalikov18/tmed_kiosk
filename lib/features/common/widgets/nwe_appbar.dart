@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
@@ -36,7 +37,7 @@ class _NewAppBarState extends State<NewAppBar> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: contColor,
+        color: context.color.contColor,
       ),
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -47,7 +48,7 @@ class _NewAppBarState extends State<NewAppBar> {
               Text(
                 widget.title,
                 style:
-                    AppTheme.displaySmall.copyWith(fontWeight: FontWeight.w600),
+                    AppTheme.displaySmall.copyWith(fontWeight: FontWeight.w600,color: context.color.white),
               ),
               const Spacer(),
               ...widget.action
@@ -55,7 +56,7 @@ class _NewAppBarState extends State<NewAppBar> {
           ),
           if (widget.child != null)
             Container(
-              height: SizeConfig.h(36),
+              height: SizeConfig.h(34),
               width: double.infinity,
               margin: const EdgeInsets.only(top: 12),
               child: widget.child,

@@ -116,13 +116,13 @@ class _AuthMainViewState extends State<AuthMainView> with AuthMainMixin {
                                                   .width *
                                               .06),
                                       Text(
-                                        LocaleKeys.loginAuthText.tr(),
+                                        LocaleKeys.login_auth_text.tr(),
                                         style: AppTheme.bodyMedium.copyWith(
                                             color: white, fontSize: 60),
                                       ),
                                       const SizedBox(height: 12),
                                       Text(
-                                        LocaleKeys.loginAuthTextDescription
+                                        LocaleKeys.login_auth_text_description
                                             .tr(),
                                         style: AppTheme.labelSmall
                                             .copyWith(fontSize: 24),
@@ -188,7 +188,7 @@ class _AuthMainViewState extends State<AuthMainView> with AuthMainMixin {
                                         onTap: () {
                                           login();
                                         },
-                                        text: LocaleKeys.loginUsername.tr(),
+                                        text: LocaleKeys.login_username.tr(),
                                       ),
                                       SizedBox(
                                           height: MediaQuery.of(context)

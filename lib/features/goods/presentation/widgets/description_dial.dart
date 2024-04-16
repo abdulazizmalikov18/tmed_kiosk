@@ -1,9 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/goods/presentation/controllers/bloc/goods_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/themes/theme.dart';
 import 'package:tmed_kiosk/features/goods/domain/entity/org_product_entity.dart';
 import 'package:tmed_kiosk/features/goods/presentation/widgets/dialog_goods_psp.dart';
+import 'package:tmed_kiosk/generated/locale_keys.g.dart';
 
 class DescriptionDialog extends StatelessWidget {
   const DescriptionDialog(
@@ -48,18 +51,18 @@ class DescriptionDialog extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               product.product.name,
-              style: AppTheme.bodyMedium.copyWith(fontSize: 20),
+              style: AppTheme.bodyMedium.copyWith(fontSize: 20,color: context.color.white),
             ),
-            const Divider(color: lightBlue),
+            Divider(color: context.color.white.withOpacity(.1)),
             const SizedBox(height: 12),
             if (product.productFeatures.isNotEmpty)
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Parametr:",
-                    style: AppTheme.bodyLarge,
+                  Text(
+                    "${LocaleKeys.parameter.tr()}:",
+                    style: AppTheme.bodyLarge.copyWith(color: context.color.white),
                   ),
                   ...List.generate(
                     product.productFeatures.length,
@@ -67,14 +70,14 @@ class DescriptionDialog extends StatelessWidget {
                       children: [
                         Text(
                           "${product.productFeatures[index].feature.name}: ",
-                          style: AppTheme.labelSmall,
+                          style: AppTheme.labelSmall.copyWith(color: context.color.white),
                         ),
                         ...List.generate(
                           product.productFeatures[index].preparedValue.length,
                           (index) => Text(
                             product.productFeatures[index].preparedValue[index]
                                 .value,
-                            style: AppTheme.titleLarge,
+                            style: AppTheme.titleLarge.copyWith(color: context.color.white50),
                           ),
                         )
                       ],
@@ -83,9 +86,9 @@ class DescriptionDialog extends StatelessWidget {
                 ],
               ),
             const SizedBox(height: 12),
-            const Text(
-              "Tafsif: ",
-              style: AppTheme.bodyLarge,
+            Text(
+              "${LocaleKeys.description.tr()}: ",
+              style: AppTheme.bodyLarge.copyWith(color: context.color.white),
             ),
             const SizedBox(height: 8),
             Text(
@@ -96,18 +99,18 @@ class DescriptionDialog extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 16, bottom: 8),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16, bottom: 8),
                     child: Text(
-                      "Mas’ul xodimlar:",
-                      style: AppTheme.bodyLarge,
+                      "${LocaleKeys.responsible_employees.tr()}:",
+                      style: AppTheme.bodyLarge.copyWith(color: context.color.white),
                     ),
                   ),
                   Row(
                     children: [
-                      const Text(
-                        "In stock: ",
-                        style: AppTheme.labelSmall,
+                      Text(
+                        "${LocaleKeys.offerpage_in_stock.tr()}: ",
+                        style: AppTheme.labelSmall.copyWith(color: context.color.white),
                       ),
                       Text(
                         "${product.remains}",
@@ -117,8 +120,8 @@ class DescriptionDialog extends StatelessWidget {
                   ),
                   RichText(
                     text: TextSpan(
-                      text: "Offer place: ",
-                      style: AppTheme.labelSmall,
+                      text: "${LocaleKeys.offer_place.tr()}: ",
+                      style: AppTheme.labelSmall.copyWith(color: context.color.white),
                       children: [
                         TextSpan(
                           text: product.placeDesc,
