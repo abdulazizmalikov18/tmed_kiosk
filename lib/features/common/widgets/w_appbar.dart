@@ -70,7 +70,7 @@ class WAppBar extends StatelessWidget implements PreferredSizeWidget {
                     controller: searchController,
                     prefixIcon: IconButton(
                       onPressed: () {},
-                      icon: SvgPicture.asset(AppIcons.search,color: white50,),
+                      icon: AppIcons.search.svg(color: white50),
                     ),
                     hintText: LocaleKeys.adduser_search.tr(),
                     hintTextStyle: const TextStyle(color: greyText),

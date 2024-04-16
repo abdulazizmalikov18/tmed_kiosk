@@ -3,7 +3,6 @@ import 'package:tmed_kiosk/core/utils/enums.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/generated/locale_keys.g.dart';
 
 class GenderDropDown extends StatefulWidget {

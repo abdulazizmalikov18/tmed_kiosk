@@ -206,7 +206,7 @@ class _GoodsViewState extends State<GoodsView> {
                     context.push(RoutsContact.cart);
                   },
                   text: "Xizmatlar soni / ${cartMap.length} ta",
-                  textStyle: TextStyle(fontSize: 32),
+                  textStyle: const TextStyle(fontSize: 32),
                 );
               }
               return const SizedBox();
