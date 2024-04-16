@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/themes/theme.dart';
 
 class NewAppBar extends StatefulWidget implements PreferredSizeWidget {

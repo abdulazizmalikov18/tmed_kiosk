@@ -12,7 +12,6 @@ import 'package:tmed_kiosk/features/cart/presentation/widgets/accounts_list.dart
 import 'package:tmed_kiosk/features/common/widgets/cart_appbar.dart';
 import 'package:tmed_kiosk/features/main/presentation/controllers/bloc/navigator_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class VCartItem extends StatefulWidget {

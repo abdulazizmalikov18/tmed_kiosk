@@ -20,7 +20,6 @@ import 'package:tmed_kiosk/features/common/repo/storage_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:tmed_kiosk/generated/codegen_loader.g.dart';
 import 'package:tmed_kiosk/restart_widget.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart'

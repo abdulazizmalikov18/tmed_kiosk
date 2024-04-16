@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/size_config.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
