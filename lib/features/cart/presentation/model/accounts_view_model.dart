@@ -6,6 +6,7 @@ import 'package:tmed_kiosk/core/utils/my_function.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/accounts_entity.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/user_set/region_sel.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
+import 'package:tmed_kiosk/features/common/repo/log_service.dart';
 
 class AccountsViewModel {
   TextEditingController phone = TextEditingController();
@@ -52,6 +53,7 @@ class AccountsViewModel {
   }
 
   void selectAccount(AccountsEntity account) {
+    Log.w(account);
     isChek = true;
     phone.text = account.pinfl.isEmpty ? account.phone : account.pinfl;
     name.text = account.name;

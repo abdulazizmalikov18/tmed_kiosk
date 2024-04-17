@@ -51,10 +51,13 @@ class _CreatePhJshState extends State<CreatePhJsh> {
             children: [
               Text(
                 "create_account".tr(),
-                style: AppTheme.displayLarge.copyWith(fontSize: 20,color: context.color.white),
+                style: AppTheme.displayLarge
+                    .copyWith(fontSize: 20, color: context.color.white),
               ),
               const SizedBox(height: 12),
-              Divider(color: context.color.white.withOpacity(.1),),
+              Divider(
+                color: context.color.white.withOpacity(.1),
+              ),
               const SizedBox(height: 12),
               Text(
                 'jshshir'.tr(),
@@ -119,18 +122,18 @@ class _CreatePhJshState extends State<CreatePhJsh> {
                     Expanded(
                       flex: 2,
                       child: WButton(
+                        height: 48,
                         isDisabled: !(widget.vm.phone.text.startsWith("+998")
                                 ? widget.vm.phone.text.length == 13
                                 : widget.vm.phone.text.length == 14) ||
                             widget.vm.isChek,
                         onTap: widget.onTap,
-                        color: context.color.white.withOpacity(.3),
                         text: "adduser_phone_button".tr(),
                         isLoading: state.status.isInProgress,
-                        textStyle: TextStyle(
+                        textStyle: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: context.color.white
+                          color: white,
                         ),
                       ),
                     ),

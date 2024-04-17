@@ -5,6 +5,8 @@ class RoutsContact {
   static const goods = '/goods';
   static const main = '/main';
   static const profile = '/profile';
+  static const userInfo = '/userInfo';
+  static const userAdd = '/userAdd';
   static const infoView = '/info_view';
   static const myOrders = 'my_orders';
   static const orders = '/orders';

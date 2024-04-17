@@ -1,6 +1,9 @@
 import 'package:tmed_kiosk/features/auth/presentation/views/auth_main_view.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
+import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
+import 'package:tmed_kiosk/features/cart/presentation/views/user_add_view.dart';
+import 'package:tmed_kiosk/features/cart/presentation/views/user_info_view.dart';
 import 'package:tmed_kiosk/features/cart/presentation/views/v_cart_item.dart';
 import 'package:tmed_kiosk/features/category/presentation/controllers/bloc/category_bloc.dart';
 import 'package:tmed_kiosk/features/common/navigation/routs_contact.dart';
@@ -69,6 +72,16 @@ sealed class AppRouts {
               GoRoute(
                 path: RoutsContact.cart,
                 builder: (context, state) => const VCartItem(),
+              ),
+              GoRoute(
+                path: RoutsContact.userAdd,
+                builder: (context, state) =>
+                    UserAddView(vm: (state.extra as AccountsViewModel)),
+              ),
+              GoRoute(
+                path: RoutsContact.userInfo,
+                builder: (context, state) =>
+                    UserInfoView(vm: (state.extra as AccountsViewModel)),
               ),
             ],
           ),

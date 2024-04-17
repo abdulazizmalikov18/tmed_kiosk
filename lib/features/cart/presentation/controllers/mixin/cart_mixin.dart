@@ -1,8 +1,10 @@
+import 'package:go_router/go_router.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/views/card_list_iteam.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/payme_dialog.dart';
 import 'package:tmed_kiosk/features/common/controllers/show_pop_up/show_pop_up_bloc.dart';
+import 'package:tmed_kiosk/features/common/navigation/routs_contact.dart';
 import 'package:tmed_kiosk/features/common/widgets/dialog_title.dart';
 import 'package:tmed_kiosk/features/goods/domain/entity/org_product_entity.dart';
 import 'package:tmed_kiosk/features/goods/presentation/controllers/bloc/goods_bloc.dart';
@@ -68,9 +70,7 @@ mixin CartMixin on State<CardListIteam> {
       );
       // context.read<MyNavigatorBloc>().add(NavId(2));
     } else {
-      context
-          .read<ShowPopUpBloc>()
-          .add(ShowPopUp(message: "User tanlang", status: PopStatus.error));
+      context.push(RoutsContact.userAdd, extra: widget.vmA);
     }
   }
 }

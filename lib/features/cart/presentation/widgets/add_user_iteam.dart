@@ -12,11 +12,8 @@ import 'package:tmed_kiosk/features/common/repo/log_service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formz/formz.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
-import 'package:tmed_kiosk/assets/constants/icons.dart';
-import 'package:tmed_kiosk/assets/constants/images.dart';
 import 'package:tmed_kiosk/core/utils/my_function.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
@@ -51,52 +48,6 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              GestureDetector(
-                onTap: state.selectAccount.selectAccount.status != 5
-                    ? () {
-                        getSelectionImage();
-                        changeInfo();
-                      }
-                    : () {},
-                child: images == null
-                    ? Container(
-                        height: 120,
-                        width: 120,
-                        margin: const EdgeInsets.all(24),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: greyText),
-                          image: state
-                                  .selectAccount.selectAccount.avatar.isNotEmpty
-                              ? DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                    state.selectAccount.selectAccount.avatar[0],
-                                  ),
-                                  onError: (exception, stackTrace) =>
-                                      Image.asset(AppImages.logo),
-                                )
-                              : null,
-                        ),
-                        alignment: Alignment.center,
-                        child: SvgPicture.asset(AppIcons.camera),
-                      )
-                    : Container(
-                        height: 120,
-                        width: 120,
-                        margin: const EdgeInsets.all(24),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: greyText),
-                          image: DecorationImage(
-                            image: FileImage(
-                              images!,
-                            ),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-              ),
               if (!widget.isNew)
                 WButton(
                   onTap: () {},
@@ -114,153 +65,97 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
               const SizedBox(height: 16),
               Column(
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
+                  WTextField(
+                    height: 56,
+                    textCapitalization: TextCapitalization.words,
+                    onChanged: (value) {
+                      widget.vm.name.value = TextEditingValue(
+                        text: Formatters.capitalize(value),
+                        selection: widget.vm.name.selection,
+                      );
+                      changeInfo();
+                    },
+                    inputFormatters: [Formatters.lotinFormat],
+                    enabled: state.selectAccount.selectAccount.status != 2,
+                    hintText: "${LocaleKeys.adduser_firstname.tr()}*",
+                    controller: widget.vm.name,
+                    fillColor: context.color.whiteBlack,
+                    style: TextStyle(color: context.color.white),
+                  ),
+                  const SizedBox(height: 16),
+                  WTextField(
+                    height: 56,
+                    enabled: state.selectAccount.selectAccount.status != 2,
+                    onChanged: (value) {
+                      widget.vm.latname.value = TextEditingValue(
+                        text: Formatters.capitalize(value),
+                        selection: widget.vm.latname.selection,
+                      );
+                      changeInfo();
+                    },
+                    inputFormatters: [Formatters.lotinFormat],
+                    hintText: "${LocaleKeys.adduser_lastname.tr()}*",
+                    textCapitalization: TextCapitalization.words,
+                    controller: widget.vm.latname,
+                    fillColor: context.color.whiteBlack,
+                    style: TextStyle(color: context.color.white),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 8),
+                    child: Form(
+                      key: _dateFormKey,
+                      child: Focus(
+                        onFocusChange: (value) {
+                          if (!value) {
+                            _dateFormKey.currentState!.validate();
+                          }
+                        },
                         child: WTextField(
                           height: 56,
-                          textCapitalization: TextCapitalization.words,
-                          onChanged: (value) {
-                            widget.vm.name.value = TextEditingValue(
-                              text: Formatters.capitalize(value),
-                              selection: widget.vm.name.selection,
-                            );
-                            changeInfo();
-                          },
-                          inputFormatters: [Formatters.lotinFormat],
                           enabled:
-                          state.selectAccount.selectAccount.status != 2,
-                          hintText: "${LocaleKeys.adduser_firstname.tr()}*",
-                          controller: widget.vm.name,
+                              state.selectAccount.selectAccount.status != 2,
+                          onTap: () {
+                            _selectDate(context);
+                          },
+                          inputFormatters: [Formatters.dateFormatter],
+                          onChanged: (value) {
+                            changeInfo();
+                            if (value.length == 10) {
+                              _dateFormKey.currentState!.validate();
+                            }
+                          },
+                          validator: (value) {
+                            if (value != null && value.isNotEmpty) {
+                              if (parseDate(value) != null) {
+                                Log.w(parseDate(value));
+                                return null;
+                              } else {
+                                Log.e("NImagp");
+                                return "No DateTIme";
+                              }
+                            } else {
+                              return null;
+                            }
+                          },
+                          hintText: "${LocaleKeys.age.tr()}*",
+                          controller: widget.vm.age,
+                          keyboardType: TextInputType.datetime,
                           fillColor: context.color.whiteBlack,
                           style: TextStyle(color: context.color.white),
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: WTextField(
-                          height: 56,
-                          enabled:
-                          state.selectAccount.selectAccount.status != 2,
-                          onChanged: (value) {
-                            widget.vm.latname.value = TextEditingValue(
-                              text: Formatters.capitalize(value),
-                              selection: widget.vm.latname.selection,
-                            );
-                            changeInfo();
-                          },
-                          inputFormatters: [Formatters.lotinFormat],
-                          hintText: "${LocaleKeys.adduser_lastname.tr()}*",
-                          textCapitalization: TextCapitalization.words,
-                          controller: widget.vm.latname,
-                          fillColor: context.color.whiteBlack,
-                          style: TextStyle(color: context.color.white),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          margin: const EdgeInsets.only(top: 8),
-                          child: Form(
-                            key: _dateFormKey,
-                            child: Focus(
-                              onFocusChange: (value) {
-                                if (!value) {
-                                  _dateFormKey.currentState!.validate();
-                                }
-                              },
-                              child: WTextField(
-                                height: 56,
-                                enabled: state
-                                    .selectAccount.selectAccount.status !=
-                                    2,
-                                onTap: () {
-                                  _selectDate(context);
-                                },
-                                inputFormatters: [Formatters.dateFormatter],
-                                onChanged: (value) {
-                                  changeInfo();
-                                  if (value.length == 10) {
-                                    _dateFormKey.currentState!.validate();
-                                  }
-                                },
-                                validator: (value) {
-                                  if (value != null && value.isNotEmpty) {
-                                    if (parseDate(value) != null) {
-                                      Log.w(parseDate(value));
-                                      return null;
-                                    } else {
-                                      Log.e("NImagp");
-                                      return "No DateTIme";
-                                    }
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                hintText: "${LocaleKeys.age.tr()}*",
-                                controller: widget.vm.age,
-                                keyboardType: TextInputType.datetime,
-                                suffix: Padding(
-                                  padding: const EdgeInsets.only(right: 12),
-                                  child: SvgPicture.asset(AppIcons.calendar, color: greyText,),
-                                ),
-                                fillColor: context.color.whiteBlack,
-                                style: TextStyle(color: context.color.white),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: SizedBox(
-                          height: 48,
-                          child: GenderDropDown(
-                            controller: widget.vm.gender,
-                            onChange: () {
-                              changeInfo();
-                            },
-                            isDisebled:
-                                state.selectAccount.selectAccount.status == 2,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  WTextField(
-                    height: 56,
-                    onChanged: (value) {
-                      changeInfo();
-                    },
-                    controller: widget.vm.region,
-                    hintText: LocaleKeys.adduser_region.tr(),
-                    readOnly: true,
-                    enabled: state.selectAccount.selectAccount.status != 2,
-                    onTap: () {
-                      getRegionDialog();
-                    },
-                    fillColor: context.color.whiteBlack,
-                    style: TextStyle(color: context.color.white),
-                  ),
-                  const SizedBox(height: 12),
-                  WTextField(
-                    height: 56,
-                    onTap: () {
-                      getProfissonDialog();
-                    },
-                    onChanged: (value) {
-                      changeInfo();
-                    },
-                    controller: widget.vm.profession,
-                    hintText: LocaleKeys.check_profession.tr(),
-                    enabled: state.selectAccount.selectAccount.status != 2,
-                    readOnly: true,
-                    fillColor: context.color.whiteBlack,
-                    style: TextStyle(color: context.color.white),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    height: 48,
+                    child: GenderDropDown(
+                      controller: widget.vm.gender,
+                      onChange: () {
+                        changeInfo();
+                      },
+                      isDisebled: state.selectAccount.selectAccount.status == 2,
+                    ),
                   ),
                   const SizedBox(height: 24),
                   Row(

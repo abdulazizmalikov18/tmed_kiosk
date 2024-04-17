@@ -10,9 +10,7 @@ class ErrorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Error"),
-      ),
+      appBar: AppBar(title: const Text("Error")),
       body: Center(
         child: Container(
           width: 368,

@@ -1,14 +1,11 @@
+import 'package:tmed_kiosk/assets/colors/colors.dart';
+import 'package:tmed_kiosk/assets/themes/theme.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
+import 'package:tmed_kiosk/features/cart/domain/entity/user_set/selection_account.dart';
+import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/cart_view_model.dart';
 import 'package:tmed_kiosk/features/cart/presentation/views/card_list_iteam.dart';
-import 'package:tmed_kiosk/features/cart/presentation/views/cart_pay_view.dart';
-import 'package:tmed_kiosk/features/cart/presentation/views/history_view.dart';
-import 'package:tmed_kiosk/features/cart/presentation/views/task_create_view.dart';
-import 'package:tmed_kiosk/features/cart/presentation/views/user_add_view.dart';
-import 'package:tmed_kiosk/features/cart/presentation/views/user_info_view.dart';
-import 'package:tmed_kiosk/features/cart/presentation/widgets/accounts_list.dart';
-import 'package:tmed_kiosk/features/common/widgets/cart_appbar.dart';
 import 'package:tmed_kiosk/features/main/presentation/controllers/bloc/navigator_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,34 +22,28 @@ class _VCartItemState extends State<VCartItem> {
   late final vmC = CartViewModel();
   bool cartClose = false;
 
-  List<Widget> page = [];
-
-  @override
-  void initState() {
-    page = [
-      CardListIteam(vm: vmC, vmA: vmA),
-      UserInfoView(vm: vmA),
-      CartPayView(vm: vmC, vmA: vmA),
-      HistoryView(vm: vmA),
-      UserAddView(vm: vmA),
-      TaskCreateView(vm: vmC),
-      AccountsList(vm: vmA)
-    ];
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MyNavigatorBloc, MyNavigatorState>(
       builder: (context, state) {
         return Scaffold(
           backgroundColor: context.color.contColor,
-          body: Column(
-            children: [
-              state.navid != 2 ? CartAppBar(vm: vmA) : const SizedBox(),
-              Expanded(child: page[state.navid]),
-            ],
-          ),
+          appBar: state.navid != 2
+              ? AppBar(
+                  backgroundColor: context.color.backGroundColor,
+                  title: BlocSelector<AccountsBloc, AccountsState,
+                      SelectionAccountEntity>(
+                    builder: (context, state) {
+                      return Text(
+                        "${state.selectAccount.name} ${state.selectAccount.lastname}",
+                        style: AppTheme.displaySmall.copyWith(color: dark),
+                      );
+                    },
+                    selector: (state) => state.selectAccount,
+                  ),
+                )
+              : null,
+          body: CardListIteam(vm: vmC, vmA: vmA),
         );
       },
     );
