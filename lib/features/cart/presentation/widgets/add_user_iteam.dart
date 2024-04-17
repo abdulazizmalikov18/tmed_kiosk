@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/formatters.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/cupon_entity.dart';
@@ -32,6 +33,7 @@ part 'package:tmed_kiosk/features/cart/presentation/controllers/add_user_contoll
 
 class AddUsetIteam extends StatefulWidget {
   const AddUsetIteam({super.key, required this.vm, this.isNew = false});
+
   final AccountsViewModel vm;
   final bool isNew;
 
@@ -51,8 +53,10 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
               if (!widget.isNew)
                 WButton(
                   onTap: () {},
-                  width: 240,
+                  width: 350,
+                  height: 80,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
+                  textStyle: const TextStyle(fontSize: 28),
                   text: state.selectAccount.selectAccount.phone.isNotEmpty
                       ? "+${state.selectAccount.selectAccount.phone}"
                       : "PNFL ${state.selectAccount.selectAccount.pinfl}",
@@ -66,7 +70,10 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
               Column(
                 children: [
                   WTextField(
-                    height: 56,
+                    cursorHeight: 50,
+                    height: 100,
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 14, horizontal: 16),
                     textCapitalization: TextCapitalization.words,
                     onChanged: (value) {
                       widget.vm.name.value = TextEditingValue(
@@ -80,11 +87,16 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                     hintText: "${LocaleKeys.adduser_firstname.tr()}*",
                     controller: widget.vm.name,
                     fillColor: context.color.whiteBlack,
-                    style: TextStyle(color: context.color.white),
+                    hintStyle: TextStyle(
+                        fontSize: 32,
+                        color: context.color.white.withOpacity(.5)),
+                    style: TextStyle(color: context.color.white, fontSize: 32),
                   ),
-                  const SizedBox(height: 16),
                   WTextField(
-                    height: 56,
+                    cursorHeight: 50,
+                    height: 100,
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 14, horizontal: 16),
                     enabled: state.selectAccount.selectAccount.status != 2,
                     onChanged: (value) {
                       widget.vm.latname.value = TextEditingValue(
@@ -98,7 +110,10 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                     textCapitalization: TextCapitalization.words,
                     controller: widget.vm.latname,
                     fillColor: context.color.whiteBlack,
-                    style: TextStyle(color: context.color.white),
+                    hintStyle: TextStyle(
+                        fontSize: 32,
+                        color: context.color.white.withOpacity(.5)),
+                    style: TextStyle(color: context.color.white, fontSize: 32),
                   ),
                   Container(
                     margin: const EdgeInsets.only(top: 8),
@@ -111,17 +126,50 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                           }
                         },
                         child: WTextField(
-                          height: 56,
+                          cursorHeight: 50,
+                          height: 100,
+                          keyboardType: TextInputType.number,
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 16),
                           enabled:
                               state.selectAccount.selectAccount.status != 2,
-                          onTap: () {
-                            _selectDate(context);
-                          },
-                          inputFormatters: [Formatters.dateFormatter],
                           onChanged: (value) {
+                            // if(!RegExp("[0-9]").hasMatch(value[value.length-1])){
+                            //   widget.vm.age.text = value.substring(0, value.length-2);
+                            // }
+                            if (value.length == 3 &&
+                                value[value.length - 1] != "/") {
+                              widget.vm.age.text =
+                                  "${value.substring(0, 2)}/${value[2]}";
+                            }
+                            if (value.length == 6 &&
+                                value[value.length - 1] != "/") {
+                              widget.vm.age.text =
+                                  "${value.substring(0, 5)}/${value[5]}";
+                            }
+                            if (value.length >= 9) {
+                              widget.vm.age.text = value.substring(0, 10);
+                            }
                             changeInfo();
                             if (value.length == 10) {
                               _dateFormKey.currentState!.validate();
+                            }
+                            if (value.length >= 2 &&
+                                int.tryParse(value.substring(0, 2))! >= 32) {
+                              widget.vm.age.text =
+                                  value.replaceRange(0, 2, "30");
+                              "30";
+                            }
+                            if (value.length >= 5 &&
+                                int.tryParse(value.substring(3, 5))! >= 12) {
+                              widget.vm.age.text =
+                                  value.replaceRange(3, 5, "02");
+                              "02";
+                            } else if (value.length >= 9 &&
+                                int.tryParse(value.substring(6, 10))! >= 2025) {
+                              widget.vm.age.text =
+                                  value.replaceRange(6, 10, "2000");
+                              "2024";
                             }
                           },
                           validator: (value) {
@@ -138,17 +186,19 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                             }
                           },
                           hintText: "${LocaleKeys.age.tr()}*",
+                          hintStyle: TextStyle(
+                              fontSize: 32,
+                              color: context.color.white.withOpacity(.5)),
                           controller: widget.vm.age,
-                          keyboardType: TextInputType.datetime,
                           fillColor: context.color.whiteBlack,
-                          style: TextStyle(color: context.color.white),
+                          style: TextStyle(
+                              color: context.color.white, fontSize: 32),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
                   SizedBox(
-                    height: 48,
+                    height: 100,
                     child: GenderDropDown(
                       controller: widget.vm.gender,
                       onChange: () {
@@ -162,6 +212,8 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                     children: [
                       Expanded(
                         child: WButton(
+                          textStyle: const TextStyle(fontSize: 32),
+                          height: 100,
                           onTap: () {
                             context.read<MyNavigatorBloc>().add(NavId(0));
                             widget.vm.clearAccount(context);
@@ -176,6 +228,8 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                       if (!widget.isNew) ...[
                         Expanded(
                           child: WButton(
+                            textStyle: const TextStyle(fontSize: 32),
+                            height: 100,
                             onTap: () {
                               context.read<MyNavigatorBloc>().add(NavId(0));
                             },
@@ -189,6 +243,8 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                       if (state.selectAccount.selectAccount.status != 2)
                         Expanded(
                           child: WButton(
+                            height: 100,
+                            textStyle: const TextStyle(fontSize: 32),
                             isLoading: state.status.isInProgress,
                             isDisabled: !isChanged,
                             onTap: () {

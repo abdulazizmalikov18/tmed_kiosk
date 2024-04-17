@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/enums.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -48,7 +49,7 @@ class _GenderDropDownState extends State<GenderDropDown> {
                     setState(() {});
                   },
             child: Container(
-              padding: const EdgeInsets.fromLTRB(0, 12, 12, 12),
+              padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: context.color.whiteBlack,
@@ -56,21 +57,24 @@ class _GenderDropDownState extends State<GenderDropDown> {
               ),
               child: Row(
                 children: [
-                  CupertinoCheckbox(
-                    value: selectedMenu == SampleItem.er,
-                    onChanged: (value) {
-                      if (!widget.isDisebled) {
-                        selectedMenu = SampleItem.er;
-                        widget.controller.text = SampleItem.er.genderType;
-                        widget.onChange();
-                        setState(() {});
-                      }
-                    },
+                  Transform.scale(
+                   scale: 1.5,
+                    child: CupertinoCheckbox(
+                      value: selectedMenu == SampleItem.er,
+                      onChanged: (value) {
+                        if (!widget.isDisebled) {
+                          selectedMenu = SampleItem.er;
+                          widget.controller.text = SampleItem.er.genderType;
+                          widget.onChange();
+                          setState(() {});
+                        }
+                      },
+                    ),
                   ),
                   Text(
                     LocaleKeys.adduser_gender_man.tr(),
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                          fontSize: 16,
+                          fontSize: 32,
                           fontWeight: FontWeight.w400,
                           color: context.color.white.withOpacity(.5),
                         ),
@@ -92,7 +96,7 @@ class _GenderDropDownState extends State<GenderDropDown> {
                     setState(() {});
                   },
             child: Container(
-              padding: const EdgeInsets.fromLTRB(0, 12, 12, 12),
+              padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: context.color.whiteBlack,
@@ -100,21 +104,24 @@ class _GenderDropDownState extends State<GenderDropDown> {
               ),
               child: Row(
                 children: [
-                  CupertinoCheckbox(
-                    value: selectedMenu == SampleItem.ayol,
-                    onChanged: (value) {
-                      if (!widget.isDisebled) {
-                        selectedMenu = SampleItem.ayol;
-                        widget.controller.text = SampleItem.ayol.genderType;
-                        widget.onChange();
-                        setState(() {});
-                      }
-                    },
+                  Transform.scale(
+                    scale: 1.5,
+                    child: CupertinoCheckbox(
+                      value: selectedMenu == SampleItem.ayol,
+                      onChanged: (value) {
+                        if (!widget.isDisebled) {
+                          selectedMenu = SampleItem.ayol;
+                          widget.controller.text = SampleItem.ayol.genderType;
+                          widget.onChange();
+                          setState(() {});
+                        }
+                      },
+                    ),
                   ),
                   Text(
                     LocaleKeys.adduser_gender_woman.tr(),
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                          fontSize: 16,
+                          fontSize: 30,
                           fontWeight: FontWeight.w400,
                           color: context.color.white.withOpacity(.5),
                         ),

@@ -56,36 +56,36 @@ class DescriptionDialog extends StatelessWidget {
             Divider(color: context.color.white.withOpacity(.1)),
             const SizedBox(height: 12),
             if (product.productFeatures.isNotEmpty)
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "${LocaleKeys.parameter.tr()}:",
-                    style: AppTheme.bodyLarge.copyWith(color: context.color.white),
-                  ),
-                  ...List.generate(
-                    product.productFeatures.length,
-                    (index) => Row(
-                      children: [
-                        Text(
-                          "${product.productFeatures[index].feature.name}: ",
-                          style: AppTheme.labelSmall.copyWith(color: context.color.white),
-                        ),
-                        ...List.generate(
-                          product.productFeatures[index].preparedValue.length,
-                          (index) => Text(
-                            product.productFeatures[index].preparedValue[index]
-                                .value,
-                            style: AppTheme.titleLarge.copyWith(color: context.color.white50),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            const SizedBox(height: 12),
+            //   Column(
+            //     mainAxisSize: MainAxisSize.min,
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Text(
+            //         "${LocaleKeys.parameter.tr()}:",
+            //         style: AppTheme.bodyLarge.copyWith(color: context.color.white),
+            //       ),
+            //       ...List.generate(
+            //         product.productFeatures.length,
+            //         (index) => Row(
+            //           children: [
+            //             Text(
+            //               "${product.productFeatures[index].feature.name}: ",
+            //               style: AppTheme.labelSmall.copyWith(color: context.color.white),
+            //             ),
+            //             ...List.generate(
+            //               product.productFeatures[index].preparedValue.length,
+            //               (index) => Text(
+            //                 product.productFeatures[index].preparedValue[index]
+            //                     .value,
+            //                 style: AppTheme.titleLarge.copyWith(color: context.color.white50),
+            //               ),
+            //             )
+            //           ],
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // const SizedBox(height: 12),
             Text(
               "${LocaleKeys.description.tr()}: ",
               style: AppTheme.bodyLarge.copyWith(color: context.color.white),

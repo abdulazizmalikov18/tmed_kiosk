@@ -16,6 +16,7 @@ class WTextField extends StatefulWidget {
   final Widget? suffix;
   final double prefixMaxWidth;
   final double suffixMaxWidth;
+  final double? cursorHeight;
   final TextStyle? style;
   final TextStyle? hintStyle;
   final TextStyle? counterStyle;
@@ -96,6 +97,7 @@ class WTextField extends StatefulWidget {
     this.onTap,
     this.textColor,
     this.textCapitalization = TextCapitalization.none,
+    this.cursorHeight = 20,
   });
 
   @override
@@ -155,7 +157,7 @@ class _WTextFieldState extends State<WTextField>
             minLines: widget.minLines,
             cursorColor: widget.cursorColor,
             cursorWidth: 1,
-            cursorHeight: 20,
+            cursorHeight: widget.cursorHeight,
             decoration: widget.inputDecoration ??
                 InputDecoration(
                   border: OutlineInputBorder(

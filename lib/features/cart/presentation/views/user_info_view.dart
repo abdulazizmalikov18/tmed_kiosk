@@ -57,13 +57,13 @@ class _UserInfoViewState extends State<UserInfoView> {
           child: Column(
             children: [
               SizedBox(
-                height: 48,
+                height: 80,
                 width: double.infinity,
                 child: WTabBar(
                   tabs: [
-                    Text(LocaleKeys.user_info.tr()),
-                    Text(LocaleKeys.user_history.tr()),
-                    Text(LocaleKeys.user_retsept.tr()),
+                    Text(LocaleKeys.user_info.tr(), style: const TextStyle(fontSize: 30),),
+                    Text(LocaleKeys.user_history.tr(),style: const TextStyle(fontSize: 30),),
+                    Text(LocaleKeys.user_retsept.tr(),style: const TextStyle(fontSize: 30),),
                   ],
                 ),
               ),
@@ -84,7 +84,7 @@ class _UserInfoViewState extends State<UserInfoView> {
                           return Column(
                             children: [
                               Container(
-                                height: 48,
+                                height: 80,
                                 margin: const EdgeInsets.all(16),
                                 child: Shimmer.fromColors(
                                   baseColor: blue.withOpacity(0.13),
