@@ -1,19 +1,19 @@
 import 'package:formz/formz.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
+import 'package:tmed_kiosk/assets/themes/theme.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/formatters.dart';
-import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
+import 'package:tmed_kiosk/features/common/controllers/show_pop_up/show_pop_up_bloc.dart';
+import 'package:tmed_kiosk/features/common/repo/log_service.dart';
 import 'package:tmed_kiosk/features/common/widgets/dialog_title.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_button.dart';
-import 'package:tmed_kiosk/features/common/widgets/w_scale_animation.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_textfield.dart';
-import 'package:tmed_kiosk/features/common/widgets/z_text_form_field.dart';
 import 'package:tmed_kiosk/features/main/presentation/controllers/bloc/navigator_bloc.dart';
 import 'package:tmed_kiosk/generated/locale_keys.g.dart';
 
@@ -21,9 +21,11 @@ class SearchAccount extends StatelessWidget {
   const SearchAccount({
     super.key,
     required this.vm,
+    required this.bloc,
   });
 
   final AccountsViewModel vm;
+  final AccountsBloc bloc;
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AccountsBloc, AccountsState>(
@@ -33,7 +35,7 @@ class SearchAccount extends StatelessWidget {
             final TextEditingController controller = TextEditingController();
             showDialog(
               context: context,
-              builder: (context) => AlertDialog(
+              builder: (ctx) => AlertDialog(
                 backgroundColor: context.color.backGroundColor,
                 title: const DialogTitle(
                   title: "PNFl yoki telefon raqamni tering",
@@ -42,11 +44,23 @@ class SearchAccount extends StatelessWidget {
                 actions: [
                   WButton(
                     onTap: () {
-                      if (controller.text.length >= 13) {
-                        context
-                            .read<AccountsBloc>()
-                            .add(AccountsGet(search: controller.text));
-                      }
+                      Log.w("Nima gap");
+                      bloc.add(AccountsGet(
+                        search: controller.text,
+                        onSucces: () {
+                          context.read<AccountsBloc>().add(GetCupon(
+                              user: bloc
+                                  .state.selectAccount.selectAccount.username));
+                          context.read<MyNavigatorBloc>().add(NavId(1));
+                          vm.selectAccount(
+                              bloc.state.selectAccount.selectAccount);
+                        },
+                        onError: () {
+                          context.read<ShowPopUpBloc>().add(ShowPopUp(
+                              message: "User Topilmadi",
+                              status: PopStatus.error));
+                        },
+                      ));
                     },
                     isLoading: state.statusAccounts.isInProgress,
                     text: LocaleKeys.adduser_search.tr(),
@@ -58,34 +72,9 @@ class SearchAccount extends StatelessWidget {
           child: Container(
             height: 40,
             constraints: const BoxConstraints(maxWidth: 300),
-            child: ZTextFormField(
-              onChanged: (value) {},
-              fillColor: context.color.whiteBlack,
-              prefixIcon: IconButton(
-                onPressed: () {},
-                icon: AppIcons.search.svg(color: white50),
-              ),
-              controller: vm.controller,
-              suffixIcon: "a",
-              enabled: false,
-              suffix: state.isFocused ||
-                      state.selectAccount.selectAccount.id != 0 &&
-                          context.read<CartBloc>().state.isOrder.isEmpty
-                  ? WScaleAnimation(
-                      onTap: () {
-                        context.read<MyNavigatorBloc>().add(NavId(0));
-                        context
-                            .read<AccountsBloc>()
-                            .add(IsFocused(isFocused: false));
-                        vm.clearAccount(context);
-                      },
-                      child: const Icon(
-                        Icons.close_rounded,
-                        color: white50,
-                      ),
-                    )
-                  : null,
-              hintText: LocaleKeys.adduser_search.tr(),
+            child: Text(
+              vm.controller.text,
+              style: AppTheme.displaySmall.copyWith(color: dark),
             ),
           ),
         );

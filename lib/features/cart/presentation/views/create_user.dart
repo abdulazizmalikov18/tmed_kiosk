@@ -46,7 +46,7 @@ class _CreateUserState extends State<CreateUser> {
   @override
   void initState() {
     context.read<AccountsBloc>().add(GetRegion());
-    context.read<AccountsBloc>().add(AccountsGet());
+    // context.read<AccountsBloc>().add(AccountsGet(onSucces: () {  }, onError: () {  }));
     super.initState();
   }
 

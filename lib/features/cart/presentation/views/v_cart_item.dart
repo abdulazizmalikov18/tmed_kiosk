@@ -1,5 +1,4 @@
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
-import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/cart_view_model.dart';
 import 'package:tmed_kiosk/features/cart/presentation/views/card_list_iteam.dart';
@@ -39,7 +38,6 @@ class _VCartItemState extends State<VCartItem> {
       TaskCreateView(vm: vmC),
       AccountsList(vm: vmA)
     ];
-    context.read<AccountsBloc>().add(AccountsGet());
     super.initState();
   }
 

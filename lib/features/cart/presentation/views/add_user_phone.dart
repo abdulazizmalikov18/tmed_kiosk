@@ -49,7 +49,9 @@ class _AddUserPhoneState extends State<AddUserPhone> {
   @override
   void initState() {
     context.read<AccountsBloc>().add(GetRegion());
-    context.read<AccountsBloc>().add(AccountsGet());
+    context
+        .read<AccountsBloc>()
+        .add(AccountsGet(onSucces: () {}, onError: () {}));
     super.initState();
   }
 
@@ -81,9 +83,8 @@ class _AddUserPhoneState extends State<AddUserPhone> {
                     prefixIconConstraints: const BoxConstraints(maxWidth: 40),
                   ),
                   onChanged: (value) {
-                    context
-                        .read<AccountsBloc>()
-                        .add(AccountsGet(search: value));
+                    context.read<AccountsBloc>().add(AccountsGet(
+                        search: value, onSucces: () {}, onError: () {}));
                   },
                 ),
               ),

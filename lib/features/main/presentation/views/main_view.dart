@@ -116,7 +116,8 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
               if (barcode.startsWith("IUUZBAD")) {
                 final pnfl = barcode.substring(16, 29);
 
-                context.read<AccountsBloc>().add(AccountsGet(search: pnfl));
+                context.read<AccountsBloc>().add(
+                    AccountsGet(search: pnfl, onSucces: () {}, onError: () {}));
                 context.read<AccountsBloc>().add(IsFocused(isFocused: true));
                 context.read<MyNavigatorBloc>().add(NavId(6));
               }
@@ -156,8 +157,8 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                             onTap: (value) {
                               widget.navigationShell.goBranch(
                                 value,
-                                initialLocation:
-                                    value == widget.navigationShell.currentIndex,
+                                initialLocation: value ==
+                                    widget.navigationShell.currentIndex,
                               );
                             },
                             items: [
@@ -177,21 +178,23 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                         BlocBuilder<PriceBloc, PriceState>(
                           builder: (context, state) {
                             return WButton(
-                              margin: const EdgeInsets.only(left: 16, top: 10,bottom: 10),
+                              margin: const EdgeInsets.only(
+                                  left: 16, top: 10, bottom: 10),
                               height: 40,
                               width: 40,
                               borderRadius: 12,
                               onTap: () {
-                                context
-                                    .read<PriceBloc>()
-                                    .add(ModeControllerEvent(themeMode: !state.isMode));
+                                context.read<PriceBloc>().add(
+                                    ModeControllerEvent(
+                                        themeMode: !state.isMode));
                                 AppScope.update(
                                   context,
                                   AppScope(
                                       themeMode:
-                                      AppScope.of(context).themeMode == ThemeMode.light
-                                          ? ThemeMode.dark
-                                          : ThemeMode.light),
+                                          AppScope.of(context).themeMode ==
+                                                  ThemeMode.light
+                                              ? ThemeMode.dark
+                                              : ThemeMode.light),
                                 );
                               },
                               color: context.color.white.withOpacity(.1),

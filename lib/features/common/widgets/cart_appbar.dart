@@ -31,7 +31,10 @@ class CartAppBar extends StatelessWidget {
                     icon: const Icon(Icons.arrow_back_outlined),
                   ),
                   const SizedBox(width: 16),
-                  SearchAccount(vm: vm),
+                  SearchAccount(
+                    vm: vm,
+                    bloc: context.read<AccountsBloc>(),
+                  ),
                   const Spacer(),
                   IconButton(
                     onPressed: () {

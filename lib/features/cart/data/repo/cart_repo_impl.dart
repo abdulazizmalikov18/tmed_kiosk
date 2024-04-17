@@ -26,7 +26,6 @@ import 'package:tmed_kiosk/features/common/entity/orders_entity.dart';
 import 'package:tmed_kiosk/features/common/models/popular_category_filter.dart';
 import 'package:tmed_kiosk/features/common/pagination/models/generic_pagination.dart';
 
-
 class CartRepoImpl extends CartRepo {
   final CartDataSourceImpl dataSource;
   final CartLocalDataSource localDataSource;
@@ -37,7 +36,7 @@ class CartRepoImpl extends CartRepo {
   Future<Either<Failure, GenericPagination<AccountsEntity>>> accountsList(
       AccountsFilter param) async {
     bool isConnection = await isInternetConnected();
-    if (isConnection && param.search == null || param.search!.length % 3 == 0) {
+    if (isConnection) {
       try {
         final result = await dataSource.accountsList(param);
         return Right(result);

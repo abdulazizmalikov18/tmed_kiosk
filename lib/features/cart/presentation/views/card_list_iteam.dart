@@ -1,5 +1,9 @@
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/cupon/cupon_iteam.dart';
+import 'package:tmed_kiosk/features/cart/presentation/widgets/search_accounts.dart';
+import 'package:tmed_kiosk/features/common/controllers/show_pop_up/show_pop_up_bloc.dart';
+import 'package:tmed_kiosk/features/common/repo/log_service.dart';
+import 'package:tmed_kiosk/features/common/widgets/dialog_title.dart';
 import 'package:tmed_kiosk/features/goods/presentation/controllers/bloc/goods_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
@@ -155,15 +159,76 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                     child: WButton(
                                       height: 80,
                                       onTap: () {
-                                        checkUser(
-                                          cartMap: state.cartMap,
-                                          selUsername: stateAccount
-                                              .selectAccount
-                                              .selectAccount
-                                              .username,
-                                          username: state.username,
+                                        final TextEditingController controller =
+                                            TextEditingController();
+                                        showDialog(
                                           context: context,
+                                          builder: (ctx) => AlertDialog(
+                                            backgroundColor:
+                                                context.color.backGroundColor,
+                                            title: const DialogTitle(
+                                              title:
+                                                  "PINFL yoki telefon raqamni tering",
+                                            ),
+                                            content: SearchUserPNFL(
+                                                controller: controller),
+                                            actions: [
+                                              WButton(
+                                                onTap: () {
+                                                  Log.w("Nima gap");
+                                                  context
+                                                      .read<AccountsBloc>()
+                                                      .add(AccountsGet(
+                                                        search: controller.text,
+                                                        onSucces: () {
+                                                          context
+                                                              .read<
+                                                                  AccountsBloc>()
+                                                              .add(GetCupon(
+                                                                  user: stateAccount
+                                                                      .selectAccount
+                                                                      .selectAccount
+                                                                      .username));
+                                                          context
+                                                              .read<
+                                                                  MyNavigatorBloc>()
+                                                              .add(NavId(1));
+                                                          widget.vmA.selectAccount(
+                                                              stateAccount
+                                                                  .selectAccount
+                                                                  .selectAccount);
+                                                        },
+                                                        onError: () {
+                                                          context
+                                                              .read<
+                                                                  ShowPopUpBloc>()
+                                                              .add(ShowPopUp(
+                                                                  message:
+                                                                      "User Topilmadi",
+                                                                  status: PopStatus
+                                                                      .error));
+                                                        },
+                                                      ));
+                                                },
+                                                isLoading: stateAccount
+                                                    .statusAccounts
+                                                    .isInProgress,
+                                                text: LocaleKeys.adduser_search
+                                                    .tr(),
+                                              )
+                                            ],
+                                          ),
                                         );
+
+                                        // checkUser(
+                                        //   cartMap: state.cartMap,
+                                        //   selUsername: stateAccount
+                                        //       .selectAccount
+                                        //       .selectAccount
+                                        //       .username,
+                                        //   username: state.username,
+                                        //   context: context,
+                                        // );
                                       },
                                       text:
                                           LocaleKeys.check_payment_button.tr(),

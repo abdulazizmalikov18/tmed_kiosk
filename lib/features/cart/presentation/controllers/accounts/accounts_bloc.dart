@@ -29,6 +29,7 @@ import 'package:tmed_kiosk/features/cart/domain/usecase/recommendation_usecase.d
 import 'package:tmed_kiosk/features/cart/domain/usecase/region_usecase.dart';
 import 'package:tmed_kiosk/features/cart/domain/usecase/sel_cupon_usecase.dart';
 import 'package:tmed_kiosk/features/common/models/popular_category_filter.dart';
+import 'package:tmed_kiosk/features/common/repo/log_service.dart';
 
 part 'accounts_event.dart';
 part 'accounts_state.dart';
@@ -164,7 +165,6 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     on<DelSelectionAcccount>(
       (event, emit) {
         emit(state.copyWith(selectAccount: const SelectionAccountEntity()));
-        add(AccountsGet());
       },
     );
 
@@ -193,7 +193,6 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
           onSucces: event.onSucces,
           onError: () {},
         ));
-        add(AccountsGet());
       } else {
         event.onError();
         emit(state.copyWith(status: FormzSubmissionStatus.failure));
@@ -291,19 +290,27 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     });
 
     on<AccountsGet>((event, emit) async {
+      Log.w("Biz Keldik");
       AccountsFilter filter = AccountsFilter(search: event.search);
       emit(state.copyWith(statusAccounts: FormzSubmissionStatus.inProgress));
       final result = await accounts.call(filter);
       if (result.isRight) {
-        emit(state.copyWith(
-          accounts: result.right.results,
-          count: result.right.count,
-          statusAccounts: FormzSubmissionStatus.success,
-        ));
+        if (result.right.results.isNotEmpty) {
+          add(SelectionAccount(account: result.right.results.first));
+          emit(state.copyWith(
+            accounts: result.right.results,
+            count: result.right.count,
+            statusAccounts: FormzSubmissionStatus.success,
+          ));
+          event.onSucces();
+        } else {
+          event.onError();
+        }
       } else {
         emit(state.copyWith(statusAccounts: FormzSubmissionStatus.failure));
       }
     });
+
     on<GetMoreAccounts>((event, emit) async {
       AccountsFilter filter = AccountsFilter(
         offset: state.accounts.length,

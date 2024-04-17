@@ -4,8 +4,14 @@ sealed class AccountsEvent {}
 
 class AccountsGet extends AccountsEvent {
   final String? search;
+  final VoidCallback onSucces;
+  final VoidCallback onError;
 
-  AccountsGet({this.search});
+  AccountsGet({
+    this.search,
+    required this.onSucces,
+    required this.onError,
+  });
 }
 
 class AccountsUsernameEvent extends AccountsEvent {
