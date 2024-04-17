@@ -127,8 +127,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         add(CartRemove());
         add(RemoveCupon());
       } else {
-        event.onError((result.left as ServerFailure).errorMessage);
         emit(state.copyWith(status: FormzSubmissionStatus.failure));
+        if (result.left is ServerFailure) {
+          event.onError((result.left as ServerFailure).errorMessage);
+        } else {
+          event.onError((result.left as DioFailure).hashCode.toString());
+        }
       }
     });
 
