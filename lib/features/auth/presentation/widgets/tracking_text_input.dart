@@ -7,7 +7,6 @@ import 'package:tmed_kiosk/features/auth/presentation/widgets/input_helper.dart'
 import 'package:tmed_kiosk/features/common/widgets/stroke_paint.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 typedef CaretMoved = void Function(Offset? globalCaretPosition);
 typedef TextChanged = void Function(String text);
@@ -62,9 +61,9 @@ class _TrackingTextInputState extends State<TrackingTextInput>
         if (_fieldKey.currentContext != null) {
           // Find the render editable in the field.
           final RenderObject? fieldBox =
-          _fieldKey.currentContext?.findRenderObject();
+              _fieldKey.currentContext?.findRenderObject();
           var caretPosition =
-          fieldBox is RenderBox ? getCaretPosition(fieldBox) : null;
+              fieldBox is RenderBox ? getCaretPosition(fieldBox) : null;
 
           widget.onCaretMoved?.call(caretPosition);
         }
@@ -82,11 +81,11 @@ class _TrackingTextInputState extends State<TrackingTextInput>
   Widget build(BuildContext context) {
     return TextFormField(
       style: Theme.of(context).textTheme.displayLarge!.copyWith(
-        fontSize: widget.isPhone ? 16 : 20,
-        fontWeight: FontWeight.w400,
-        color: context.color.white,
-        letterSpacing: -0.48,
-      ),
+            fontSize: widget.isPhone ? 16 : 20,
+            fontWeight: FontWeight.w400,
+            color: context.color.white,
+            letterSpacing: -0.48,
+          ),
       inputFormatters: widget.inputFormatters,
       textInputAction: widget.textInputAction ?? TextInputAction.none,
       onEditingComplete: widget.onEditingComplete,
@@ -123,43 +122,43 @@ class _TrackingTextInputState extends State<TrackingTextInput>
         suffixIcon: !widget.isObscured
             ? const SizedBox()
             : Padding(
-          padding: const EdgeInsets.only(right: 24),
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                isObscure = !isObscure;
-              });
-              if (isObscure) {
-                animationController.forward();
-              } else {
-                animationController.reverse();
-              }
-            },
-            behavior: HitTestBehavior.opaque,
-            child: Container(
-              alignment: Alignment.center,
-              child: Center(
-                child: AnimatedBuilder(
-                  animation: animationController,
-                  child: SvgPicture.asset(AppIcons.eye,color: greyText,),
-                  builder: (context, child) => SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: CustomPaint(
-                      foregroundPainter:
-                      StrokePaint(animationController.value),
-                      child: child,
+                padding: const EdgeInsets.only(right: 24),
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isObscure = !isObscure;
+                    });
+                    if (isObscure) {
+                      animationController.forward();
+                    } else {
+                      animationController.reverse();
+                    }
+                  },
+                  behavior: HitTestBehavior.opaque,
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: AnimatedBuilder(
+                        animation: animationController,
+                        child: AppIcons.eye.svg(color: greyText),
+                        builder: (context, child) => SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CustomPaint(
+                            foregroundPainter:
+                                StrokePaint(animationController.value),
+                            child: child,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ),
-        ),
         fillColor: context.color.contColor,
         filled: true,
         counterStyle:
-        Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 12),
+            Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 12),
       ),
       key: _fieldKey,
       controller: widget.controller,

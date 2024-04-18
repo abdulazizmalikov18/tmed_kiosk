@@ -1,5 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
 import 'package:tmed_kiosk/assets/themes/theme.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
@@ -64,7 +62,8 @@ class DropDownFlag extends StatelessWidget {
                   const SizedBox(width: 8),
                   Text(
                     selectedItem.value!.name,
-                    style: AppTheme.displayLarge.copyWith(color: context.color.white),
+                    style: AppTheme.displayLarge
+                        .copyWith(color: context.color.white),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   )
@@ -97,7 +96,6 @@ class DropDownFlag extends StatelessWidget {
               items: items.map((item) {
                 return DropdownMenuItem<FlagEntity>(
                   value: item,
-
                   enabled: false,
                   child: StatefulBuilder(
                     builder: (context, menuSetState) {
@@ -113,7 +111,8 @@ class DropDownFlag extends StatelessWidget {
                         },
                         child: Container(
                           height: 32,
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
                           alignment: Alignment.center,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
