@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
 import 'package:tmed_kiosk/assets/themes/theme.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/auth/domain/entity/flag_entity.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
@@ -39,7 +40,7 @@ class DropDownFlag extends StatelessWidget {
       height: height ?? 40,
       width: width ?? MediaQuery.of(context).size.width - 32,
       decoration: BoxDecoration(
-        color: color ?? contGrey,
+        color: color ?? context.color.white.withOpacity(.1),
         borderRadius: BorderRadius.circular(radius ?? 8),
       ),
       child: ValueListenableBuilder(
@@ -63,7 +64,7 @@ class DropDownFlag extends StatelessWidget {
                   const SizedBox(width: 8),
                   Text(
                     selectedItem.value!.name,
-                    style: AppTheme.displayLarge.copyWith(color: white),
+                    style: AppTheme.displayLarge.copyWith(color: context.color.white),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   )
@@ -74,7 +75,7 @@ class DropDownFlag extends StatelessWidget {
                 width: width ?? MediaQuery.of(context).size.width - 32,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: contGrey,
+                  color: context.color.white.withOpacity(.1),
                 ),
                 elevation: 0,
                 offset: offset ?? const Offset(-17, -16),
@@ -88,7 +89,7 @@ class DropDownFlag extends StatelessWidget {
                   child: AppIcons.arrowDownB.svg(
                     height: 16,
                     width: 16,
-                    color: white,
+                    color: context.color.white,
                   ),
                 ),
               ),
@@ -96,24 +97,27 @@ class DropDownFlag extends StatelessWidget {
               items: items.map((item) {
                 return DropdownMenuItem<FlagEntity>(
                   value: item,
+
                   enabled: false,
                   child: StatefulBuilder(
                     builder: (context, menuSetState) {
                       return InkWell(
                         onTap: () {
                           selectedItem.value = item;
-                          context.setLocale(Locale(
-                              selectedItem.value!.name == "Uzbek"
-                                  ? 'uz'
-                                  : 'ru'));
+                          // context.setLocale(Locale(
+                          //     selectedItem.value!.name == "Uzbek"
+                          //         ? 'uz'
+                          //         : 'ru'));
                           Navigator.pop(context);
                           filterFunction();
                         },
                         child: Container(
-                          height: 30,
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          height: 32,
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           alignment: Alignment.center,
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               SizedBox(
                                 height: 26,
@@ -124,7 +128,7 @@ class DropDownFlag extends StatelessWidget {
                               Text(
                                 item.name,
                                 style: AppTheme.displayLarge
-                                    .copyWith(color: white),
+                                    .copyWith(color: context.color.white),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),

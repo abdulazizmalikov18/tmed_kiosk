@@ -28,6 +28,7 @@ import 'package:tmed_kiosk/features/main/presentation/controllers/bloc/navigator
 import 'package:tmed_kiosk/features/goods/presentation/widgets/w_goods_iteam.dart';
 import 'package:tmed_kiosk/features/main/presentation/controllers/tts_controller_mixin.dart';
 import 'package:tmed_kiosk/features/main/presentation/widgets/no_data_cart.dart';
+import 'package:tmed_kiosk/generated/locale_keys.g.dart';
 // import 'package:flutter_barcode_listener/flutter_barcode_listener.dart';
 
 class GoodsView extends StatefulWidget {
@@ -206,6 +207,7 @@ class _GoodsViewState extends State<GoodsView> {
               BlocSelector<CartBloc, CartState, Map<int, OrgProductEntity>>(
             selector: (state) => state.cartMap,
             builder: (context, cartMap) {
+
               if (cartMap.isNotEmpty) {
                 if (cartMap.length == 1) {
                   controllerMixin.speak(
@@ -217,7 +219,7 @@ class _GoodsViewState extends State<GoodsView> {
                   onTap: () {
                     context.push(RoutsContact.cart);
                   },
-                  text: "Xizmatlar soni / ${cartMap.length} ta",
+                  text: "${LocaleKeys.checkout.tr()} / ${cartMap.length} ta",
                   textStyle: const TextStyle(fontSize: 32),
                 );
               }

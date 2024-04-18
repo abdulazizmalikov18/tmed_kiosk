@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/themes/theme.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/my_function.dart';
 import 'package:tmed_kiosk/features/auth/presentation/widgets/time_widget.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class AuthInfoCont extends StatelessWidget {
     return Container(
       height: double.infinity,
       width: size.width * 0.45,
-      color: contColor,
+      color: context.color.contColor,
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -37,7 +38,7 @@ class AuthInfoCont extends StatelessWidget {
                       SizedBox(
                         height: 64,
                         width: 146,
-                        child: Image.asset($appType.logoImage),
+                        child: Image.asset($appType.logoImage,color: context.color.white,),
                       ),
                       Container(
                         width: 1,
@@ -62,13 +63,13 @@ class AuthInfoCont extends StatelessWidget {
                   Text(
                     LocaleKeys.welcomeBusinessProfile.tr(),
                     style: AppTheme.bodyMedium
-                        .copyWith(color: white, fontSize: 32),
+                        .copyWith(color: context.color.white, fontSize: 32),
                   ),
                   const SizedBox(height: 12),
                   Text(
                     LocaleKeys.toStarted.tr(),
                     style: AppTheme.labelSmall
-                        .copyWith(color: white, fontSize: 16),
+                        .copyWith(color: context.color.white, fontSize: 16),
                   ),
                 ],
               ),
@@ -81,6 +82,13 @@ class AuthInfoCont extends StatelessWidget {
                 'assets/anim/auth_anima.json',
                 fit: BoxFit.cover,
               ),
+              // child: FlareActor(
+              //   "assets/anim/Teddy.flr",
+              //   shouldClip: false,
+              //   alignment: Alignment.bottomCenter,
+              //   fit: BoxFit.contain,
+              //   controller: bearLoginController,
+              // ),
             ),
           ],
         ),

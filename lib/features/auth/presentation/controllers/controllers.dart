@@ -8,16 +8,18 @@ mixin AuthMainMixin on State<AuthMainView> {
   bool isCheckEmail = false;
   bool isCheckPas = false;
   final List<FlagEntity> lengu = [
-    FlagEntity(icon: AppImages.ruFlag, name: "Русский", type: 'ru'),
-    FlagEntity(icon: AppImages.uzFlag, name: "Uzbek", type: 'uz'),
-    // FlagEntity(icon: AppImages.uzFlag, name: "Engilish"),
+    FlagEntity(icon: AppImages.ruFlag, name:  LocaleKeys.language_ru.tr(), type: 'ru'),
+    FlagEntity(icon: AppImages.uzFlag, name:  LocaleKeys.language_uz.tr() ,type: 'uz'),
+    FlagEntity(icon: AppImages.engFlag, name:  LocaleKeys.language_en.tr(), type: 'en'),
   ];
   late ValueNotifier<FlagEntity> selectedItem;
   getLenguage() async {
     final lenguage =
-        StorageRepository.getString(StorageKeys.LANGUAGE, defValue: "ru");
+    StorageRepository.getString(StorageKeys.LANGUAGE, defValue: "ru");
     if (lenguage == "uz") {
       selectedItem = ValueNotifier<FlagEntity>(lengu[1]);
+    } else  if (lenguage == "en") {
+      selectedItem = ValueNotifier<FlagEntity>(lengu[2]);
     } else {
       selectedItem = ValueNotifier<FlagEntity>(lengu[0]);
     }
