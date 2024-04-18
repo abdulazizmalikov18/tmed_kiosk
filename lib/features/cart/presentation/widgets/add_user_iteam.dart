@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/formatters.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/cupon_entity.dart';

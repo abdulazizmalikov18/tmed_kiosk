@@ -11,9 +11,11 @@ import 'package:tmed_kiosk/features/goods/presentation/controllers/bloc/goods_bl
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tmed_kiosk/features/main/presentation/controllers/tts_controller_mixin.dart';
 
 mixin CartMixin on State<CardListIteam> {
   late final vm = widget.vm;
+  TTSControllerMixin controllerMixin = TTSControllerMixin();
 
   void onBarcode(String barcode) {
     context.read<GoodsBloc>().add(PrBarCode(
@@ -44,6 +46,7 @@ mixin CartMixin on State<CardListIteam> {
       }
     }
     if (!isProduct) {
+      controllerMixin.speak("Отсканируйте QR код с вашего приложения");
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(

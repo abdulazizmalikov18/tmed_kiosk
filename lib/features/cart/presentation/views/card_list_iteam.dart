@@ -34,6 +34,11 @@ class CardListIteam extends StatefulWidget {
 
 class _CardListIteamState extends State<CardListIteam> with CartMixin {
   @override
+  void initState() {
+    super.initState();
+    controllerMixin.initTts();
+  }
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<PriceBloc, PriceState>(
       builder: (context, statePrice) {
@@ -155,6 +160,7 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                     child: WButton(
                                       height: 80,
                                       onTap: () {
+                                        controllerMixin.speak("Пожалуйста подведите к нижней камере  QR вашего ID паспорта либо зарегистируйтесь по ПИНФЛ либо  по номеру телефона.");
                                         checkUser(
                                           cartMap: state.cartMap,
                                           selUsername: stateAccount

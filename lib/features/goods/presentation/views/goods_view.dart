@@ -26,6 +26,7 @@ import 'package:tmed_kiosk/features/goods/presentation/widgets/bottom_category_l
 import 'package:tmed_kiosk/features/goods/presentation/widgets/goods_shimmer_iteam.dart';
 import 'package:tmed_kiosk/features/main/presentation/controllers/bloc/navigator_bloc.dart';
 import 'package:tmed_kiosk/features/goods/presentation/widgets/w_goods_iteam.dart';
+import 'package:tmed_kiosk/features/main/presentation/controllers/tts_controller_mixin.dart';
 import 'package:tmed_kiosk/features/main/presentation/widgets/no_data_cart.dart';
 // import 'package:flutter_barcode_listener/flutter_barcode_listener.dart';
 
@@ -37,9 +38,16 @@ class GoodsView extends StatefulWidget {
 }
 
 class _GoodsViewState extends State<GoodsView> {
+  TTSControllerMixin controllerMixin = TTSControllerMixin();
   final vm = GoodsViewModel();
   int index = 0;
   TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    controllerMixin.initTts();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -199,6 +207,10 @@ class _GoodsViewState extends State<GoodsView> {
             selector: (state) => state.cartMap,
             builder: (context, cartMap) {
               if (cartMap.isNotEmpty) {
+                if (cartMap.length == 1) {
+                  controllerMixin.speak(
+                      "Чтобы продолжить покупку пожалуйста нажмите в нижнем меню кнопку оформить");
+                }
                 return WButton(
                   height: 80,
                   margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),

@@ -23,6 +23,7 @@ import 'package:tmed_kiosk/features/common/widgets/w_scale_animation.dart';
 import 'package:tmed_kiosk/features/main/presentation/controllers/bloc/navigator_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tmed_kiosk/features/main/presentation/controllers/tts_controller_mixin.dart';
 import 'package:tmed_kiosk/features/specialists/presentation/controllers/bloc/specialists_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -37,6 +38,7 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> with WidgetsBindingObserver {
+  TTSControllerMixin controllerMixin = TTSControllerMixin();
   late MainViewModal viewModal;
   late bool visible;
   Timer? _timer;
@@ -68,14 +70,15 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
     context.read<CartBloc>().add(GetProcessStatus());
     context.read<AccountsBloc>().add(GetCupon());
     super.initState();
+    controllerMixin.initTts();
     _startTimer();
     WidgetsBinding.instance.addObserver(this);
   }
 
   void _startTimer() {
     // Start a timer to navigate to the home page after 15 seconds of inactivity
-    _timer = Timer(const Duration(seconds: 30), () {
-      // context.go(RoutsContact.infoView);
+    _timer = Timer(const Duration(seconds: 60), () {
+      context.go(RoutsContact.infoView);
     });
   }
 

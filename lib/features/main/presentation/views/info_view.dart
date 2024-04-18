@@ -10,12 +10,25 @@ import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/common/controllers/auth/authentication_bloc.dart';
 import 'package:tmed_kiosk/features/common/navigation/routs_contact.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_button.dart';
+import 'package:tmed_kiosk/features/main/presentation/controllers/tts_controller_mixin.dart';
 import 'package:tmed_kiosk/generated/locale_keys.g.dart';
 import 'package:tmed_kiosk/main.dart';
 
-class InfoView extends StatelessWidget {
+class InfoView extends StatefulWidget {
   const InfoView({super.key});
 
+  @override
+  State<InfoView> createState() => _InfoViewState();
+}
+
+class _InfoViewState extends State<InfoView> {
+  TTSControllerMixin controllerMixin = TTSControllerMixin();
+  @override
+  void initState() {
+    super.initState();
+    controllerMixin.initTts();
+    controllerMixin.speak('Приветствуем в Т-Мэд. Выберите услугу и запишитесь на приём.');
+  }
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
