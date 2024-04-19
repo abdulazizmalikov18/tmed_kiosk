@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/formatters.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/cupon_entity.dart';
@@ -214,7 +215,7 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                           textStyle: const TextStyle(fontSize: 32),
                           height: 100,
                           onTap: () {
-                            context.read<MyNavigatorBloc>().add(NavId(0));
+                            context.pop();
                             widget.vm.clearAccount(context);
                           },
                           color: red,
@@ -230,28 +231,11 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                             textStyle: const TextStyle(fontSize: 32),
                             height: 100,
                             onTap: () {
-                              context.read<MyNavigatorBloc>().add(NavId(0));
-                            },
-                            color: green,
-                            text: LocaleKeys.adduser_move_to_order.tr(),
-                          ),
-                        ),
-                        if (state.selectAccount.selectAccount.status != 2)
-                          const SizedBox(width: 16),
-                      ],
-                      if (state.selectAccount.selectAccount.status != 2)
-                        Expanded(
-                          child: WButton(
-                            height: 100,
-                            textStyle: const TextStyle(fontSize: 32),
-                            isLoading: state.status.isInProgress,
-                            isDisabled: !isChanged,
-                            onTap: () {
                               if (widget.vm.isCreat) {
                                 if (_dateFormKey.currentState!.validate()) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Processing Data'),
+                                    SnackBar(
+                                      content: Text('Processing Data',style: TextStyle(color: context.color.white),),
                                     ),
                                   );
                                 }
@@ -260,10 +244,27 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                                   createUser();
                                 }
                               }
+                              context.pop();
                             },
-                            text: LocaleKeys.adduser_save.tr(),
+                            color: green,
+                            text: LocaleKeys.adduser_move_to_order.tr(),
                           ),
                         ),
+                        if (state.selectAccount.selectAccount.status != 2)
+                          const SizedBox(width: 16),
+                      ],
+                      // if (state.selectAccount.selectAccount.status != 2)
+                      //   Expanded(
+                      //     child: WButton(
+                      //       height: 100,
+                      //       textStyle: const TextStyle(fontSize: 32),
+                      //       isLoading: state.status.isInProgress,
+                      //       isDisabled: !isChanged,
+                      //       onTap: () {
+                      //       },
+                      //       text: LocaleKeys.adduser_save.tr(),
+                      //     ),
+                      //   ),
                     ],
                   ),
                   const SizedBox(height: 48),

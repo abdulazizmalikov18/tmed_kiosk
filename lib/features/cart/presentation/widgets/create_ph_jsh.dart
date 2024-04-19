@@ -76,6 +76,7 @@ class _CreatePhJshState extends State<CreatePhJsh> {
                       child: WTextField(
                         height: 48,
                         fillColor: context.color.borderColor,
+                        autoFocus: true,
                         maxLength: first == '+' ? 13 : 14,
                         keyboardType: TextInputType.phone,
                         controller: widget.vm.phone,

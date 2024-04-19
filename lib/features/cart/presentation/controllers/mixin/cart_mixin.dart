@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/views/card_list_iteam.dart';
@@ -50,6 +51,7 @@ mixin CartMixin on State<CardListIteam> {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
+          backgroundColor: context.color.backGroundColor,
           insetPadding: const EdgeInsets.all(24),
           titlePadding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
           contentPadding: const EdgeInsets.symmetric(horizontal: 20),

@@ -36,7 +36,7 @@ class _VCartItemState extends State<VCartItem> {
                     builder: (context, state) {
                       return Text(
                         "${state.selectAccount.name} ${state.selectAccount.lastname}",
-                        style: AppTheme.displaySmall.copyWith(color: dark),
+                        style: AppTheme.displaySmall.copyWith(color: context.color.white),
                       );
                     },
                     selector: (state) => state.selectAccount,
