@@ -11,6 +11,7 @@ part 'org_product_model.g.dart';
 class OrgProductModel extends OrgProductEntity {
   const OrgProductModel({
     super.id,
+    super.image360,
     super.product,
     super.status,
     super.barCode,

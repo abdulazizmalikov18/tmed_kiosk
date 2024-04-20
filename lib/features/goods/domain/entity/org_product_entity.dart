@@ -8,6 +8,7 @@ import 'package:tmed_kiosk/features/goods/domain/entity/product_feature_entity.d
 
 class OrgProductEntity extends Equatable {
   final int id;
+  final String image360;
   @ProductConverter()
   final ProductEntity product;
   final int status;
@@ -29,6 +30,7 @@ class OrgProductEntity extends Equatable {
 
   const OrgProductEntity({
     this.id = 0,
+    this.image360 = "",
     this.product = const ProductEntity(),
     this.status = 0,
     this.barCode = '',
@@ -48,6 +50,7 @@ class OrgProductEntity extends Equatable {
   @override
   List<Object?> get props => [
         id,
+        image360,
         product,
         status,
         barCode,
