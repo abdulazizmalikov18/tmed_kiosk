@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tmed_kiosk/assets/constants/storage_keys.dart';
+import 'package:tmed_kiosk/core/singletons/service_locator.dart';
+import 'package:tmed_kiosk/features/common/repo/auth.dart';
 import 'package:tmed_kiosk/features/common/repo/storage_repository.dart';
 import 'package:tmed_kiosk/main.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:teledart/teledart.dart';
+// import 'package:teledart/teledart.dart';
 
 class DioSettings {
   BaseOptions _dioBaseOptions = BaseOptions(
@@ -55,36 +57,33 @@ class DioSettings {
 
 class ErrorHandlerInterceptor implements Interceptor {
   ErrorHandlerInterceptor._();
+
   static final _instance = ErrorHandlerInterceptor._();
+
   factory ErrorHandlerInterceptor() => _instance;
-  static String appName = "#TMED_KASSA";
+  static String appName = "#TMED_TASK";
 
-  static TeleDart? telegram;
-
-  // static Future<void> initTele() async {
-  //   var botToken = '7175999350:AAHnib0ioHi37o9iEpq2CUlr4oe2pcCCQ6k';
-  //   telegram =
-  //       TeleDart(botToken, Event((await Telegram(botToken).getMe()).username!));
-  // }
-
-//   static void sendMessage(Response response) async {
+  static void sendMessage(Response response) async {
 //     if ((response.statusCode ?? 0) >= 400) {
 //       String a = """
 // App =>  $appName,
+// Version =>  $appVersion,
+// UserName =>  ${StorageRepository.getString(StorageKeys.USERNAME)},
+// Device =>  ${Platform.localeName},
 // Status Code => ${response.statusCode}
 // Url => !! ${response.realUri.toString()} !!
 // Header => ## ${response.headers} ##
 // """;
-//       if ("${response.data}".length < 100) {
-//         a += "\nbody => ${response.data}";
+//       if ("body => @@ ${response.data} @@".length < 100) {
+//         a += "\nbody => @@ ${response.data} @@";
 //       }
-//       telegram!.sendMessage('@t_med_log', a);
+//       // TelegramSender.sendMessage(TelegramChannel.logChannel, a);
 //     }
-//   }
+  }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-//     telegram?.sendMessage('@t_med_log', """
+//     TelegramSender.sendMessage(TelegramChannel.logChannel, """
 // #error
 // Error ##################
 // App => $appName
@@ -104,7 +103,25 @@ class ErrorHandlerInterceptor implements Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) async {
-    // sendMessage(response);
+    if (response.statusCode == 401) {
+      final result = await AuthRepository().refreshToken();
+
+      if (result.isRight) {
+        await StorageRepository.putString(
+            StorageKeys.TOKEN, result.right.access);
+        await StorageRepository.putString(
+            StorageKeys.REFRESH, result.right.refresh);
+        return handler.resolve(await serviceLocator<DioSettings>()
+            .dio
+            .fetch(response.requestOptions
+              ..headers = {
+                "Authorization": "Bearer ${result.right.access}",
+              }));
+      } else {
+        return handler.next(response);
+      }
+    }
+    sendMessage(response);
     handler.next(response);
   }
 }
