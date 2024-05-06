@@ -207,7 +207,6 @@ class _GoodsViewState extends State<GoodsView> {
               BlocSelector<CartBloc, CartState, Map<int, OrgProductEntity>>(
             selector: (state) => state.cartMap,
             builder: (context, cartMap) {
-
               if (cartMap.isNotEmpty) {
                 if (cartMap.length == 1) {
                   controllerMixin.speak(

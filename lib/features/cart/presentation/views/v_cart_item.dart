@@ -1,4 +1,3 @@
-import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/themes/theme.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/user_set/selection_account.dart';
@@ -11,7 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class VCartItem extends StatefulWidget {
-  const VCartItem({super.key});
+  const VCartItem({super.key, required this.isAccount});
+  final bool isAccount;
 
   @override
   State<VCartItem> createState() => _VCartItemState();
@@ -36,14 +36,19 @@ class _VCartItemState extends State<VCartItem> {
                     builder: (context, state) {
                       return Text(
                         "${state.selectAccount.name} ${state.selectAccount.lastname}",
-                        style: AppTheme.displaySmall.copyWith(color: context.color.white),
+                        style: AppTheme.displaySmall
+                            .copyWith(color: context.color.white),
                       );
                     },
                     selector: (state) => state.selectAccount,
                   ),
                 )
               : null,
-          body: CardListIteam(vm: vmC, vmA: vmA),
+          body: CardListIteam(
+            vm: vmC,
+            vmA: vmA,
+            isAccount: widget.isAccount,
+          ),
         );
       },
     );

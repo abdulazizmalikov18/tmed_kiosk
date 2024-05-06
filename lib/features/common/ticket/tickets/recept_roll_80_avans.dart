@@ -95,7 +95,7 @@ class ReceiptRoll80Avans extends BaseReceiptWidget {
                           ),
                         ),
                         pw.Text(
-                          "Number ${data.number}",
+                          "Raqamingiz ${data.number}",
                           style: pw.TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,

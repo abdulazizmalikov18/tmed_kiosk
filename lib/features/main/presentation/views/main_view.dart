@@ -8,10 +8,13 @@ import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/category/presentation/controllers/bloc/category_bloc.dart';
 import 'package:tmed_kiosk/features/common/controllers/price_bloc/price_bloc.dart';
+import 'package:tmed_kiosk/features/common/controllers/show_pop_up/show_pop_up_bloc.dart';
 import 'package:tmed_kiosk/features/common/navigation/routs_contact.dart';
 import 'package:tmed_kiosk/features/common/repo/log_service.dart';
 import 'package:tmed_kiosk/features/common/user_type/user_type.dart';
+import 'package:tmed_kiosk/features/common/widgets/dialog_title.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_button.dart';
+import 'package:tmed_kiosk/features/common/widgets/w_textfield.dart';
 import 'package:tmed_kiosk/features/goods/presentation/controllers/bloc/goods_bloc.dart';
 import 'package:tmed_kiosk/features/main/presentation/controllers/main_view_modal.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
@@ -78,7 +81,9 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
   void _startTimer() {
     // Start a timer to navigate to the home page after 15 seconds of inactivity
     _timer = Timer(const Duration(seconds: 60), () {
-      context.go(RoutsContact.infoView);
+      if (context.read<CartBloc>().state.cartMap.isEmpty) {
+        context.go(RoutsContact.infoView);
+      }
     });
   }
 
@@ -118,7 +123,47 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
 
               if (barcode.startsWith("IUUZBAD")) {
                 final pnfl = barcode.substring(16, 29);
-
+                TextEditingController controller =
+                    TextEditingController(text: pnfl);
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const DialogTitle(title: "Shu sizning pnfelingizmi"),
+                    content: Column(
+                      children: [
+                        WTextField(
+                          controller: controller,
+                          onChanged: (value) {},
+                        ),
+                        WButton(
+                          onTap: () {
+                            context.read<AccountsBloc>().add(AccountsGet(
+                                  search: controller.text,
+                                  onSucces: () {
+                                    context.read<AccountsBloc>().add(GetCupon(
+                                        user: context
+                                            .read<AccountsBloc>()
+                                            .state
+                                            .selectAccount
+                                            .selectAccount
+                                            .username));
+                                    context.push(
+                                      RoutsContact.cart,
+                                      extra: true,
+                                    );
+                                  },
+                                  onError: () {
+                                    context.read<ShowPopUpBloc>().add(ShowPopUp(
+                                        message: "User Topilmadi",
+                                        status: PopStatus.error));
+                                  },
+                                ));
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                );
                 context.read<AccountsBloc>().add(
                     AccountsGet(search: pnfl, onSucces: () {}, onError: () {}));
                 context.read<AccountsBloc>().add(IsFocused(isFocused: true));
@@ -264,7 +309,7 @@ class CartViewKiosk extends StatelessWidget {
             color: contColor,
           ),
           child: openCart
-              ? const VCartItem()
+              ? const VCartItem(isAccount: false)
               : WScaleAnimation(
                   onTap: () {
                     context.read<MyNavigatorBloc>().add(OpenCart(!openCart));

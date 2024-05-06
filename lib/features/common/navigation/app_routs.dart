@@ -71,7 +71,9 @@ sealed class AppRouts {
               ),
               GoRoute(
                 path: RoutsContact.cart,
-                builder: (context, state) => const VCartItem(),
+                builder: (context, state) => VCartItem(
+                  isAccount: (state.extra as bool),
+                ),
               ),
               GoRoute(
                 path: RoutsContact.userAdd,

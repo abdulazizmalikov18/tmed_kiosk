@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/cupon/cupon_iteam.dart';
+import 'package:tmed_kiosk/features/common/navigation/routs_contact.dart';
 import 'package:tmed_kiosk/features/goods/presentation/controllers/bloc/goods_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
@@ -25,9 +26,15 @@ import 'package:tmed_kiosk/features/main/presentation/widgets/no_data_cart.dart'
 import 'package:tmed_kiosk/generated/locale_keys.g.dart';
 
 class CardListIteam extends StatefulWidget {
-  const CardListIteam({super.key, required this.vm, required this.vmA});
+  const CardListIteam({
+    super.key,
+    required this.vm,
+    required this.vmA,
+    required this.isAccount,
+  });
   final CartViewModel vm;
   final AccountsViewModel vmA;
+  final bool isAccount;
 
   @override
   State<CardListIteam> createState() => _CardListIteamState();
@@ -36,9 +43,16 @@ class CardListIteam extends StatefulWidget {
 class _CardListIteamState extends State<CardListIteam> with CartMixin {
   @override
   void initState() {
+    if (widget.isAccount) {
+      widget.vmA.selectAccount(
+          context.read<AccountsBloc>().state.selectAccount.selectAccount);
+      context.push(RoutsContact.userInfo, extra: widget.vm);
+    }
+
     super.initState();
     controllerMixin.initTts();
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PriceBloc, PriceState>(
@@ -149,6 +163,7 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                         context
                                             .read<CartBloc>()
                                             .add(CartRemove());
+                                        context.pop();
                                       },
                                       text: LocaleKeys.cart_order_cancel_button
                                           .tr(),
@@ -161,7 +176,8 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                     child: WButton(
                                       height: 80,
                                       onTap: () {
-                                        controllerMixin.speak("Пожалуйста подведите к нижней камере  QR вашего ID паспорта либо зарегистируйтесь по ПИНФЛ либо  по номеру телефона.");
+                                        controllerMixin.speak(
+                                            "Пожалуйста подведите к нижней камере  QR вашего ID паспорта либо зарегистируйтесь по ПИНФЛ либо  по номеру телефона.");
                                         checkUser(
                                           cartMap: state.cartMap,
                                           selUsername: stateAccount
