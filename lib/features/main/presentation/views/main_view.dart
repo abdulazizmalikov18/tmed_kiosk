@@ -207,6 +207,7 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                       children: [
                         WTextField(
                           controller: controller,
+                          fillColor: context.color.contColor,
                           onChanged: (value) {},
                         ),
                         const SizedBox(height: 16),
