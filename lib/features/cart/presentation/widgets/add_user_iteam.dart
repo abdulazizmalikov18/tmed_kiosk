@@ -253,18 +253,32 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                         if (state.selectAccount.selectAccount.status != 2)
                           const SizedBox(width: 16),
                       ],
-                      // if (state.selectAccount.selectAccount.status != 2)
-                      //   Expanded(
-                      //     child: WButton(
-                      //       height: 100,
-                      //       textStyle: const TextStyle(fontSize: 32),
-                      //       isLoading: state.status.isInProgress,
-                      //       isDisabled: !isChanged,
-                      //       onTap: () {
-                      //       },
-                      //       text: LocaleKeys.adduser_save.tr(),
-                      //     ),
-                      //   ),
+                      if (state.selectAccount.selectAccount.status != 2)
+                        Expanded(
+                          child: WButton(
+                            height: 100,
+                            textStyle: const TextStyle(fontSize: 32),
+                            isLoading: state.status.isInProgress,
+                            isDisabled: !isChanged,
+                            onTap: () {
+                              if (widget.vm.isCreat) {
+                                if (_dateFormKey.currentState!.validate()) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          LocaleKeys.processing_data.tr()),
+                                    ),
+                                  );
+                                }
+                              } else {
+                                if (_dateFormKey.currentState!.validate()) {
+                                  createUser();
+                                }
+                              }
+                            },
+                            text: LocaleKeys.adduser_save.tr(),
+                          ),
+                        ),
                     ],
                   ),
                   const SizedBox(height: 48),
