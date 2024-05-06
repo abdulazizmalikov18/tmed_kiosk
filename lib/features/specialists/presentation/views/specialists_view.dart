@@ -1,7 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
+import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/cart_view_model.dart';
+import 'package:tmed_kiosk/features/common/navigation/routs_contact.dart';
+import 'package:tmed_kiosk/features/common/widgets/w_button.dart';
+import 'package:tmed_kiosk/features/goods/domain/entity/org_product_entity.dart';
+import 'package:tmed_kiosk/features/main/presentation/controllers/tts_controller_mixin.dart';
 import 'package:tmed_kiosk/features/specialists/presentation/views/specialists_phone_view.dart';
 import 'package:formz/formz.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
@@ -16,6 +22,7 @@ import 'package:tmed_kiosk/features/specialists/presentation/widgets/specialist_
 import 'package:tmed_kiosk/features/specialists/presentation/widgets/w_user_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tmed_kiosk/generated/locale_keys.g.dart';
 
 class SpecialistsView extends StatefulWidget {
   const SpecialistsView({super.key});
@@ -25,11 +32,13 @@ class SpecialistsView extends StatefulWidget {
 }
 
 class _SpecialistsViewState extends State<SpecialistsView> {
+  TTSControllerMixin controllerMixin = TTSControllerMixin();
   late TextEditingController controller;
   @override
   void initState() {
     controller = TextEditingController();
     super.initState();
+    controllerMixin.initTts();
   }
 
   @override
@@ -106,6 +115,28 @@ class _SpecialistsViewState extends State<SpecialistsView> {
               }
             },
           );
+        },
+      ),
+      bottomNavigationBar:
+          BlocSelector<CartBloc, CartState, Map<int, OrgProductEntity>>(
+        selector: (state) => state.cartMap,
+        builder: (context, cartMap) {
+          if (cartMap.isNotEmpty) {
+            if (cartMap.length == 1) {
+              controllerMixin.speak(
+                  "Чтобы продолжить покупку пожалуйста нажмите в нижнем меню кнопку оформить");
+            }
+            return WButton(
+              height: 80,
+              margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              onTap: () {
+                context.push(RoutsContact.cart, extra: false);
+              },
+              text: "${LocaleKeys.checkout.tr()} / ${cartMap.length} ta",
+              textStyle: const TextStyle(fontSize: 32),
+            );
+          }
+          return const SizedBox();
         },
       ),
     );

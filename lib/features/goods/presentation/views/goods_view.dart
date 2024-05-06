@@ -216,7 +216,7 @@ class _GoodsViewState extends State<GoodsView> {
                   height: 80,
                   margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                   onTap: () {
-                    context.push(RoutsContact.cart);
+                    context.push(RoutsContact.cart, extra: false);
                   },
                   text: "${LocaleKeys.checkout.tr()} / ${cartMap.length} ta",
                   textStyle: const TextStyle(fontSize: 32),

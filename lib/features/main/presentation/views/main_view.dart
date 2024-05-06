@@ -121,54 +121,48 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
             onBarcodeScanned: (barcode) {
               if (!visible) return;
 
-              if (barcode.startsWith("IUUZBAD")) {
-                final pnfl = barcode.substring(16, 29);
-                TextEditingController controller =
-                    TextEditingController(text: pnfl);
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const DialogTitle(title: "Shu sizning pnfelingizmi"),
-                    content: Column(
-                      children: [
-                        WTextField(
-                          controller: controller,
-                          onChanged: (value) {},
-                        ),
-                        WButton(
-                          onTap: () {
-                            context.read<AccountsBloc>().add(AccountsGet(
-                                  search: controller.text,
-                                  onSucces: () {
-                                    context.read<AccountsBloc>().add(GetCupon(
-                                        user: context
-                                            .read<AccountsBloc>()
-                                            .state
-                                            .selectAccount
-                                            .selectAccount
-                                            .username));
-                                    context.push(
-                                      RoutsContact.cart,
-                                      extra: true,
-                                    );
-                                  },
-                                  onError: () {
-                                    context.read<ShowPopUpBloc>().add(ShowPopUp(
-                                        message: "User Topilmadi",
-                                        status: PopStatus.error));
-                                  },
-                                ));
-                          },
-                        )
-                      ],
-                    ),
+              final pnfl = barcode.substring(16, 29);
+              TextEditingController controller =
+                  TextEditingController(text: pnfl);
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const DialogTitle(title: "Shu sizning pnfelingizmi"),
+                  content: Column(
+                    children: [
+                      WTextField(
+                        controller: controller,
+                        onChanged: (value) {},
+                      ),
+                      WButton(
+                        onTap: () {
+                          context.read<AccountsBloc>().add(AccountsGet(
+                                search: controller.text,
+                                onSucces: () {
+                                  context.read<AccountsBloc>().add(GetCupon(
+                                      user: context
+                                          .read<AccountsBloc>()
+                                          .state
+                                          .selectAccount
+                                          .selectAccount
+                                          .username));
+                                  context.push(
+                                    RoutsContact.cart,
+                                    extra: true,
+                                  );
+                                },
+                                onError: () {
+                                  context.read<ShowPopUpBloc>().add(ShowPopUp(
+                                      message: "User Topilmadi",
+                                      status: PopStatus.error));
+                                },
+                              ));
+                        },
+                      )
+                    ],
                   ),
-                );
-                context.read<AccountsBloc>().add(
-                    AccountsGet(search: pnfl, onSucces: () {}, onError: () {}));
-                context.read<AccountsBloc>().add(IsFocused(isFocused: true));
-                context.read<MyNavigatorBloc>().add(NavId(6));
-              }
+                ),
+              );
             },
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
