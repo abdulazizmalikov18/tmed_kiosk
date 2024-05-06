@@ -5,7 +5,9 @@ import 'package:flutter_barcode_listener/flutter_barcode_listener.dart';
 import 'package:tmed_kiosk/assets/colors/theme_changer.dart';
 import 'package:tmed_kiosk/assets/themes/theme.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
+import 'package:tmed_kiosk/features/cart/domain/entity/accounts_entity.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
+import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
 import 'package:tmed_kiosk/features/category/presentation/controllers/bloc/category_bloc.dart';
 import 'package:tmed_kiosk/features/common/controllers/price_bloc/price_bloc.dart';
 import 'package:tmed_kiosk/features/common/controllers/show_pop_up/show_pop_up_bloc.dart';
@@ -81,9 +83,7 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
   void _startTimer() {
     // Start a timer to navigate to the home page after 15 seconds of inactivity
     _timer = Timer(const Duration(seconds: 60), () {
-      if (context.read<CartBloc>().state.cartMap.isEmpty) {
-        context.go(RoutsContact.infoView);
-      }
+      context.go(RoutsContact.infoView);
     });
   }
 
@@ -92,7 +92,9 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
     _longPressTimer = Timer(const Duration(seconds: 5), () {
       _timer?.cancel();
       Log.w("_handleLongPressStart 2");
-      context.push(RoutsContact.profile).then((value) {
+      context
+          .push(RoutsContact.profile, extra: context.read<CartBloc>())
+          .then((value) {
         _startTimer();
       });
     });
@@ -106,6 +108,72 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
     _timer?.cancel();
     _startTimer();
   }
+
+  // dialog(BuildContext context) {
+  //   TextEditingController controller =
+  //       TextEditingController(text: "42501710460026");
+  //   final bloc = context.read<AccountsBloc>();
+
+  //   final vm = AccountsViewModel();
+  //   showDialog(
+  //     context: context,
+  //     builder: (_) => AlertDialog(
+  //       backgroundColor: context.color.backGroundColor,
+  //       title: const DialogTitle(title: "Shu sizning pnfelingizmi"),
+  //       content: SizedBox(
+  //         width: MediaQuery.sizeOf(context).width / 2,
+  //         child: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             WTextField(
+  //               controller: controller,
+  //               onChanged: (value) {},
+  //             ),
+  //             const SizedBox(height: 16),
+  //             WButton(
+  //               text: "Tasdiqlash",
+  //               height: 56,
+  //               onTap: () {
+  //                 bloc.add(AccountsGet(
+  //                   search: controller.text,
+  //                   onSucces: () {
+  //                     bloc.add(GetCupon(
+  //                         user:
+  //                             bloc.state.selectAccount.selectAccount.username));
+  //                     vm.selectAccount(bloc.state.selectAccount.selectAccount);
+  //                     Navigator.of(context).pop();
+  //                     context.push(RoutsContact.userInfo, extra: vm);
+  //                   },
+  //                   onError: () {
+  //                     context.read<AccountsBloc>().add(
+  //                           PostPhone(
+  //                             phoneJshshr: controller.text,
+  //                             onSuccess: (exodim) {
+  //                               final name = exodim.name.split(' ');
+  //                               vm.selectAccount(AccountsEntity(
+  //                                 name: name.first,
+  //                                 lastname: name.last,
+  //                                 phone: controller.text,
+  //                               ));
+  //                               setState(() {});
+  //                             },
+  //                             onError: (error) {},
+  //                           ),
+  //                         );
+  //                     Navigator.of(context).pop();
+  //                     context.push(RoutsContact.userAdd, extra: vm);
+  //                     context.read<ShowPopUpBloc>().add(ShowPopUp(
+  //                         message: "User Topilmadi", status: PopStatus.error));
+  //                   },
+  //                 ));
+  //               },
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -125,6 +193,8 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
               TextEditingController controller =
                   TextEditingController(text: pnfl);
               final bloc = context.read<AccountsBloc>();
+
+              final vm = AccountsViewModel();
               showDialog(
                 context: context,
                 builder: (_) => AlertDialog(
@@ -142,23 +212,37 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                         const SizedBox(height: 16),
                         WButton(
                           text: "Tasdiqlash",
+                          height: 56,
                           onTap: () {
                             bloc.add(AccountsGet(
                               search: controller.text,
                               onSucces: () {
                                 bloc.add(GetCupon(
-                                    user: context
-                                        .read<AccountsBloc>()
-                                        .state
-                                        .selectAccount
-                                        .selectAccount
+                                    user: bloc.state.selectAccount.selectAccount
                                         .username));
-                                context.push(
-                                  RoutsContact.cart,
-                                  extra: true,
-                                );
+                                vm.selectAccount(
+                                    bloc.state.selectAccount.selectAccount);
+                                Navigator.of(context).pop();
+                                context.push(RoutsContact.userInfo, extra: vm);
                               },
                               onError: () {
+                                context.read<AccountsBloc>().add(
+                                      PostPhone(
+                                        phoneJshshr: controller.text,
+                                        onSuccess: (exodim) {
+                                          final name = exodim.name.split(' ');
+                                          vm.selectAccount(AccountsEntity(
+                                            name: name.first,
+                                            lastname: name.last,
+                                            phone: controller.text,
+                                          ));
+                                          setState(() {});
+                                        },
+                                        onError: (error) {},
+                                      ),
+                                    );
+                                Navigator.of(context).pop();
+                                context.push(RoutsContact.userAdd, extra: vm);
                                 context.read<ShowPopUpBloc>().add(ShowPopUp(
                                     message: "User Topilmadi",
                                     status: PopStatus.error));
@@ -184,6 +268,11 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
               },
               child: Scaffold(
                 resizeToAvoidBottomInset: false,
+                // floatingActionButton: FloatingActionButton(
+                //   onPressed: () {
+                //     dialog(context);
+                //   },
+                // ),
                 body: Padding(
                   padding: EdgeInsets.only(
                       top: MediaQuery.of(context).viewPadding.top),

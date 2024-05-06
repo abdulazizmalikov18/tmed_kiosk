@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tmed_kiosk/features/cart/domain/entity/accounts_entity.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/add_user_iteam.dart';
@@ -10,9 +13,8 @@ import 'package:tmed_kiosk/features/common/navigation/routs_contact.dart';
 import 'package:tmed_kiosk/features/common/repo/log_service.dart';
 
 class UserAddView extends StatefulWidget {
-  const UserAddView({super.key, required this.vm, this.isAccount = false});
+  const UserAddView({super.key, required this.vm});
   final AccountsViewModel vm;
-  final bool isAccount;
 
   @override
   State<UserAddView> createState() => _UserAddViewState();
@@ -21,6 +23,8 @@ class UserAddView extends StatefulWidget {
 class _UserAddViewState extends State<UserAddView> {
   late final vm = widget.vm;
   String first = '';
+  String url = '';
+  File? images;
 
   @override
   void initState() {
@@ -44,10 +48,15 @@ class _UserAddViewState extends State<UserAddView> {
                     context.read<AccountsBloc>().add(
                           PostPhone(
                             phoneJshshr: vm.phone.text,
-                            onSuccess: () {
-                              setState(() {
-                                vm.isChek = !vm.isChek;
-                              });
+                            onSuccess: (exodim) {
+                              final name = exodim.name.split(' ');
+                              url = exodim.photo;
+                              widget.vm.selectAccount(AccountsEntity(
+                                name: name.first,
+                                lastname: name.last,
+                                phone: vm.phone.text,
+                              ));
+                              setState(() {});
                             },
                             onError: (error) {
                               Log.w("Nima gap");
@@ -76,7 +85,13 @@ class _UserAddViewState extends State<UserAddView> {
                         );
                   },
                 ),
-                if (vm.isChek) AddUsetIteam(vm: vm, isNew: true),
+                if (vm.isChek)
+                  AddUsetIteam(
+                    vm: vm,
+                    isNew: true,
+                    file: images,
+                    url: url,
+                  ),
               ],
             ),
           );

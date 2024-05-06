@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:tmed_kiosk/features/cart/data/models/check_user_model.dart';
 import 'package:tmed_kiosk/features/cart/domain/usecase/account_username_usecase.dart';
 import 'package:tmed_kiosk/features/cart/domain/usecase/del_cupon_usecase.dart';
 import 'package:equatable/equatable.dart';
@@ -209,7 +210,7 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
       emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
       final result = await postPhone.call(phone);
       if (result.isRight) {
-        if (result.right) {
+        if (result.right.status) {
           event.onError("Ushu raqam bilan user mavjud");
           emit(state.copyWith(status: FormzSubmissionStatus.success));
         } else {
@@ -221,7 +222,10 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
           } else {
             emit(state.copyWith(status: FormzSubmissionStatus.success));
             if (event.onSuccess != null) {
-              event.onSuccess!();
+              final model = result.right.statusEXodim
+                  ? Exodim.fromJson(result.right.exodim)
+                  : const Exodim();
+              event.onSuccess!(model);
             }
           }
         }
@@ -237,7 +241,7 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
         emit(state.copyWith(
           status: FormzSubmissionStatus.success,
         ));
-        event.onSuccess!();
+        event.onSuccess!(const Exodim());
       } else {
         emit(state.copyWith(status: FormzSubmissionStatus.failure));
       }

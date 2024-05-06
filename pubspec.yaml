@@ -62,6 +62,8 @@ dependencies:
   kiosk_mode: ^0.5.0+2
   flutter_tts: ^4.0.2
   panorama_viewer: ^1.0.4
+  http: ^1.2.1
+  open_app_file: ^4.0.2
   # camera_windows:
   #   git:
   #     url: https://github.com/yushulx/flutter_camera_windows.git

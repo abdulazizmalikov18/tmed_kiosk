@@ -113,7 +113,7 @@ class ReceiptRoll80 extends BaseReceiptWidget {
           PdfLine(length: 42),
           RowTitle(title: "Check raqami", subtitle: data.number.toString()),
           RowTitle(title: "Terminal ID", subtitle: " EP00000000000151"),
-          RowTitle(title: "Fiskal belgi", subtitle: " 383203056421"),
+          // RowTitle(title: "Fiskal belgi", subtitle: " 383203056421"),
           if (data.user.username.isNotEmpty) ...[
             PdfLine(length: 42),
             pw.Container(
@@ -141,12 +141,12 @@ class ReceiptRoll80 extends BaseReceiptWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        pw.Text(
-                          data.user.region != null
-                              ? data.user.region.toString()
-                              : "",
-                          style: const pw.TextStyle(fontSize: 8),
-                        ),
+                        // pw.Text(
+                        //   data.user.region != null
+                        //       ? data.user.region.toString()
+                        //       : "",
+                        //   style: const pw.TextStyle(fontSize: 8),
+                        // ),
                         pw.Text(
                           MyFunctions.parseDate(data.user.birthdate),
                           style: const pw.TextStyle(fontSize: 8),

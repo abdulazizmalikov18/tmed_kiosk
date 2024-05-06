@@ -1,8 +1,11 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tmed_kiosk/assets/constants/icons.dart';
+import 'package:tmed_kiosk/assets/constants/images.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/formatters.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/cupon_entity.dart';
@@ -32,16 +35,31 @@ import 'package:tmed_kiosk/generated/locale_keys.g.dart';
 part 'package:tmed_kiosk/features/cart/presentation/controllers/add_user_contoller.dart';
 
 class AddUsetIteam extends StatefulWidget {
-  const AddUsetIteam({super.key, required this.vm, this.isNew = false});
+  const AddUsetIteam({
+    super.key,
+    required this.vm,
+    this.isNew = false,
+    this.file,
+    this.url,
+  });
 
   final AccountsViewModel vm;
   final bool isNew;
+  final File? file;
+  final String? url;
 
   @override
   State<AddUsetIteam> createState() => _AddUsetIteamState();
 }
 
 class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
+  @override
+  void initState() {
+    images = widget.file;
+    super.initState();
+    Log.w(widget.url);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccountsBloc, AccountsState>(
@@ -50,11 +68,71 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              images == null
+                  ? bytes != null
+                      ? Container(
+                          height: 220,
+                          width: 220,
+                          margin: const EdgeInsets.all(24),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: greyText),
+                            color: orang,
+                            image: DecorationImage(
+                              image: MemoryImage(bytes!),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        )
+                      : Container(
+                          height: 220,
+                          width: 220,
+                          margin: const EdgeInsets.all(24),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: greyText),
+                            image: state.selectAccount.selectAccount.avatar
+                                    .isNotEmpty
+                                ? DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                      widget.url != null
+                                          ? widget.url!
+                                          : state.selectAccount.selectAccount
+                                              .avatar[0],
+                                    ),
+                                    onError: (exception, stackTrace) =>
+                                        Image.asset(AppImages.logo),
+                                  )
+                                : DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(widget.url!),
+                                    onError: (exception, stackTrace) =>
+                                        Image.asset(AppImages.logo),
+                                  ),
+                          ),
+                          alignment: Alignment.center,
+                          child: AppIcons.camera.svg(),
+                        )
+                  : Container(
+                      height: 220,
+                      width: 220,
+                      margin: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: red,
+                        border: Border.all(color: greyText),
+                        image: DecorationImage(
+                          image: FileImage(images!),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
               if (!widget.isNew)
                 WButton(
                   onTap: () {},
                   width: 350,
-                  height: 80,
+                  height: 64,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   textStyle: const TextStyle(fontSize: 28),
                   text: state.selectAccount.selectAccount.phone.isNotEmpty
@@ -255,10 +333,12 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                             text: LocaleKeys.adduser_move_to_order.tr(),
                           ),
                         ),
-                        if (state.selectAccount.selectAccount.status != 2)
+                        if (state.selectAccount.selectAccount.status != 2 &&
+                            widget.isNew)
                           const SizedBox(width: 16),
                       ],
-                      if (state.selectAccount.selectAccount.status != 2)
+                      if (state.selectAccount.selectAccount.status != 2 &&
+                          widget.isNew)
                         Expanded(
                           child: WButton(
                             height: 100,

@@ -1,4 +1,8 @@
 import 'package:kiosk_mode/kiosk_mode.dart';
+import 'package:tmed_kiosk/assets/constants/storage_keys.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
+import 'package:tmed_kiosk/features/cart/domain/entity/process_status_entity.dart';
+import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
 import 'package:tmed_kiosk/features/common/controllers/price_bloc/price_bloc.dart';
 import 'package:tmed_kiosk/features/main/presentation/widgets/selection_account.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -17,7 +21,8 @@ import 'package:tmed_kiosk/features/main/presentation/widgets/lenguage_sele.dart
 import 'package:tmed_kiosk/generated/locale_keys.g.dart';
 
 class ProfileView extends StatefulWidget {
-  const ProfileView({super.key});
+  const ProfileView({super.key, required this.cartBloc});
+  final CartBloc cartBloc;
 
   @override
   State<ProfileView> createState() => _ProfileViewState();
@@ -26,6 +31,11 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   String lenguage = StorageRepository.getString('language');
   late final Stream<KioskMode> _currentMode = watchKioskMode();
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,6 +177,52 @@ class _ProfileViewState extends State<ProfileView> {
                     title: Text(LocaleKeys.profile_language.tr()),
                     trailing: AppIcons.arrowRight.svg(color: white50),
                   ),
+                ),
+                const SizedBox(height: 8),
+                BlocBuilder<CartBloc, CartState>(
+                  bloc: widget.cartBloc,
+                  builder: (context, state) {
+                    return Container(
+                      height: 48,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: context.color.contColor,
+                        border: Border.all(color: contColor.withOpacity(0.1)),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: DropdownButtonFormField<ProcessStatusEntity>(
+                        value: state.selStatus,
+                        icon: AppIcons.arrowDown.svg(),
+                        decoration: InputDecoration(
+                          fillColor: context.color.contColor,
+                          focusColor: context.color.contColor,
+                          hoverColor: context.color.contColor,
+                          border: InputBorder.none,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        dropdownColor: context.color.contColor,
+                        items: state.processStatus
+                            .map((ProcessStatusEntity value) {
+                          return DropdownMenuItem<ProcessStatusEntity>(
+                            value: value,
+                            child: Text(
+                              value.name,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppTheme.labelSmall.copyWith(
+                                  color: context.color.white.withOpacity(.4)),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          StorageRepository.putInt(
+                              StorageKeys.STATUS, newValue!.id);
+                          context
+                              .read<CartBloc>()
+                              .add(SelStatus(selStatus: newValue));
+                        },
+                      ),
+                    );
+                  },
                 ),
                 const Spacer(),
                 WButton(

@@ -81,7 +81,7 @@ class GetCupon extends AccountsEvent {
 
 class CheckPhone extends AccountsEvent {
   final String phone;
-  final VoidCallback? onSuccess;
+  final Function(Exodim)? onSuccess;
 
   CheckPhone({
     required this.phone,
@@ -91,7 +91,7 @@ class CheckPhone extends AccountsEvent {
 
 class PostPhone extends AccountsEvent {
   final String phoneJshshr;
-  final VoidCallback? onSuccess;
+  final Function(Exodim)? onSuccess;
   final Function(String) onError;
   PostPhone({
     required this.phoneJshshr,

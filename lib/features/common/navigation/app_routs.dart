@@ -47,7 +47,9 @@ sealed class AppRouts {
       ),
       GoRoute(
         path: RoutsContact.profile,
-        builder: (context, state) => const ProfileView(),
+        builder: (context, state) =>  ProfileView(
+          cartBloc: (state.extra as CartBloc),
+        ),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) => MultiBlocProvider(

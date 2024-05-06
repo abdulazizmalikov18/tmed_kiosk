@@ -6,6 +6,7 @@ import 'package:tmed_kiosk/features/cart/data/datasource/cart_datasource.dart';
 import 'package:tmed_kiosk/features/cart/data/datasource/cart_local_datasource.dart';
 import 'package:tmed_kiosk/features/cart/data/models/account_create_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/accounts_filter.dart';
+import 'package:tmed_kiosk/features/cart/data/models/check_user_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_filter.dart';
 import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_selection.dart';
 import 'package:tmed_kiosk/features/cart/data/models/history/history_filter.dart';
@@ -86,7 +87,7 @@ class CartRepoImpl extends CartRepo {
   }
 
   @override
-  Future<Either<Failure, bool>> postPhone(AccountCreateModel parma) async {
+  Future<Either<Failure, CheckUserModel>> postPhone(AccountCreateModel parma) async {
     try {
       final result = await dataSource.postPhone(parma);
       return Right(result);

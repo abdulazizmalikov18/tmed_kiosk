@@ -1,5 +1,7 @@
+import 'package:tmed_kiosk/assets/constants/storage_keys.dart';
 import 'package:tmed_kiosk/features/common/entity/orders_entity.dart';
 import 'package:tmed_kiosk/features/common/repo/log_service.dart';
+import 'package:tmed_kiosk/features/common/repo/storage_repository.dart';
 import 'package:tmed_kiosk/features/goods/domain/usecase/org_product_id_usecase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -111,7 +113,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         action: event.filter.method ? "pay" : "in_advance",
         clientComment: event.filter.clientComment,
         specsComment: event.filter.specsComment,
-        processStatus: state.selStatus.id,
+        processStatus: StorageRepository.getInt(StorageKeys.STATUS),
         cartProducts: carts,
         payments: event.filter.paymentinorderSet ??
             [

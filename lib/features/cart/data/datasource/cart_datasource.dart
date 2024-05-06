@@ -9,6 +9,7 @@ import 'package:tmed_kiosk/core/singletons/service_locator.dart';
 import 'package:tmed_kiosk/features/cart/data/models/account_create_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/accounts_filter.dart';
 import 'package:tmed_kiosk/features/cart/data/models/accounts_model.dart';
+import 'package:tmed_kiosk/features/cart/data/models/check_user_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/create_account_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_filter.dart';
 import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_model.dart';
@@ -35,7 +36,7 @@ abstract class CartDataSource {
   Future<GenericPagination<ProfessionModel>> getProfession(Filter param);
   Future<GenericPagination<CuponModel>> getCoupon(CFilter filter);
   Future<CuponModel> getCouponID(int id);
-  Future<bool> postPhone(AccountCreateModel parma);
+  Future<CheckUserModel> postPhone(AccountCreateModel parma);
   Future<bool> postPhoneConfir(String phone);
   Future<CreateAccountModel> createAccount(FormData formData);
   Future<GenericPagination<ProcessStatusModel>> processStatus();
@@ -168,7 +169,7 @@ class CartDataSourceImpl extends CartDataSource {
   }
 
   @override
-  Future<bool> postPhone(AccountCreateModel parma) async {
+  Future<CheckUserModel> postPhone(AccountCreateModel parma) async {
     try {
       final response = await dio.post(
         'UMS/api/v1.0/account/check-user/?login_params=${parma.param}',
@@ -183,7 +184,7 @@ class CartDataSourceImpl extends CartDataSource {
         data: parma.mydata,
       );
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
-        return response.data['status'];
+        return CheckUserModel.fromJson(response.data);
       }
 
       throw ServerException(

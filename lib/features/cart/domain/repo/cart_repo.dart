@@ -3,6 +3,7 @@ import 'package:tmed_kiosk/core/exceptions/failures.dart';
 import 'package:tmed_kiosk/core/utils/either.dart';
 import 'package:tmed_kiosk/features/cart/data/models/account_create_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/accounts_filter.dart';
+import 'package:tmed_kiosk/features/cart/data/models/check_user_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_filter.dart';
 import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_selection.dart';
 import 'package:tmed_kiosk/features/cart/data/models/history/history_filter.dart';
@@ -34,7 +35,7 @@ abstract class CartRepo {
   Future<Either<Failure, GenericPagination<CuponEntity>>> getCoupon(
       CFilter filter);
   Future<Either<Failure, CuponEntity>> getCouponID(int id);
-  Future<Either<Failure, bool>> postPhone(AccountCreateModel parma);
+  Future<Either<Failure, CheckUserModel>> postPhone(AccountCreateModel parma);
   Future<Either<Failure, bool>> postPhoneConfir(String phone);
   Future<Either<Failure, CreateAccountEntity>> createAccount(FormData formData);
   Future<Either<Failure, GenericPagination<ProcessStatusEntity>>>

@@ -9,6 +9,7 @@ import 'package:tmed_kiosk/features/cart/data/datasource/cart_datasource.dart';
 import 'package:tmed_kiosk/features/cart/data/models/account_create_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/accounts_filter.dart';
 import 'package:tmed_kiosk/features/cart/data/models/accounts_model.dart';
+import 'package:tmed_kiosk/features/cart/data/models/check_user_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/create_account_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_filter.dart';
 import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_model.dart';
@@ -25,7 +26,6 @@ import 'package:tmed_kiosk/features/cart/data/models/update_orders_model.dart';
 import 'package:tmed_kiosk/features/common/models/orders_model.dart';
 import 'package:tmed_kiosk/features/common/models/popular_category_filter.dart';
 import 'package:tmed_kiosk/features/common/pagination/models/generic_pagination.dart';
-
 
 class CartLocalDataSource extends CartDataSource {
   final box = Hive.box(StorageKeys.PRODUCTS);
@@ -112,7 +112,7 @@ class CartLocalDataSource extends CartDataSource {
   }
 
   @override
-  Future<bool> postPhone(AccountCreateModel parma) {
+  Future<CheckUserModel> postPhone(AccountCreateModel parma) {
     throw UnimplementedError();
   }
 

@@ -31,6 +31,7 @@ class StorageKeys {
   static const PAYMENTS = 'payment';
   static const KSPECIAL = 'kspecial';
   static const KPI = 'kpi';
+  static const STATUS = 'status';
   static const ACCOUNTS = 'accounts';
   static const ProcessStatus = 'processtatus';
   static const CUPONS = 'cupons';

@@ -3,6 +3,7 @@ part of 'package:tmed_kiosk/features/cart/presentation/widgets/add_user_iteam.da
 mixin AddUserViweModel on State<AddUsetIteam> {
   final _dateFormKey = GlobalKey<FormState>();
   File? images;
+  Uint8List? bytes;
   DateTime selectedDate = DateTime.now();
   bool isChanged = false;
   Future<void> _selectDate(BuildContext context) async {
