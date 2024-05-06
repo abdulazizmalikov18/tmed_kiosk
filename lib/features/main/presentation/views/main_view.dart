@@ -188,74 +188,76 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
             bufferDuration: const Duration(milliseconds: 200),
             onBarcodeScanned: (barcode) {
               if (!visible) return;
+              if (barcode.startsWith("IUUZBAD")) {
+                final pnfl = barcode.substring(15, 29);
+                TextEditingController controller =
+                    TextEditingController(text: pnfl);
+                final bloc = context.read<AccountsBloc>();
 
-              final pnfl = barcode.substring(15, 29);
-              TextEditingController controller =
-                  TextEditingController(text: pnfl);
-              final bloc = context.read<AccountsBloc>();
-
-              final vm = AccountsViewModel();
-              showDialog(
-                context: context,
-                builder: (_) => AlertDialog(
-                  backgroundColor: context.color.backGroundColor,
-                  title: const DialogTitle(title: "Shu sizning pnfelingizmi"),
-                  content: SizedBox(
-                    width: MediaQuery.sizeOf(context).width / 2,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        WTextField(
-                          controller: controller,
-                          fillColor: context.color.contColor,
-                          onChanged: (value) {},
-                        ),
-                        const SizedBox(height: 16),
-                        WButton(
-                          text: "Tasdiqlash",
-                          height: 56,
-                          onTap: () {
-                            bloc.add(AccountsGet(
-                              search: controller.text,
-                              onSucces: () {
-                                bloc.add(GetCupon(
-                                    user: bloc.state.selectAccount.selectAccount
-                                        .username));
-                                vm.selectAccount(
-                                    bloc.state.selectAccount.selectAccount);
-                                Navigator.of(context).pop();
-                                context.push(RoutsContact.userInfo, extra: vm);
-                              },
-                              onError: () {
-                                context.read<AccountsBloc>().add(
-                                      PostPhone(
-                                        phoneJshshr: controller.text,
-                                        onSuccess: (exodim) {
-                                          final name = exodim.name.split(' ');
-                                          vm.selectAccount(AccountsEntity(
-                                            name: name.first,
-                                            lastname: name.last,
-                                            phone: controller.text,
-                                          ));
-                                          setState(() {});
-                                        },
-                                        onError: (error) {},
-                                      ),
-                                    );
-                                Navigator.of(context).pop();
-                                context.push(RoutsContact.userAdd, extra: vm);
-                                context.read<ShowPopUpBloc>().add(ShowPopUp(
-                                    message: "User Topilmadi",
-                                    status: PopStatus.error));
-                              },
-                            ));
-                          },
-                        )
-                      ],
+                final vm = AccountsViewModel();
+                showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    backgroundColor: context.color.backGroundColor,
+                    title: const DialogTitle(title: "Shu sizning pnfelingizmi"),
+                    content: SizedBox(
+                      width: MediaQuery.sizeOf(context).width / 2,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          WTextField(
+                            controller: controller,
+                            fillColor: context.color.contColor,
+                            onChanged: (value) {},
+                          ),
+                          const SizedBox(height: 16),
+                          WButton(
+                            text: "Tasdiqlash",
+                            height: 56,
+                            onTap: () {
+                              bloc.add(AccountsGet(
+                                search: controller.text,
+                                onSucces: () {
+                                  bloc.add(GetCupon(
+                                      user: bloc.state.selectAccount
+                                          .selectAccount.username));
+                                  vm.selectAccount(
+                                      bloc.state.selectAccount.selectAccount);
+                                  Navigator.of(context).pop();
+                                  context.push(RoutsContact.userInfo,
+                                      extra: vm);
+                                },
+                                onError: () {
+                                  context.read<AccountsBloc>().add(
+                                        PostPhone(
+                                          phoneJshshr: controller.text,
+                                          onSuccess: (exodim) {
+                                            final name = exodim.name.split(' ');
+                                            vm.selectAccount(AccountsEntity(
+                                              name: name.first,
+                                              lastname: name.last,
+                                              phone: controller.text,
+                                            ));
+                                            setState(() {});
+                                          },
+                                          onError: (error) {},
+                                        ),
+                                      );
+                                  Navigator.of(context).pop();
+                                  context.push(RoutsContact.userAdd, extra: vm);
+                                  context.read<ShowPopUpBloc>().add(ShowPopUp(
+                                      message: "User Topilmadi",
+                                      status: PopStatus.error));
+                                },
+                              ));
+                            },
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
+                );
+              }
             },
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
