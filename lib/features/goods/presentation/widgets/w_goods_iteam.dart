@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
+import 'package:panorama_viewer/panorama_viewer.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_price_row.dart';
@@ -15,6 +19,7 @@ import 'package:tmed_kiosk/features/goods/domain/entity/list_count.dart';
 import 'package:tmed_kiosk/features/goods/domain/entity/org_product_entity.dart';
 import 'package:tmed_kiosk/features/goods/presentation/controllers/bloc/goods_bloc.dart';
 import 'package:tmed_kiosk/features/goods/presentation/controllers/goods_view_model.dart';
+import 'package:tmed_kiosk/features/goods/presentation/views/ponarama_image_view.dart';
 import 'package:tmed_kiosk/features/goods/presentation/widgets/description_dial.dart';
 import 'package:tmed_kiosk/generated/locale_keys.g.dart';
 
@@ -176,63 +181,41 @@ class _WGoodsItemState extends State<WGoodsItem> {
                 blocCart: widget.blocCart,
               );
             },
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
-                if (widget.isPrice)
-                  WPriceRow(
-                    color: context.color.white,
-                    product: widget.product,
-                    count: ListCount(),
-                    isPhone: true,
-                    vm: CartViewModel(),
-                  ),
-                if (widget.isPrice) const SizedBox(height: 4),
-                if (widget.product.remains == 0 &&
-                    widget.product.product.type.name != "product")
-                  Row(
-                    children: [
-                      Text(
-                        "${LocaleKeys.offerpage_in_stock.tr()}: ",
-                        style: AppTheme.labelLarge.copyWith(
-                            color: isNull
-                                ? context.color.white.withOpacity(.5)
-                                : context.color.white),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                      AppIcons.infinity
-                          .svg(height: 14, color: context.color.white)
-                    ],
-                  )
-                else
-                  Text(
-                    "${LocaleKeys.offerpage_in_stock.tr()}: ${widget.product.remains}",
-                    style: AppTheme.labelLarge.copyWith(
-                        color: isNull
-                            ? context.color.white.withOpacity(.5)
-                            : context.color.white),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                if (widget.product.product.type.name == "offering")
-                  Text(
-                    "${LocaleKeys.offerpage_duration.tr()}: ${widget.product.duration == 0 ? "-" : widget.product.duration}",
-                    style: AppTheme.labelLarge.copyWith(
-                        color: isNull
-                            ? context.color.white.withOpacity(.5)
-                            : context.color.white),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                if (widget.product.product.type.name == "product")
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
+                Expanded(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (widget.product.expiryDate.isNotEmpty)
+                      if (widget.isPrice)
+                        WPriceRow(
+                          color: context.color.white,
+                          product: widget.product,
+                          count: ListCount(),
+                          isPhone: true,
+                          vm: CartViewModel(),
+                        ),
+                      if (widget.isPrice) const SizedBox(height: 4),
+                      if (widget.product.remains == 0 &&
+                          widget.product.product.type.name != "product")
+                        Row(
+                          children: [
+                            Text(
+                              "${LocaleKeys.offerpage_in_stock.tr()}: ",
+                              style: AppTheme.labelLarge.copyWith(
+                                  color: isNull
+                                      ? context.color.white.withOpacity(.5)
+                                      : context.color.white),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                            AppIcons.infinity
+                                .svg(height: 14, color: context.color.white)
+                          ],
+                        )
+                      else
                         Text(
-                          "${LocaleKeys.offerpage_expiration_date.tr()}: ${MyFunctions.parseDate(widget.product.expiryDate)}",
+                          "${LocaleKeys.offerpage_in_stock.tr()}: ${widget.product.remains}",
                           style: AppTheme.labelLarge.copyWith(
                               color: isNull
                                   ? context.color.white.withOpacity(.5)
@@ -240,34 +223,100 @@ class _WGoodsItemState extends State<WGoodsItem> {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
-                      Text(
-                        "${LocaleKeys.offerpage_manufacturer.tr()}: ${widget.product.product.manufacturer.name.isEmpty ? "-" : widget.product.product.manufacturer.name}",
-                        style: AppTheme.labelLarge.copyWith(
-                            color: isNull
-                                ? context.color.white.withOpacity(.5)
-                                : context.color.white),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                      Text(
-                        "${LocaleKeys.offerpage_offer_place.tr()}: ${widget.product.placeDesc.isEmpty ? "-" : widget.product.placeDesc}",
-                        style: AppTheme.labelLarge.copyWith(
-                            color: isNull
-                                ? context.color.white.withOpacity(.5)
-                                : context.color.white),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                      Text(
-                        "${LocaleKeys.expiry_date.tr()}: -",
-                        style: AppTheme.labelLarge.copyWith(
-                            color: isNull
-                                ? context.color.white.withOpacity(.5)
-                                : context.color.white),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
+                      if (widget.product.product.type.name == "offering")
+                        Text(
+                          "${LocaleKeys.offerpage_duration.tr()}: ${widget.product.duration == 0 ? "-" : widget.product.duration}",
+                          style: AppTheme.labelLarge.copyWith(
+                              color: isNull
+                                  ? context.color.white.withOpacity(.5)
+                                  : context.color.white),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      if (widget.product.product.type.name == "product")
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (widget.product.expiryDate.isNotEmpty)
+                              Text(
+                                "${LocaleKeys.offerpage_expiration_date.tr()}: ${MyFunctions.parseDate(widget.product.expiryDate)}",
+                                style: AppTheme.labelLarge.copyWith(
+                                    color: isNull
+                                        ? context.color.white.withOpacity(.5)
+                                        : context.color.white),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                            Text(
+                              "${LocaleKeys.offerpage_manufacturer.tr()}: ${widget.product.product.manufacturer.name.isEmpty ? "-" : widget.product.product.manufacturer.name}",
+                              style: AppTheme.labelLarge.copyWith(
+                                  color: isNull
+                                      ? context.color.white.withOpacity(.5)
+                                      : context.color.white),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                            Text(
+                              "${LocaleKeys.offerpage_offer_place.tr()}: ${widget.product.placeDesc.isEmpty ? "-" : widget.product.placeDesc}",
+                              style: AppTheme.labelLarge.copyWith(
+                                  color: isNull
+                                      ? context.color.white.withOpacity(.5)
+                                      : context.color.white),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                            Text(
+                              "${LocaleKeys.expiry_date.tr()}: -",
+                              style: AppTheme.labelLarge.copyWith(
+                                  color: isNull
+                                      ? context.color.white.withOpacity(.5)
+                                      : context.color.white),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                          ],
+                        )
                     ],
+                  ),
+                ),
+                if (widget.product.image360.isNotEmpty)
+                  InkWell(
+                    onTap: () {
+                      if (Platform.isAndroid || Platform.isIOS) {
+                        Navigator.of(context).push(CupertinoPageRoute(
+                          builder: (context) =>
+                              PonaramaImageView(product: widget.product),
+                        ));
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            backgroundColor: context.color.backGroundColor,
+                            title: DialogTitle(
+                              title: widget.product.product.name,
+                              isBottom: false,
+                            ),
+                            content: SizedBox(
+                              height: MediaQuery.of(context).size.height - 120,
+                              width: MediaQuery.of(context).size.width - 120,
+                              child: InteractiveViewer(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(16),
+                                  child: PanoramaViewer(
+                                    animSpeed: .1,
+                                    sensorControl: SensorControl.orientation,
+                                    child:
+                                        Image.network(widget.product.image360),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                    child: AppIcons.image360.svg(height: 28, width: 28),
                   )
               ],
             ),

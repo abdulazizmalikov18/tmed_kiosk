@@ -9,6 +9,7 @@ part of 'org_product_model.dart';
 OrgProductModel _$OrgProductModelFromJson(Map<String, dynamic> json) =>
     OrgProductModel(
       id: json['id'] as int? ?? 0,
+      image360: json['image360'] as String? ?? "",
       product: json['product'] == null
           ? const ProductEntity()
           : const ProductConverter()
@@ -46,6 +47,7 @@ OrgProductModel _$OrgProductModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$OrgProductModelToJson(OrgProductModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'image360': instance.image360,
       'product': const ProductConverter().toJson(instance.product),
       'status': instance.status,
       'bar_code': instance.barCode,

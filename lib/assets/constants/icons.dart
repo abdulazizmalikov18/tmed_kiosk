@@ -96,6 +96,7 @@ class AppIcons {
   static const checkboxesOn = "assets/icons/checkboxes.svg";
   static const icProfileArrowUp = "assets/icons/arrow_up_profile.svg";
   static const icProfileArrowDown = "assets/icons/arrow_down_profile.svg";
+  static const image360 = "assets/icons/360_image.svg";
 }
 
 extension SvgExt on String {
