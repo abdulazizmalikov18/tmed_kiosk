@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/enums.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -58,7 +57,7 @@ class _GenderDropDownState extends State<GenderDropDown> {
               child: Row(
                 children: [
                   Transform.scale(
-                   scale: 1.5,
+                    scale: 1.5,
                     child: CupertinoCheckbox(
                       value: selectedMenu == SampleItem.er,
                       onChanged: (value) {

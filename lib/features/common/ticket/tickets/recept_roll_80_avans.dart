@@ -28,7 +28,15 @@ class ReceiptRoll80Avans extends BaseReceiptWidget {
       child: pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
-          // pw.Center(child: pw.Image(image)),
+          pw.Container(
+            alignment: Alignment.center,
+            padding: const pw.EdgeInsets.symmetric(horizontal: 8),
+            child: pw.Text(
+              'TMED',
+              style: const pw.TextStyle(fontSize: 12),
+              textAlign: TextAlign.center,
+            ),
+          ),
           pw.Container(
             padding: const pw.EdgeInsets.only(top: 8),
             alignment: Alignment.center,
@@ -95,7 +103,7 @@ class ReceiptRoll80Avans extends BaseReceiptWidget {
                           ),
                         ),
                         pw.Text(
-                          "Number ${data.number}",
+                          "Raqamingiz ${data.number}",
                           style: pw.TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,

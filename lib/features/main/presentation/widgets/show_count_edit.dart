@@ -56,7 +56,7 @@ class _ShowCountEditState extends State<ShowCountEdit> {
                         keyboardType: TextInputType.number,
                         controller: widget.controller,
                         decoration: const InputDecoration(
-                          hintText: "Number",
+                          hintText: "Raqamingiz",
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.only(
                             bottom: 12,

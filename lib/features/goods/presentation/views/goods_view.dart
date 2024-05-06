@@ -207,7 +207,6 @@ class _GoodsViewState extends State<GoodsView> {
               BlocSelector<CartBloc, CartState, Map<int, OrgProductEntity>>(
             selector: (state) => state.cartMap,
             builder: (context, cartMap) {
-
               if (cartMap.isNotEmpty) {
                 if (cartMap.length == 1) {
                   controllerMixin.speak(
@@ -217,7 +216,7 @@ class _GoodsViewState extends State<GoodsView> {
                   height: 80,
                   margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                   onTap: () {
-                    context.push(RoutsContact.cart);
+                    context.push(RoutsContact.cart, extra: false);
                   },
                   text: "${LocaleKeys.checkout.tr()} / ${cartMap.length} ta",
                   textStyle: const TextStyle(fontSize: 32),

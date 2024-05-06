@@ -32,6 +32,15 @@ class ReceiptRoll80 extends BaseReceiptWidget {
         children: [
           // pw.Center(child: pw.Image(image)),
           pw.Container(
+            alignment: Alignment.center,
+            padding: const pw.EdgeInsets.symmetric(horizontal: 8),
+            child: pw.Text(
+              'TMED',
+              style: const pw.TextStyle(fontSize: 12),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          pw.Container(
             padding: const pw.EdgeInsets.only(top: 8),
             alignment: Alignment.center,
             child: pw.Text(
@@ -126,7 +135,7 @@ class ReceiptRoll80 extends BaseReceiptWidget {
                           ),
                         ),
                         pw.Text(
-                          "Number ${data.number}",
+                          "Raqamingiz ${data.number}",
                           style: pw.TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,

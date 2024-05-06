@@ -10,8 +10,9 @@ import 'package:tmed_kiosk/features/common/navigation/routs_contact.dart';
 import 'package:tmed_kiosk/features/common/repo/log_service.dart';
 
 class UserAddView extends StatefulWidget {
-  const UserAddView({super.key, required this.vm});
+  const UserAddView({super.key, required this.vm, this.isAccount = false});
   final AccountsViewModel vm;
+  final bool isAccount;
 
   @override
   State<UserAddView> createState() => _UserAddViewState();
