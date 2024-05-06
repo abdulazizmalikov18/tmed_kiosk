@@ -133,6 +133,7 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                               vertical: 14, horizontal: 16),
                           enabled:
                               state.selectAccount.selectAccount.status != 2,
+                          inputFormatters: [Formatters.dateFormatter],
                           onChanged: (value) {
                             // if(!RegExp("[0-9]").hasMatch(value[value.length-1])){
                             //   widget.vm.age.text = value.substring(0, value.length-2);
@@ -148,7 +149,7 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                                   "${value.substring(0, 5)}/${value[5]}";
                             }
                             if (value.length >= 9) {
-                              widget.vm.age.text = value.substring(0, 10);
+                              widget.vm.age.text = value;
                             }
                             changeInfo();
                             if (value.length == 10) {
@@ -166,7 +167,7 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                                   value.replaceRange(3, 5, "02");
                               "02";
                             } else if (value.length >= 9 &&
-                                int.tryParse(value.substring(6, 10))! >= 2025) {
+                                int.tryParse(value.substring(6, 9))! >= 2025) {
                               widget.vm.age.text =
                                   value.replaceRange(6, 10, "2000");
                               "2024";
@@ -235,7 +236,11 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                                 if (_dateFormKey.currentState!.validate()) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text('Processing Data',style: TextStyle(color: context.color.white),),
+                                      content: Text(
+                                        'Processing Data',
+                                        style: TextStyle(
+                                            color: context.color.white),
+                                      ),
                                     ),
                                   );
                                 }
@@ -265,8 +270,8 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                                 if (_dateFormKey.currentState!.validate()) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text(
-                                          LocaleKeys.processing_data.tr()),
+                                      content:
+                                          Text(LocaleKeys.processing_data.tr()),
                                     ),
                                   );
                                 }

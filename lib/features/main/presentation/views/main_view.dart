@@ -121,45 +121,53 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
             onBarcodeScanned: (barcode) {
               if (!visible) return;
 
-              final pnfl = barcode.substring(16, 29);
+              final pnfl = barcode.substring(15, 29);
               TextEditingController controller =
                   TextEditingController(text: pnfl);
+              final bloc = context.read<AccountsBloc>();
               showDialog(
                 context: context,
-                builder: (context) => AlertDialog(
+                builder: (_) => AlertDialog(
+                  backgroundColor: context.color.backGroundColor,
                   title: const DialogTitle(title: "Shu sizning pnfelingizmi"),
-                  content: Column(
-                    children: [
-                      WTextField(
-                        controller: controller,
-                        onChanged: (value) {},
-                      ),
-                      WButton(
-                        onTap: () {
-                          context.read<AccountsBloc>().add(AccountsGet(
-                                search: controller.text,
-                                onSucces: () {
-                                  context.read<AccountsBloc>().add(GetCupon(
-                                      user: context
-                                          .read<AccountsBloc>()
-                                          .state
-                                          .selectAccount
-                                          .selectAccount
-                                          .username));
-                                  context.push(
-                                    RoutsContact.cart,
-                                    extra: true,
-                                  );
-                                },
-                                onError: () {
-                                  context.read<ShowPopUpBloc>().add(ShowPopUp(
-                                      message: "User Topilmadi",
-                                      status: PopStatus.error));
-                                },
-                              ));
-                        },
-                      )
-                    ],
+                  content: SizedBox(
+                    width: MediaQuery.sizeOf(context).width / 2,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        WTextField(
+                          controller: controller,
+                          onChanged: (value) {},
+                        ),
+                        const SizedBox(height: 16),
+                        WButton(
+                          text: "Tasdiqlash",
+                          onTap: () {
+                            bloc.add(AccountsGet(
+                              search: controller.text,
+                              onSucces: () {
+                                bloc.add(GetCupon(
+                                    user: context
+                                        .read<AccountsBloc>()
+                                        .state
+                                        .selectAccount
+                                        .selectAccount
+                                        .username));
+                                context.push(
+                                  RoutsContact.cart,
+                                  extra: true,
+                                );
+                              },
+                              onError: () {
+                                context.read<ShowPopUpBloc>().add(ShowPopUp(
+                                    message: "User Topilmadi",
+                                    status: PopStatus.error));
+                              },
+                            ));
+                          },
+                        )
+                      ],
+                    ),
                   ),
                 ),
               );
