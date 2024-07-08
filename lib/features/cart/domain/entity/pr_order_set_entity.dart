@@ -14,6 +14,7 @@ class PrOrderSetEntity extends Equatable {
   final String expectedEndDate;
   final int responsible;
   final String image;
+  final Map<String, Object>? coupon;
 
   const PrOrderSetEntity({
     this.id = 0,
@@ -27,6 +28,7 @@ class PrOrderSetEntity extends Equatable {
     this.expectedEndDate = "",
     this.responsible = 0,
     this.image = "",
+    this.coupon,
   });
 
   @override
@@ -41,7 +43,8 @@ class PrOrderSetEntity extends Equatable {
         meetDate,
         expectedEndDate,
         responsible,
-        image
+        image,
+        coupon,
       ];
 }
 

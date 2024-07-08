@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_model.dart';
+import 'package:tmed_kiosk/features/cart/domain/entity/process_status_entity.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
 import 'package:tmed_kiosk/features/common/controllers/price_bloc/price_bloc.dart';
 import 'package:tmed_kiosk/features/common/entity/cupon_entity.dart';
@@ -14,11 +16,26 @@ import 'package:tmed_kiosk/features/auth/presentation/widgets/lenguage_select.da
 import 'package:tmed_kiosk/features/common/user_type/user_type.dart';
 import 'package:tmed_kiosk/generated/locale_keys.g.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:html/parser.dart' as html_parser;
 
 class MyFunctions {
   static const DATE_FORMAT = 'dd/MM/yyyy';
   static bool isOpenProduct(String key) {
     return (key != "cancel" && key != "finish");
+  }
+
+  static String formatPhoneNumber(String phoneNumber) {
+    // Remove all non-numeric characters
+    String cleanedNumber = phoneNumber.replaceAll(RegExp(r'\D'), '');
+
+    // Remove leading '+' if present
+    if (cleanedNumber.startsWith('998')) {
+      return cleanedNumber;
+    } else if (cleanedNumber.startsWith('998')) {
+      return cleanedNumber.substring(1);
+    }
+
+    return cleanedNumber;
   }
 
   static UserType usertype(KassaSpecialEntity model) {
@@ -36,10 +53,10 @@ class MyFunctions {
     }
   }
 
-  static OrderCouponEntity? filterCupons(List<OrderProductEntity> products) {
-    for (var element in products) {
-      if (element.coupon.id != 0) {
-        return element.coupon;
+  static ProcessStatusEntity? checkStatus(List<ProcessStatusEntity> entity) {
+    for (var element in entity) {
+      if (element.key != 'cancel' && element.key != 'finish') {
+        return element;
       }
     }
     return null;
@@ -103,6 +120,44 @@ class MyFunctions {
     return formattedDateTime;
   }
 
+  static String information(String date) {
+    if (date == "Oliy") {
+      return "high";
+    } else if (date == "Orta") {
+      return "middle";
+    } else if (date == "Maktab") {
+      return "low";
+    } else {
+      return "no";
+    }
+  }
+
+  static String informationConvert(String date) {
+    if (date == "high") {
+      return "Oliy";
+    } else if (date == "middle") {
+      return "Orta";
+    } else if (date == "low") {
+      return "Maktab";
+    } else if (date == "no") {
+      return "Oqmagan";
+    } else {
+      return date;
+    }
+  }
+
+  static String informationParse(String date) {
+    if (date == "high") {
+      return "Oliy";
+    } else if (date == "middle") {
+      return "Orta";
+    } else if (date == "low") {
+      return "Maktab";
+    } else {
+      return "Oqimagan";
+    }
+  }
+
   static String secondToTime(int time) {
     int hour = (time / 3600).floor();
     int min = ((time - hour * 3600) / 60).floor();
@@ -151,6 +206,53 @@ class MyFunctions {
     }
   }
 
+  static String formatDate(String inputDate) {
+    try {
+      if (inputDate.length == 10) {
+        Log.w("Nima gap $inputDate");
+        if (inputDate[2] == "-") {
+          DateFormat dateFormat = DateFormat("dd-MM-yyyy");
+          DateTime dateTime = dateFormat.parse(inputDate);
+          return DateFormat(DATE_FORMAT).format(dateTime);
+        } else {
+          DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+          DateTime dateTime = dateFormat.parse(inputDate);
+          return DateFormat(DATE_FORMAT).format(dateTime);
+        }
+      } else {
+        Log.w("Nima gap 2");
+        Log.d(inputDate);
+        // Parse the input string into a DateTime object
+        DateTime dateTime = DateTime.parse(inputDate);
+        // Format the DateTime object into the desired format
+        return DateFormat(DATE_FORMAT).format(dateTime);
+      }
+    } catch (e) {
+      return "";
+    }
+  }
+
+  static bool isCupon(CuponModel model, int id) {
+    for (var partner in model.partner) {
+      for (var group in partner.groups) {
+        if (group.products.contains(id)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  static String formatDate2(String inputDate) {
+    // Parse the input string into a DateTime object
+    DateTime originalDate = DateFormat('dd/MM/yyyy').parse(inputDate).toLocal();
+
+    // Format the date in 'yyyy-MM-dd' format
+    String formattedDate = DateFormat('yyyy-MM-dd').format(originalDate);
+    // Format the DateTime object into the desired format
+    return formattedDate;
+  }
+
   static int discountInt(int discount, int price) {
     int eprice = 0;
     if (discount > 0) {
@@ -175,6 +277,19 @@ class MyFunctions {
       eprice = price;
     }
     return getThousandsSeparatedPrice(eprice.toString());
+  }
+
+  static String parseHtmlString(String htmlString) {
+    var document = html_parser.parse(htmlString);
+    var paragraphs = document.getElementsByTagName('p');
+    List<String> result = [];
+
+    for (var paragraph in paragraphs) {
+      var text = "${paragraph.text.trim()}\n";
+      result.add(text);
+    }
+
+    return result.join();
   }
 
   static String parseDate(String date) {
@@ -272,6 +387,15 @@ class MyFunctions {
     return newCost.trimLeft();
   }
 
+  static OrderCouponEntity? filterCupons(List<OrderProductEntity> products) {
+    for (var element in products) {
+      if (element.coupon.id != 0) {
+        return element.coupon;
+      }
+    }
+    return null;
+  }
+
   // static String getFormatCost(String cost) {
   //   if (cost.isEmpty) return '';
   //   var oldCost = cost;
@@ -296,9 +420,14 @@ class MyFunctions {
   }
 
   static String getClockFormatSek(String date) {
-    DateTime dateTime = DateTime.parse(date).toLocal();
-    String formattedDateTime = DateFormat('HH:mm').format(dateTime);
-    return formattedDateTime;
+    try {
+      DateTime dateTime = DateTime.parse(date).toLocal();
+      String formattedDateTime = DateFormat('HH:mm').format(dateTime);
+      return formattedDateTime;
+    } catch (e) {
+      String formattedDateTime = DateFormat('HH:mm').format(DateTime.now());
+      return formattedDateTime;
+    }
   }
 
   static String getClockFormat2(String date) {

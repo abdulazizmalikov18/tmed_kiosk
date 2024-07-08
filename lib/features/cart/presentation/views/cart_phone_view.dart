@@ -1,5 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/constants/images.dart';
+import 'package:tmed_kiosk/assets/constants/storage_keys.dart';
 import 'package:tmed_kiosk/core/utils/my_function.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/post_product_filter.dart';
 import 'package:tmed_kiosk/features/cart/presentation/views/add_user_phone.dart';
@@ -8,16 +12,21 @@ import 'package:tmed_kiosk/features/cart/presentation/views/task_create_view.dar
 import 'package:tmed_kiosk/features/cart/presentation/widgets/create_order_bottom.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/order_status_selection.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/w_info_price.dart';
+import 'package:tmed_kiosk/features/common/controllers/auth/authentication_bloc.dart';
 import 'package:tmed_kiosk/features/common/controllers/price_bloc/price_bloc.dart';
+import 'package:tmed_kiosk/features/common/entity/orders_entity.dart';
+import 'package:tmed_kiosk/features/common/repo/log_service.dart';
+import 'package:tmed_kiosk/features/common/repo/storage_repository.dart';
+import 'package:tmed_kiosk/features/common/ticket/recept_roll_80.dart';
+import 'package:tmed_kiosk/features/common/ticket/tickets/recept_roll_product.dart';
+import 'package:tmed_kiosk/features/common/ticket/w_dialog_printer_phone.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_button.dart';
 import 'package:tmed_kiosk/features/goods/domain/entity/list_count.dart';
 import 'package:tmed_kiosk/features/goods/domain/entity/org_product_entity.dart';
 import 'package:tmed_kiosk/features/goods/presentation/controllers/bloc/goods_bloc.dart';
-import 'package:tmed_kiosk/features/main/presentation/controllers/bloc/navigator_bloc.dart';
 import 'package:tmed_kiosk/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
@@ -31,6 +40,8 @@ import 'package:tmed_kiosk/features/common/navigation/presentation/navigator.dar
 import 'package:tmed_kiosk/features/cart/presentation/widgets/cart_list_iteam_phone.dart';
 import 'package:tmed_kiosk/features/main/presentation/widgets/no_data_cart.dart';
 import 'package:formz/formz.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 part 'package:tmed_kiosk/features/cart/presentation/controllers/controllers.dart';
 
@@ -57,8 +68,10 @@ class _CartPhoneViewState extends State<CartPhoneView> with CartPhoneMixin {
                   return IconButton(
                     onPressed: () {
                       if (state.selectAccount.selectAccount.id != 0) {
-                        widget.vm
-                            .selectAccount(state.selectAccount.selectAccount);
+                        widget.vm.selectAccount(
+                          state.selectAccount.selectAccount,
+                          false,
+                        );
                       }
                       Navigator.of(context).push(
                         fade(page: AddUserPhone(vm: widget.vm, vmC: vm)),
@@ -231,14 +244,7 @@ class _CartPhoneViewState extends State<CartPhoneView> with CartPhoneMixin {
                             Expanded(
                               child: WButton(
                                 onTap: () {
-                                  createOrder(
-                                    cartMap: state.cartMap,
-                                    counts: state.counts,
-                                    isOrder: state.isOrder,
-                                    selUsername: stateAccount
-                                        .selectAccount.selectAccount.username,
-                                    username: state.username,
-                                  );
+                                  createOrders(stateAccount);
                                 },
                                 text: "Vazifa berish",
                                 color: green,

@@ -8,7 +8,7 @@ part of 'history_unit_model.dart';
 
 HistoryUnitModel _$HistoryUnitModelFromJson(Map<String, dynamic> json) =>
     HistoryUnitModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
     );
 

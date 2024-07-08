@@ -10,7 +10,7 @@ DayOrderModel _$DayOrderModelFromJson(Map<String, dynamic> json) =>
     DayOrderModel(
       meetDate: json['meetDate'] as String? ?? '',
       expectedEndDate: json['expectedEndDate'] as String? ?? '',
-      responsible: json['responsible'] as int? ?? 0,
+      responsible: (json['responsible'] as num?)?.toInt() ?? 0,
       user: json['user'],
     );
 

@@ -8,7 +8,7 @@ part of 'companiya_list_model.dart';
 
 CompaniyaListModel _$CompaniyaListModelFromJson(Map<String, dynamic> json) =>
     CompaniyaListModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       legalForm: json['legal_form'] == null
           ? const LegalFormEntity()
           : const LegalFormConverter()
@@ -24,7 +24,7 @@ CompaniyaListModel _$CompaniyaListModelFromJson(Map<String, dynamic> json) =>
       slugName: json['slug_name'] as String? ?? '',
       location: json['location'] ?? '',
       phone: json['phone'] ?? '',
-      status: json['status'] as int? ?? 0,
+      status: (json['status'] as num?)?.toInt() ?? 0,
       createDate: json['create_date'] as String? ?? '',
       isOfficial: json['is_official'] as bool? ?? false,
       textForPrint: json['text_for_print'] ?? '',

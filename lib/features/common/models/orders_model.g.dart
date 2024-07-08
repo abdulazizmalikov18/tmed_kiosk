@@ -8,22 +8,22 @@ part of 'orders_model.dart';
 
 OrdersModel _$OrdersModelFromJson(Map<String, dynamic> json) => OrdersModel(
       id: json['id'] as String? ?? '',
-      number: json['number'] as int? ?? 0,
+      number: (json['number'] as num?)?.toInt() ?? 0,
       qrCode: json['qr_code'] as String? ?? '',
       clientComment: json['client_comment'] as String? ?? '',
       user: json['user'] == null
           ? const OrderUserEntity()
           : const OrderUserConverter()
               .fromJson(json['user'] as Map<String, dynamic>?),
-      status: json['status'] as int? ?? 0,
+      status: (json['status'] as num?)?.toInt() ?? 0,
       rates: json['rates'] ?? '',
-      payment: json['payment'] as int? ?? 0,
-      paymentStatus: json['payment_status'] as int? ?? 0,
+      payment: (json['payment'] as num?)?.toInt() ?? 0,
+      paymentStatus: (json['payment_status'] as num?)?.toInt() ?? 0,
       prepaidAmount: (json['prepaid_amount'] as num?)?.toDouble() ?? 0,
       totalCost: (json['total_cost'] as num?)?.toDouble() ?? 0,
       deviceId: json['device_id'] ?? '',
       specsComment: json['specs_comment'] as String? ?? '',
-      productNumber: json['product_number'] as int? ?? 0,
+      productNumber: (json['product_number'] as num?)?.toInt() ?? 0,
       insertedValue: (json['inserted_value'] as num?)?.toDouble() ?? 0,
       creator: json['creator'] == null
           ? const CreatorEntity()

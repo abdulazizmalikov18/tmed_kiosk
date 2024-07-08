@@ -104,11 +104,6 @@ class _ShowSelectState extends State<ShowSelect> {
                           CartEdit(
                             widget.product,
                             widget.index,
-                            psp: widget.isProduct
-                                ? null
-                                : dataIndex >= 0
-                                    ? state.psp[dataIndex]
-                                    : null,
                             dateTime: widget.isProduct && dataIndex >= 0
                                 ? DateTime.parse(
                                     state.supplies[dataIndex].expiryDate)
@@ -127,11 +122,6 @@ class _ShowSelectState extends State<ShowSelect> {
                           CartAddMap(
                             widget.product,
                             0,
-                            psp: widget.isProduct
-                                ? null
-                                : dataIndex >= 0
-                                    ? state.psp[dataIndex]
-                                    : null,
                             dateTime: widget.isProduct && dataIndex >= 0
                                 ? DateTime.parse(
                                     state.supplies[dataIndex].expiryDate)

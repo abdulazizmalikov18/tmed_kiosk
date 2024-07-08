@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:tmed_kiosk/features/cart/data/models/check_user_model.dart';
 import 'package:hive/hive.dart';
 import 'package:tmed_kiosk/assets/constants/storage_keys.dart';
 import 'package:tmed_kiosk/core/exceptions/exceptions.dart';
@@ -9,7 +10,6 @@ import 'package:tmed_kiosk/features/cart/data/datasource/cart_datasource.dart';
 import 'package:tmed_kiosk/features/cart/data/models/account_create_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/accounts_filter.dart';
 import 'package:tmed_kiosk/features/cart/data/models/accounts_model.dart';
-import 'package:tmed_kiosk/features/cart/data/models/check_user_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/create_account_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_filter.dart';
 import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_model.dart';
@@ -22,6 +22,7 @@ import 'package:tmed_kiosk/features/cart/data/models/process_status_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/profession_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/recommendation/recommendation_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/region_model.dart';
+import 'package:tmed_kiosk/features/cart/data/models/update_account.dart';
 import 'package:tmed_kiosk/features/cart/data/models/update_orders_model.dart';
 import 'package:tmed_kiosk/features/common/models/orders_model.dart';
 import 'package:tmed_kiosk/features/common/models/popular_category_filter.dart';
@@ -174,6 +175,12 @@ class CartLocalDataSource extends CartDataSource {
 
   @override
   Future<AccountsModel> accountUsername(String param) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AccountsModel> accountUpdate(UpdateAccount data) {
+    // TODO: implement accountUpdate
     throw UnimplementedError();
   }
 }

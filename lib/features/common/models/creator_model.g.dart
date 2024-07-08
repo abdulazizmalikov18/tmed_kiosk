@@ -7,7 +7,7 @@ part of 'creator_model.dart';
 // **************************************************************************
 
 CreatorModel _$CreatorModelFromJson(Map<String, dynamic> json) => CreatorModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
       lastname: json['lastname'] as String? ?? '',
       org: json['org'] as String? ?? '',

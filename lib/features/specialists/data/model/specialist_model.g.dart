@@ -8,7 +8,7 @@ part of 'specialist_model.dart';
 
 SpecialistsModel _$SpecialistsModelFromJson(Map<String, dynamic> json) =>
     SpecialistsModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
       lastname: json['lastname'] as String? ?? '',
       avatar: json['avatar'] as String? ?? '',
@@ -54,7 +54,7 @@ SpecialistsModel _$SpecialistsModelFromJson(Map<String, dynamic> json) =>
           ? const LocationEntity()
           : const LocationConverter()
               .fromJson(json['location'] as Map<String, dynamic>?),
-      orderCount: json['order_count'] as int? ?? 0,
+      orderCount: (json['order_count'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$SpecialistsModelToJson(SpecialistsModel instance) =>

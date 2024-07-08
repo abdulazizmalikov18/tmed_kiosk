@@ -1,3 +1,5 @@
+import 'package:go_router/go_router.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/my_function.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -37,52 +39,83 @@ class _PayButtonState extends State<PayButton> {
     return BlocBuilder<CartBloc, CartState>(
       builder: (context, state) {
         return Container(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
           decoration: BoxDecoration(
-            color: contColor,
+            color: context.color.contColor,
             boxShadow: wboxShadow,
           ),
           child: Row(
             children: [
               Expanded(
                 child: WButton(
+                  // onTap: () {
+                  //   setState(() {
+                  //     isAvans = true;
+                  //   });
+                  //   List<Map<String, dynamic>> nimadir = [];
+                  //   for (var i = 1; i < widget.list.length; i++) {
+                  //     if (widget.list[i].controller.text.isNotEmpty) {
+                  //       nimadir.add({
+                  //         "method": widget.list[i].method,
+                  //         "cost": widget.list[i].controller.text
+                  //       });
+                  //     }
+                  //   }
+                  //   if (widget.isOrder) {
+                  //     OrderPayModel param = OrderPayModel(
+                  //       paymentinorderSet: nimadir,
+                  //       action: "in_advance",
+                  //       status: 2,
+                  //       id: widget.id,
+                  //     );
+                  //     context.read<CartBloc>().add(
+                  //           PatchPay(
+                  //             param: param,
+                  //             onSuccess: () {
+                  //               Navigator.of(context).pop();
+                  //               context.read<ShowPopUpBloc>().add(ShowPopUp(
+                  //                     message: "To'lov qabul qilindi",
+                  //                     status: PopStatus.success,
+                  //                   ));
+                  //             },
+                  //             onError: (error) {
+                  //               context.read<ShowPopUpBloc>().add(ShowPopUp(
+                  //                     message: error,
+                  //                     status: PopStatus.error,
+                  //                   ));
+                  //             },
+                  //           ),
+                  //         );
+                  //   } else {
+                  //     context.read<CartBloc>().add(
+                  //           CreatOrder(
+                  //             onError: (nima) {
+                  //               context.read<ShowPopUpBloc>().add(ShowPopUp(
+                  //                   message: nima, status: PopStatus.error));
+                  //             },
+                  //             onSuccess: (data) {
+                  //               Navigator.of(context)
+                  //                 ..pop()
+                  //                 ..pop();
+                  //               context.read<ShowPopUpBloc>().add(ShowPopUp(
+                  //                     message: MyFunctions.createPrice(context),
+                  //                     status: PopStatus.success,
+                  //                   ));
+                  //             },
+                  //             filter: PostProductFilter(
+                  //               paymentinorderSet: nimadir,
+                  //               clientComment: widget.list[0].controller.text,
+                  //             ),
+                  //           ),
+                  //         );
+                  //   }
+                  // },
                   onTap: () {
-                    setState(() {
-                      isAvans = true;
-                    });
-                    List<Map<String, dynamic>> nimadir = [];
-                    for (var i = 1; i < widget.list.length; i++) {
-                      if (widget.list[i].controller.text.isNotEmpty) {
-                        nimadir.add({
-                          "method": widget.list[i].method,
-                          "cost": widget.list[i].controller.text
-                        });
-                      }
-                    }
-                    context.read<CartBloc>().add(
-                          CreatOrder(
-                            onError: (nima) {
-                              context.read<ShowPopUpBloc>().add(ShowPopUp(
-                                  message: nima, status: PopStatus.error));
-                            },
-                            onSuccess: (data) {
-                              Navigator.of(context)
-                                ..pop()
-                                ..pop();
-                              context.read<ShowPopUpBloc>().add(ShowPopUp(
-                                    message: MyFunctions.createPrice(context),
-                                    status: PopStatus.success,
-                                  ));
-                            },
-                            filter: PostProductFilter(
-                              paymentinorderSet: nimadir,
-                              clientComment: widget.list[0].controller.text,
-                            ),
-                          ),
-                        );
+                    context.pop();
                   },
-                  text: LocaleKeys.pay_order_prepaid_expense.tr(),
-                  color: green,
+                  text: LocaleKeys.cart_order_cancel_button.tr(),
+                  color: red,
+                  border: Border.all(color: contColor.withOpacity(.1)),
                   isLoading: state.status.isInProgress && isAvans,
                 ),
               ),
@@ -108,6 +141,7 @@ class _PayButtonState extends State<PayButton> {
                         context.read<AccountsBloc>().state.selectAccount;
                     context.read<CartBloc>().add(
                           CreatOrder(
+                            isCupon: true,
                             username: remote.selectAccount.username.isNotEmpty
                                 ? remote.selectAccount.username
                                 : null,
@@ -135,7 +169,8 @@ class _PayButtonState extends State<PayButton> {
                           ),
                         );
                   },
-                  text: LocaleKeys.check_payment_button.tr(),
+                  border: Border.all(color: contColor.withOpacity(.1)),
+                  text: "sas",
                 ),
               )
             ],

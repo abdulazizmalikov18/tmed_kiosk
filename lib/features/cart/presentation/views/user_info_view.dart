@@ -42,7 +42,9 @@ class _UserInfoViewState extends State<UserInfoView> {
     context.read<AccountsBloc>().add(GetReccommendation());
     super.initState();
     widget.vm.selectAccount(
-        context.read<AccountsBloc>().state.selectAccount.selectAccount);
+      context.read<AccountsBloc>().state.selectAccount.selectAccount,
+      false,
+    );
   }
 
   @override
@@ -61,9 +63,18 @@ class _UserInfoViewState extends State<UserInfoView> {
                 width: double.infinity,
                 child: WTabBar(
                   tabs: [
-                    Text(LocaleKeys.user_info.tr(), style: const TextStyle(fontSize: 30),),
-                    Text(LocaleKeys.user_history.tr(),style: const TextStyle(fontSize: 30),),
-                    Text(LocaleKeys.user_retsept.tr(),style: const TextStyle(fontSize: 30),),
+                    Text(
+                      LocaleKeys.user_info.tr(),
+                      style: const TextStyle(fontSize: 30),
+                    ),
+                    Text(
+                      LocaleKeys.user_history.tr(),
+                      style: const TextStyle(fontSize: 30),
+                    ),
+                    Text(
+                      LocaleKeys.user_retsept.tr(),
+                      style: const TextStyle(fontSize: 30),
+                    ),
                   ],
                 ),
               ),
@@ -77,7 +88,9 @@ class _UserInfoViewState extends State<UserInfoView> {
                         vm: widget.vm,
                       )
                     else
-                      AddUsetIteam(vm: widget.vm),
+                      AddUsetIteam(
+                        vm: widget.vm,
+                      ),
                     BlocBuilder<AccountsBloc, AccountsState>(
                       builder: (context, state) {
                         if (state.status.isInProgress) {

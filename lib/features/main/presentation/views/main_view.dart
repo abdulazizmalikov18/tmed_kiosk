@@ -217,12 +217,14 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                             onTap: () {
                               bloc.add(AccountsGet(
                                 search: controller.text,
-                                onSucces: () {
+                                onSucces: (value) {
                                   bloc.add(GetCupon(
                                       user: bloc.state.selectAccount
                                           .selectAccount.username));
                                   vm.selectAccount(
-                                      bloc.state.selectAccount.selectAccount);
+                                    bloc.state.selectAccount.selectAccount,
+                                    false,
+                                  );
                                   Navigator.of(context).pop();
                                   context.push(RoutsContact.userInfo,
                                       extra: vm);
@@ -233,11 +235,14 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                                           phoneJshshr: controller.text,
                                           onSuccess: (exodim) {
                                             final name = exodim.name.split(' ');
-                                            vm.selectAccount(AccountsEntity(
-                                              name: name.first,
-                                              lastname: name.last,
-                                              phone: controller.text,
-                                            ));
+                                            vm.selectAccount(
+                                              AccountsEntity(
+                                                name: name.first,
+                                                lastname: name.last,
+                                                phone: controller.text,
+                                              ),
+                                              false,
+                                            );
                                             setState(() {});
                                           },
                                           onError: (error) {},

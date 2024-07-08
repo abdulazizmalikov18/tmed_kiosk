@@ -21,6 +21,17 @@ class AccountsModel extends AccountsEntity {
     super.pinfl,
     super.region,
     super.parents,
+    super.birthPlace,
+    super.currentPlace,
+    super.education,
+    super.nationality,
+    super.surname,
+    super.isAfgan,
+    super.isCherno,
+    super.isUvu,
+    super.isInvalid,
+    super.position,
+    super.type,
   });
 
   factory AccountsModel.fromJson(Map<String, dynamic> json) =>

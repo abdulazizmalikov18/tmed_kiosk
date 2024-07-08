@@ -8,11 +8,11 @@ part of 'surcharge_model.dart';
 
 SurchargeModel _$SurchargeModelFromJson(Map<String, dynamic> json) =>
     SurchargeModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       org: json['org'] as String? ?? '',
       desc: json['desc'] as String? ?? '',
       isActive: json['is_active'] as bool? ?? false,
-      type: json['type'] as int? ?? 0,
+      type: (json['type'] as num?)?.toInt() ?? 0,
       value: (json['value'] as num?)?.toDouble() ?? 0,
     );
 

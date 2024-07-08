@@ -8,14 +8,14 @@ part of 'process_status_model.dart';
 
 ProcessStatusModel _$ProcessStatusModelFromJson(Map<String, dynamic> json) =>
     ProcessStatusModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
-      flow: json['flow'] as int? ?? 0,
+      flow: (json['flow'] as num?)?.toInt() ?? 0,
       key: json['key'] as String? ?? '',
-      order: json['order'] as int? ?? 0,
+      order: (json['order'] as num?)?.toInt() ?? 0,
       isVisible: json['is_visible'] as bool? ?? false,
       isDefault: json['is_default'] as bool? ?? false,
-      productCount: json['product_count'] as int? ?? 0,
+      productCount: (json['product_count'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$ProcessStatusModelToJson(ProcessStatusModel instance) =>

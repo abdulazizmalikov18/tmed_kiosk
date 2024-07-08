@@ -8,17 +8,17 @@ part of 'org_product_model.dart';
 
 OrgProductModel _$OrgProductModelFromJson(Map<String, dynamic> json) =>
     OrgProductModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       image360: json['image360'] as String? ?? "",
       product: json['product'] == null
           ? const ProductEntity()
           : const ProductConverter()
               .fromJson(json['product'] as Map<String, dynamic>?),
-      status: json['status'] as int? ?? 0,
+      status: (json['status'] as num?)?.toInt() ?? 0,
       barCode: json['bar_code'] as String? ?? '',
-      remains: json['remains'] as int? ?? 0,
-      vat: json['vat'] as int? ?? 0,
-      duration: json['duration'] as int? ?? 0,
+      remains: (json['remains'] as num?)?.toInt() ?? 0,
+      vat: (json['vat'] as num?)?.toInt() ?? 0,
+      duration: (json['duration'] as num?)?.toInt() ?? 0,
       placeDesc: json['place_desc'] as String? ?? '',
       prices: (json['prices'] as List<dynamic>?)
               ?.map((e) =>
@@ -39,7 +39,7 @@ OrgProductModel _$OrgProductModelFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const [],
       specialistIds: (json['specialist_ids'] as List<dynamic>?)
-              ?.map((e) => e as int)
+              ?.map((e) => (e as num).toInt())
               .toList() ??
           const [],
     );

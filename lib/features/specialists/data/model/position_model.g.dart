@@ -8,7 +8,7 @@ part of 'position_model.dart';
 
 PositionModel _$PositionModelFromJson(Map<String, dynamic> json) =>
     PositionModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       createDate: json['create_date'] as String? ?? '',
       name: json['name'] as String? ?? '',
       org: json['org'] == null

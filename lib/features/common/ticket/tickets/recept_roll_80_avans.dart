@@ -24,19 +24,11 @@ class ReceiptRoll80Avans extends BaseReceiptWidget {
   @override
   pw.Widget build(pw.Context context) {
     return pw.Padding(
-      padding: const pw.EdgeInsets.only(left: 20),
+      padding: const pw.EdgeInsets.only(right: 28),
       child: pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
-          pw.Container(
-            alignment: Alignment.center,
-            padding: const pw.EdgeInsets.symmetric(horizontal: 8),
-            child: pw.Text(
-              'TMED',
-              style: const pw.TextStyle(fontSize: 12),
-              textAlign: TextAlign.center,
-            ),
-          ),
+          // pw.Center(child: pw.Image(image)),
           pw.Container(
             padding: const pw.EdgeInsets.only(top: 8),
             alignment: Alignment.center,
@@ -53,7 +45,7 @@ class ReceiptRoll80Avans extends BaseReceiptWidget {
             alignment: Alignment.center,
             padding: const pw.EdgeInsets.symmetric(horizontal: 8),
             child: pw.Text(
-              'Toshkent sh.M.Ulugbek tum. Labzak kochasi 12',
+              '-------------',
               style: const pw.TextStyle(fontSize: 8),
               textAlign: TextAlign.center,
             ),
@@ -103,7 +95,7 @@ class ReceiptRoll80Avans extends BaseReceiptWidget {
                           ),
                         ),
                         pw.Text(
-                          "Raqamingiz ${data.number}",
+                          "TMEDID ${data.number}",
                           style: pw.TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
@@ -142,7 +134,8 @@ class ReceiptRoll80Avans extends BaseReceiptWidget {
                 textAlign: pw.TextAlign.center,
               ),
             ),
-          ]
+          ] else
+            pw.SizedBox(height: 20)
         ],
       ),
     );

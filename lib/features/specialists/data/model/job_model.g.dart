@@ -7,16 +7,16 @@ part of 'job_model.dart';
 // **************************************************************************
 
 JobModel _$JobModelFromJson(Map<String, dynamic> json) => JobModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? "",
       description: json['description'] as String? ?? "",
       hideFromOrgs: json['hide_from_orgs'] as bool? ?? false,
       hideFromUsers: json['hide_from_users'] as bool? ?? false,
       image: json['image'] as String? ?? "",
       status: json['status'] as bool? ?? false,
-      firstLevelScore: json['first_level_score'] as int? ?? 0,
-      levelProgressBy: json['level_progress_by'] as int? ?? 0,
-      parent: json['parent'] as int? ?? 0,
+      firstLevelScore: (json['first_level_score'] as num?)?.toInt() ?? 0,
+      levelProgressBy: (json['level_progress_by'] as num?)?.toInt() ?? 0,
+      parent: (json['parent'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$JobModelToJson(JobModel instance) => <String, dynamic>{

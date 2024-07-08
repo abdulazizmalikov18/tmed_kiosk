@@ -12,10 +12,11 @@ class AccountsState extends Equatable {
   final List<ProfessionEntity> profession;
   final List<ProfessionEntity> profession2;
   final List<HistoryEntity> historys;
-  final List<CuponEntity> cupons;
-  final List<RecommendationEntity> recommendations;
+  final List<CuponModel> cupons;
+  final List<RecommendationModel> recommendations;
   final bool isFocused;
   final int count;
+  final int countCupon;
   const AccountsState({
     this.status = FormzSubmissionStatus.initial,
     this.statusd = FormzSubmissionStatus.initial,
@@ -32,6 +33,7 @@ class AccountsState extends Equatable {
     this.cupons = const [],
     this.recommendations = const [],
     this.count = 0,
+    this.countCupon = 0,
   });
 
   AccountsState copyWith({
@@ -47,9 +49,10 @@ class AccountsState extends Equatable {
     List<ProfessionEntity>? profession,
     List<ProfessionEntity>? profession2,
     List<HistoryEntity>? historys,
-    List<CuponEntity>? cupons,
-    List<RecommendationEntity>? recommendations,
+    List<CuponModel>? cupons,
+    List<RecommendationModel>? recommendations,
     int? count,
+    int? countCupon,
   }) =>
       AccountsState(
         status: status ?? this.status,
@@ -67,6 +70,7 @@ class AccountsState extends Equatable {
         cupons: cupons ?? this.cupons,
         recommendations: recommendations ?? this.recommendations,
         count: count ?? this.count,
+        countCupon: countCupon ?? this.countCupon,
       );
 
   @override
@@ -86,5 +90,6 @@ class AccountsState extends Equatable {
         cupons,
         recommendations,
         count,
+        countCupon
       ];
 }

@@ -19,7 +19,8 @@ class PaymeDialog extends StatefulWidget {
     required this.vm,
     required this.vmA,
     required this.goodsBloc,
-    required this.username, required this.context,
+    required this.username,
+    required this.context,
   });
   final CartBloc bloc;
   final CartViewModel vm;
@@ -55,8 +56,9 @@ class _PaymeDialogState extends State<PaymeDialog> {
               duration: const Duration(microseconds: 300),
               width: double.infinity,
               decoration: BoxDecoration(
-                color:
-                    index == 0 ? blue.withOpacity(.1) : context.color.white.withOpacity(.1),
+                color: index == 0
+                    ? blue.withOpacity(.1)
+                    : context.color.white.withOpacity(.1),
                 borderRadius: BorderRadius.circular(12),
                 border: index == 0 ? Border.all(color: blue) : null,
               ),
@@ -67,7 +69,10 @@ class _PaymeDialogState extends State<PaymeDialog> {
                   const SizedBox(height: 12),
                   Text(
                     "Payment via Pay Me",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: context.color.white),
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: context.color.white),
                   ),
                   if (index == 0)
                     Padding(
@@ -105,8 +110,9 @@ class _PaymeDialogState extends State<PaymeDialog> {
               duration: const Duration(microseconds: 300),
               width: double.infinity,
               decoration: BoxDecoration(
-                color:
-                    index == 1 ? blue.withOpacity(.1) : context.color.white.withOpacity(.1),
+                color: index == 1
+                    ? blue.withOpacity(.1)
+                    : context.color.white.withOpacity(.1),
                 borderRadius: BorderRadius.circular(12),
                 border: index == 1 ? Border.all(color: blue) : null,
               ),
@@ -117,7 +123,10 @@ class _PaymeDialogState extends State<PaymeDialog> {
                   const SizedBox(height: 12),
                   Text(
                     "Payment via Click",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400,color: context.color.white),
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: context.color.white),
                   ),
                   if (index == 1)
                     Padding(
@@ -163,6 +172,7 @@ class _PaymeDialogState extends State<PaymeDialog> {
                       context.read<ShowPopUpBloc>().add(
                           ShowPopUp(message: nima, status: PopStatus.error));
                     },
+                    isCupon: true,
                   ),
                 );
               } else {
@@ -175,8 +185,9 @@ class _PaymeDialogState extends State<PaymeDialog> {
               duration: const Duration(microseconds: 300),
               width: double.infinity,
               decoration: BoxDecoration(
-                color:
-                    index == 2 ? blue.withOpacity(.1) : context.color.white.withOpacity(.1),
+                color: index == 2
+                    ? blue.withOpacity(.1)
+                    : context.color.white.withOpacity(.1),
                 borderRadius: BorderRadius.circular(12),
                 border: index == 2 ? Border.all(color: blue) : null,
               ),
@@ -187,7 +198,10 @@ class _PaymeDialogState extends State<PaymeDialog> {
                   const SizedBox(height: 12),
                   Text(
                     "Payment by cash",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400,color: context.color.white),
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: context.color.white),
                   )
                 ],
               ),

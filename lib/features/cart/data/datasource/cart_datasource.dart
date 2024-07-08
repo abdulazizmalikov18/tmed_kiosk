@@ -1,5 +1,8 @@
 // ignore_for_file: deprecated_member_use
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:tmed_kiosk/features/cart/data/models/check_user_model.dart';
 import 'package:hive/hive.dart';
 import 'package:tmed_kiosk/assets/constants/storage_keys.dart';
 import 'package:tmed_kiosk/core/exceptions/exceptions.dart';
@@ -9,7 +12,6 @@ import 'package:tmed_kiosk/core/singletons/service_locator.dart';
 import 'package:tmed_kiosk/features/cart/data/models/account_create_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/accounts_filter.dart';
 import 'package:tmed_kiosk/features/cart/data/models/accounts_model.dart';
-import 'package:tmed_kiosk/features/cart/data/models/check_user_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/create_account_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_filter.dart';
 import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_model.dart';
@@ -22,16 +24,19 @@ import 'package:tmed_kiosk/features/cart/data/models/process_status_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/profession_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/recommendation/recommendation_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/region_model.dart';
+import 'package:tmed_kiosk/features/cart/data/models/update_account.dart';
 import 'package:tmed_kiosk/features/cart/data/models/update_orders_model.dart';
 import 'package:tmed_kiosk/features/common/models/orders_model.dart';
 import 'package:tmed_kiosk/features/common/models/popular_category_filter.dart';
 import 'package:tmed_kiosk/features/common/pagination/models/generic_pagination.dart';
+import 'package:tmed_kiosk/features/common/repo/error_handle.dart';
 import 'package:tmed_kiosk/features/common/repo/storage_repository.dart';
 
 abstract class CartDataSource {
   Future<OrdersModel> createOrder(OrdersCreatModel param);
   Future<GenericPagination<AccountsModel>> accountsList(AccountsFilter param);
   Future<AccountsModel> accountUsername(String param);
+  Future<AccountsModel> accountUpdate(UpdateAccount data);
   Future<GenericPagination<RegionModel>> getRegion(Filter param);
   Future<GenericPagination<ProfessionModel>> getProfession(Filter param);
   Future<GenericPagination<CuponModel>> getCoupon(CFilter filter);
@@ -52,6 +57,7 @@ abstract class CartDataSource {
 class CartDataSourceImpl extends CartDataSource {
   final dio = serviceLocator<DioSettings>().dio;
   final box = Hive.box(StorageKeys.PRODUCTS);
+  final ErrorHandle _handle = ErrorHandle();
 
   @override
   Future<AccountsModel> accountUsername(String param) async {
@@ -88,7 +94,7 @@ class CartDataSourceImpl extends CartDataSource {
       AccountsFilter param) async {
     try {
       final response = await dio.get(
-        'UMS/api/v1.0/business/accounts/',
+        'UMS/api/v1.0/business/accounts/?type=${StorageRepository.getBool(StorageKeys.ISCOMPANY) ? "company" : "user"}',
         options: Options(
           headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
               ? {
@@ -299,7 +305,7 @@ class CartDataSourceImpl extends CartDataSource {
   Future<GenericPagination<ProcessStatusModel>> processStatus() async {
     try {
       final response = await dio.get(
-        'OMS/api/v1.0/business/${StorageRepository.getString(StorageKeys.COMPID)}/process-status/',
+        'OMS/api/v1.0/business/${StorageRepository.getString(StorageKeys.COMPID)}/process-status/?limit=1000',
         options: Options(
           headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
               ? {
@@ -523,40 +529,45 @@ class CartDataSourceImpl extends CartDataSource {
   @override
   Future<GenericPagination<RecommendationModel>> getRecommendation(
       String username) async {
-    try {
-      final response = await dio.get(
-        'OMS/api/v1.0/business/${StorageRepository.getString(StorageKeys.COMPID)}/recommendation/?username=$username',
-        options: Options(
-          headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
-              ? {
-                  'Authorization':
-                      'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
-                }
-              : {},
-        ),
-      );
-      if (response.statusCode! >= 200 && response.statusCode! < 300) {
-        return GenericPagination.fromJson(
-          response.data,
-          (p0) => RecommendationModel.fromJson(p0 as Map<String, dynamic>),
+    return _handle.apiCantrol(
+      request: () {
+        return dio.get(
+          'OMS/api/v1.0/business/${StorageRepository.getString(StorageKeys.COMPID)}/recommendation/?username=$username',
+          options: Options(
+            headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
+                ? {
+                    'Authorization':
+                        'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+                  }
+                : {},
+          ),
         );
-      }
-      throw ServerException(
-        statusCode: response.statusCode ?? 0,
-        errorMessage: response.statusMessage ?? "",
-      );
-    } on ServerException {
-      rethrow;
-    } on DioError catch (e) {
-      throw DioException(requestOptions: e.requestOptions);
-    } on Exception catch (e) {
-      throw ParsingException(errorMessage: e.toString());
-    }
+      },
+      body: (response) => GenericPagination.fromJson(
+        response,
+        (p0) => RecommendationModel.fromJson(p0 as Map<String, dynamic>),
+      ),
+    );
   }
 
   @override
   Future<CuponModel> getCouponID(int id) {
-    throw UnimplementedError();
+    return _handle.apiCantrol(
+      request: () {
+        return dio.get(
+          'PMS/api/v1.0/business/${StorageRepository.getString(StorageKeys.COMPID)}/coupon/$id/',
+          options: Options(
+            headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
+                ? {
+                    'Authorization':
+                        'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+                  }
+                : {},
+          ),
+        );
+      },
+      body: (response) => CuponModel.fromJson(response),
+    );
   }
 
   @override
@@ -592,32 +603,43 @@ class CartDataSourceImpl extends CartDataSource {
 
   @override
   Future<CuponResModel> delateCupon(CuSel param) async {
-    try {
-      final response = await dio.delete(
-        'PMS/api/v1.0/business/${StorageRepository.getString(StorageKeys.COMPID)}/coupon/${param.id}/receiver/${param.user}/',
-        options: Options(
-          headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
-              ? {
-                  'Authorization':
-                      'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
-                }
-              : {},
-        ),
-      );
-      if (response.statusCode! >= 200 && response.statusCode! < 300) {
-        return CuponResModel.fromJson(response.data);
-      }
+    return _handle.apiCantrol(
+      request: () {
+        return dio.delete(
+          'PMS/api/v1.0/business/${StorageRepository.getString(StorageKeys.COMPID)}/coupon/${param.id}/receiver/${param.user}/',
+          options: Options(
+            headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
+                ? {
+                    'Authorization':
+                        'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+                  }
+                : {},
+          ),
+        );
+      },
+      body: (response) => CuponResModel.fromJson(response),
+    );
+  }
 
-      throw ServerException(
-        statusCode: response.statusCode ?? 0,
-        errorMessage: response.statusMessage ?? "",
-      );
-    } on ServerException {
-      rethrow;
-    } on DioError catch (e) {
-      throw DioException(requestOptions: e.requestOptions);
-    } on Exception catch (e) {
-      throw ParsingException(errorMessage: e.toString());
-    }
+  @override
+  Future<AccountsModel> accountUpdate(UpdateAccount data) {
+    return _handle.apiCantrol(
+      request: () {
+        return dio.patch(
+          "UMS/api/v1.0/account/update-by-specialist/${data.username}/",
+          options: Options(
+            headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
+                ? {
+                    'Authorization':
+                        'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+                  }
+                : {},
+          ),
+          data: json.encode(data.formData),
+        );
+      },
+      body: (response) =>
+          AccountsModel.fromJson(response as Map<String, dynamic>),
+    );
   }
 }

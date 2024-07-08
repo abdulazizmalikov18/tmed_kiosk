@@ -71,163 +71,163 @@ class _AuthMainViewState extends State<AuthMainView> with AuthMainMixin {
               backgroundColor: context.color.scaffoldBackground,
               body: size.width >= 601
                   ? Row(
-                children: [
-                  AuthInfoCont(
-                    size: MediaQuery.of(context).size,
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(50),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        AuthInfoCont(
+                          size: MediaQuery.of(context).size,
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
                               children: [
-                                DropDownFlag(
-                                  width: SizeConfig.v(162),
-                                  height: SizeConfig.v(48),
-                                  radius: 16,
-                                  items: lengu,
-                                  selectedItem: selectedItem,
-                                  filterFunction: () {
-                                    context
-                                        .setLocale(Locale(
-                                        selectedItem.value.type))
-                                        .then((value) => context
-                                        .read<AuthenticationBloc>()
-                                        .add(ChangeLanguageEvent(
-                                        selectedItem
-                                            .value.type)));
-                                    setState(() {});
-                                  },
-                                  color:
-                                  context.color.white.withOpacity(.1),
+                                Padding(
+                                  padding: const EdgeInsets.all(50),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      DropDownFlag(
+                                        width: SizeConfig.v(162),
+                                        height: SizeConfig.v(48),
+                                        radius: 16,
+                                        items: lengu,
+                                        selectedItem: selectedItem,
+                                        filterFunction: () {
+                                          context
+                                              .setLocale(Locale(
+                                                  selectedItem.value.type))
+                                              .then((value) => context
+                                                  .read<AuthenticationBloc>()
+                                                  .add(ChangeLanguageEvent(
+                                                      selectedItem
+                                                          .value.type)));
+                                          setState(() {});
+                                        },
+                                        color:
+                                            context.color.white.withOpacity(.1),
+                                      ),
+                                    ],
+                                  ),
                                 ),
+                                ConstrainedBox(
+                                  constraints:
+                                      const BoxConstraints(maxWidth: 500),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              .06),
+                                      Text(
+                                        LocaleKeys.login_auth_text.tr(),
+                                        style: AppTheme.bodyMedium.copyWith(
+                                            color: context.color.white,
+                                            fontSize: 60),
+                                      ),
+                                      const SizedBox(height: 12),
+                                      Text(
+                                        LocaleKeys.login_auth_text_description
+                                            .tr(),
+                                        style: AppTheme.labelSmall
+                                            .copyWith(fontSize: 24),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      const SizedBox(height: 64),
+                                      TrackingTextInput(
+                                        hint: LocaleKeys.login.tr(),
+                                        controller: username,
+                                        inputFormatters: [
+                                          Formatters.loginFormat
+                                        ],
+                                        onCaretMoved: (Offset? caret) {
+                                          // bearLoginController.coverEyes(caret == null);
+                                          // bearLoginController.lookAt(caret);
+                                        },
+                                        onTextChanged: (text) {
+                                          if (text.isEmpty) {
+                                            isCheckEmail = true;
+                                          } else {
+                                            isCheckEmail = false;
+                                          }
+                                          setState(() {});
+                                        },
+                                        textInputAction: TextInputAction.next,
+                                        isPhone: false,
+                                      ),
+                                      const SizedBox(height: 24),
+                                      TrackingTextInput(
+                                        hint: LocaleKeys.enterPassword.tr(),
+                                        controller: password,
+                                        isObscured: true,
+                                        onCaretMoved: (Offset? caret) {
+                                          // bearLoginController.coverEyes(caret != null);
+                                          // bearLoginController.lookAt(null);
+                                        },
+                                        onEditingComplete: () {
+                                          login();
+                                        },
+                                        onTextChanged: (String value) {
+                                          // bearLoginController.setPassword(value);
+                                          if (value.isEmpty) {
+                                            isCheckPas = true;
+                                          } else {
+                                            isCheckPas = false;
+                                          }
+                                          setState(() {});
+                                        },
+                                        textInputAction: TextInputAction.done,
+                                        isPhone: false,
+                                      ),
+                                      const SizedBox(height: 6),
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: TextButton(
+                                          onPressed: () {},
+                                          child: Text(
+                                            LocaleKeys.forgot_your_password
+                                                .tr(),
+                                            style: AppTheme.labelSmall.copyWith(
+                                                fontSize: 16, color: blue),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 24),
+                                      WButton(
+                                        height: 56,
+                                        isDisabled:
+                                            !(password.text.isNotEmpty &&
+                                                username.text.isNotEmpty),
+                                        isLoading: context
+                                                .watch<AuthenticationBloc>()
+                                                .state
+                                                .status ==
+                                            AuthenticationStatus.loading,
+                                        onTap: () {
+                                          login();
+                                        },
+                                        text: LocaleKeys.login_username.tr(),
+                                      ),
+                                      SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              .19),
+                                      Text("App version: $appVersion"),
+                                      const SizedBox(height: 48),
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
                           ),
-                          ConstrainedBox(
-                            constraints:
-                            const BoxConstraints(maxWidth: 500),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                    height: MediaQuery.of(context)
-                                        .size
-                                        .width *
-                                        .06),
-                                Text(
-                                  LocaleKeys.login_auth_text.tr(),
-                                  style: AppTheme.bodyMedium.copyWith(
-                                      color: context.color.white,
-                                      fontSize: 60),
-                                ),
-                                const SizedBox(height: 12),
-                                Text(
-                                  LocaleKeys.login_auth_text_description
-                                      .tr(),
-                                  style: AppTheme.labelSmall
-                                      .copyWith(fontSize: 24),
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 64),
-                                TrackingTextInput(
-                                  hint: LocaleKeys.login.tr(),
-                                  controller: username,
-                                  inputFormatters: [
-                                    Formatters.loginFormat
-                                  ],
-                                  onCaretMoved: (Offset? caret) {
-                                    // bearLoginController.coverEyes(caret == null);
-                                    // bearLoginController.lookAt(caret);
-                                  },
-                                  onTextChanged: (text) {
-                                    if (text.isEmpty) {
-                                      isCheckEmail = true;
-                                    } else {
-                                      isCheckEmail = false;
-                                    }
-                                    setState(() {});
-                                  },
-                                  textInputAction: TextInputAction.next,
-                                  isPhone: false,
-                                ),
-                                const SizedBox(height: 24),
-                                TrackingTextInput(
-                                  hint: LocaleKeys.enterPassword.tr(),
-                                  controller: password,
-                                  isObscured: true,
-                                  onCaretMoved: (Offset? caret) {
-                                    // bearLoginController.coverEyes(caret != null);
-                                    // bearLoginController.lookAt(null);
-                                  },
-                                  onEditingComplete: () {
-                                    login();
-                                  },
-                                  onTextChanged: (String value) {
-                                    // bearLoginController.setPassword(value);
-                                    if (value.isEmpty) {
-                                      isCheckPas = true;
-                                    } else {
-                                      isCheckPas = false;
-                                    }
-                                    setState(() {});
-                                  },
-                                  textInputAction: TextInputAction.done,
-                                  isPhone: false,
-                                ),
-                                const SizedBox(height: 6),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: TextButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      LocaleKeys.forgot_your_password
-                                          .tr(),
-                                      style: AppTheme.labelSmall.copyWith(
-                                          fontSize: 16, color: blue),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 24),
-                                WButton(
-                                  height: 56,
-                                  isDisabled:
-                                  !(password.text.isNotEmpty &&
-                                      username.text.isNotEmpty),
-                                  isLoading: context
-                                      .watch<AuthenticationBloc>()
-                                      .state
-                                      .status ==
-                                      AuthenticationStatus.loading,
-                                  onTap: () {
-                                    login();
-                                  },
-                                  text: LocaleKeys.login_username.tr(),
-                                ),
-                                SizedBox(
-                                    height: MediaQuery.of(context)
-                                        .size
-                                        .width *
-                                        .19),
-                                Text("App version: $appVersion"),
-                                const SizedBox(height: 48),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              )
-              // : AuthPhoneView(
-              //     formKey: formKey,
-              //     username: username,
-              //     password: password,
-              //     compController: compController,
-              //   ),
+                        ),
+                      ],
+                    )
+                  // : AuthPhoneView(
+                  //     formKey: formKey,
+                  //     username: username,
+                  //     password: password,
+                  //     compController: compController,
+                  //   ),
                   : const PhoneOnboarding(),
             ),
           ),

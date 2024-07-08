@@ -89,6 +89,7 @@ mixin CheckPriceController on State<ChekPriceIteam> {
             processStatus: widget.tabIndex.index == 0 ? state.selStatus.id : 1,
             clientComment: widget.list.first.controller.text,
           ),
+          isCupon: widget.vm.isCupon,
         ));
   }
 }

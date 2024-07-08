@@ -8,8 +8,8 @@ class PriceEntity extends Equatable {
   final String currency;
   final int discount;
   final bool active;
-  final int maxQty;
-  final int minQty;
+  final int? maxQty;
+  final int? minQty;
   final double discountPrice;
 
   const PriceEntity({
@@ -18,8 +18,8 @@ class PriceEntity extends Equatable {
     this.currency = '',
     this.discount = 0,
     this.active = false,
-    this.maxQty = 0,
-    this.minQty = 0,
+    this.maxQty,
+    this.minQty,
     this.discountPrice = 0,
   });
 

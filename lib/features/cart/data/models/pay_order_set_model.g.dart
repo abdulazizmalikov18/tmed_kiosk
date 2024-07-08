@@ -8,8 +8,8 @@ part of 'pay_order_set_model.dart';
 
 PayOrderSetModel _$PayOrderSetModelFromJson(Map<String, dynamic> json) =>
     PayOrderSetModel(
-      method: json['method'] as int? ?? 0,
-      cost: json['cost'] as int? ?? 0,
+      method: (json['method'] as num?)?.toInt() ?? 0,
+      cost: (json['cost'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$PayOrderSetModelToJson(PayOrderSetModel instance) =>

@@ -7,16 +7,24 @@ class CreatOrder extends CartEvent {
   final Function(String) onError;
   final PostProductFilter filter;
   final String? username;
+  final bool isCupon;
   CreatOrder({
     required this.onSuccess,
     required this.onError,
     this.filter = const PostProductFilter(),
     this.username,
+    required this.isCupon,
   });
 }
 
+class StatusActive extends CartEvent {
+  final int id;
+
+  StatusActive({required this.id});
+}
+
 class CuponSel extends CartEvent {
-  final CuponEntity cupon;
+  final CuponModel cupon;
 
   CuponSel({required this.cupon});
 }
@@ -38,7 +46,7 @@ class RemoveCupon extends CartEvent {}
 class CartAddMap extends CartEvent {
   final OrgProductEntity product;
   final int index;
-  final ProductSpecialEntity? psp;
+  final ProductSpecialModel? psp;
   final DateTime? dateTime;
   final int? discountPrice;
   final List<int>? surchargeIds;
@@ -68,7 +76,7 @@ class CartAddMap extends CartEvent {
 class CartEdit extends CartEvent {
   final OrgProductEntity orgProductCart;
   final int index;
-  final ProductSpecialEntity? psp;
+  final ProductSpecialModel? psp;
   final DateTime? dateTime;
   final int? discountPrice;
   final List<int>? surchargeIds;
@@ -118,6 +126,18 @@ class SelStatus extends CartEvent {
 
 class GetProcessStatus extends CartEvent {}
 
+// class PatchPay extends CartEvent {
+//   final OrderPayModel param;
+//   final VoidCallback onSuccess;
+//   final Function(String) onError;
+
+//   PatchPay({
+//     required this.param,
+//     required this.onSuccess,
+//     required this.onError,
+//   });
+// }
+
 class CartAddOrder extends CartEvent {
   final OrdersEntity orders;
   final VoidCallback onSuccess;
@@ -131,7 +151,7 @@ class CartAddOrder extends CartEvent {
 }
 
 class CartAddRecommendation extends CartEvent {
-  final List<RecProductEntity> products;
+  final List<ProductElement> products;
   final VoidCallback onSuccess;
   final Function(String) onError;
 

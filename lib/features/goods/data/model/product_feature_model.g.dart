@@ -8,7 +8,7 @@ part of 'product_feature_model.dart';
 
 ProductFeatureModel _$ProductFeatureModelFromJson(Map<String, dynamic> json) =>
     ProductFeatureModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       feature: json['feature'] == null
           ? const FeatureEntity()
           : const FeatureConverter()

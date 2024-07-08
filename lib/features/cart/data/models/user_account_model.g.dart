@@ -16,7 +16,7 @@ UserAccountModel _$UserAccountModelFromJson(Map<String, dynamic> json) =>
       gender: json['gender'] as String? ?? "",
       birthday: json['birthday'] as String? ?? "",
       mainCat: json['main_cat'] as String? ?? "",
-      region: json['region'] as int? ?? 0,
+      region: (json['region'] as num?)?.toInt() ?? 0,
       qrcode: json['qrcode'] as String? ?? "",
       pinfl: json['pinfl'] as String? ?? "",
     );

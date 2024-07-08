@@ -16,7 +16,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       birthday: json['birthday'] as String? ?? '',
       gender: json['gender'] as String? ?? '',
       bio: json['bio'] ?? '',
-      status: json['status'] as int? ?? 0,
+      status: (json['status'] as num?)?.toInt() ?? 0,
       isRelated: json['is_related'] as bool? ?? false,
       region: json['region'] == null
           ? const DataEntity()

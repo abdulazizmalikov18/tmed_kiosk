@@ -45,7 +45,10 @@ class CartAppBar extends StatelessWidget {
                             .selectAccount.selectAccount.username.isEmpty) {
                           context.read<MyNavigatorBloc>().add(NavId(4));
                         } else {
-                          vm.selectAccount(state.selectAccount.selectAccount);
+                          vm.selectAccount(
+                            state.selectAccount.selectAccount,
+                            false,
+                          );
                           context.read<MyNavigatorBloc>().add(NavId(1));
                         }
                       }

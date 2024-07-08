@@ -47,13 +47,15 @@ class SearchAccount extends StatelessWidget {
                       Log.w("Nima gap");
                       bloc.add(AccountsGet(
                         search: controller.text,
-                        onSucces: () {
+                        onSucces: (value) {
                           context.read<AccountsBloc>().add(GetCupon(
                               user: bloc
                                   .state.selectAccount.selectAccount.username));
                           context.read<MyNavigatorBloc>().add(NavId(1));
                           vm.selectAccount(
-                              bloc.state.selectAccount.selectAccount);
+                            bloc.state.selectAccount.selectAccount,
+                            false,
+                          );
                         },
                         onError: () {
                           context.read<ShowPopUpBloc>().add(ShowPopUp(

@@ -4,13 +4,12 @@ sealed class AccountsEvent {}
 
 class AccountsGet extends AccountsEvent {
   final String? search;
-  final VoidCallback onSucces;
-  final VoidCallback onError;
-
+  final Function(AccountsEntity entity)? onSucces;
+  final VoidCallback? onError;
   AccountsGet({
     this.search,
-    required this.onSucces,
-    required this.onError,
+    this.onSucces,
+    this.onError,
   });
 }
 
@@ -30,6 +29,18 @@ class GetMoreAccounts extends AccountsEvent {
   final String? search;
 
   GetMoreAccounts({this.search});
+}
+
+class UpdateAccountEvent extends AccountsEvent {
+  final String username;
+  final Map<String, dynamic> data;
+  final Function(AccountsEntity account) onSucces;
+
+  UpdateAccountEvent({
+    required this.username,
+    required this.data,
+    required this.onSucces,
+  });
 }
 
 class DelSelectionAcccount extends AccountsEvent {}
@@ -75,8 +86,13 @@ class GetProfession extends AccountsEvent {
 class GetCupon extends AccountsEvent {
   final String? user;
   final String? search;
+  final bool feetchMore;
 
-  GetCupon({this.user, this.search});
+  GetCupon({
+    this.user,
+    this.search,
+    this.feetchMore = false,
+  });
 }
 
 class CheckPhone extends AccountsEvent {
@@ -151,7 +167,7 @@ class RemoveCuponA extends AccountsEvent {}
 class SelectionCupon extends AccountsEvent {
   final int id;
   final bool isDisebled;
-  final Function(CuponEntity) onCupon;
+  final Function(CuponModel) onCupon;
 
   SelectionCupon({
     required this.id,

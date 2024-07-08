@@ -1,3 +1,4 @@
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/common/controllers/price_bloc/price_bloc.dart';
 import 'package:tmed_kiosk/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -7,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
 import 'package:tmed_kiosk/assets/themes/theme.dart';
-import 'package:tmed_kiosk/features/cart/domain/entity/cupon_entity.dart';
+import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_model.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/cart_view_model.dart';
@@ -17,6 +18,7 @@ class CuponIteam extends StatefulWidget {
     super.key,
     required this.vm,
   });
+
   final CartViewModel vm;
 
   @override
@@ -34,16 +36,20 @@ class _CuponIteamState extends State<CuponIteam> {
                 stateCart.cupon.title.isNotEmpty &&
                     context.watch<PriceBloc>().state.isPrice) {
               return Container(
-                decoration: wdecoration2,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: context.color.contColor,
+                  border: Border.all(color: contColor.withOpacity(.1)),
+                ),
                 padding: const EdgeInsets.all(12),
-                margin: const EdgeInsets.symmetric(horizontal: 16),
                 width: double.infinity,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       LocaleKeys.adduser_coupon.tr(),
-                      style: AppTheme.displayLarge,
+                      style: AppTheme.displayLarge
+                          .copyWith(color: context.color.white),
                     ),
                     const SizedBox(height: 8),
                     SizedBox(
@@ -51,29 +57,50 @@ class _CuponIteamState extends State<CuponIteam> {
                       child: Row(
                         children: [
                           Expanded(
-                            child: DropdownButtonFormField<CuponEntity>(
+                            child: DropdownButtonFormField<CuponModel>(
                               value: state.selectAccount.cupons.first,
-                              icon: AppIcons.arrowDown.svg(color: white50),
+                              icon: AppIcons.arrowDown.svg(color: greyText),
                               decoration: InputDecoration(
-                                fillColor: borderColor,
-                                focusColor: borderColor,
-                                hoverColor: borderColor,
+                                fillColor: context.color.contColor,
+                                focusColor: context.color.contColor,
+                                hoverColor: context.color.contColor,
                                 contentPadding:
                                     const EdgeInsets.symmetric(horizontal: 12),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(color: greyText),
+                                  borderSide: BorderSide(
+                                      color: contColor.withOpacity(.1)),
                                 ),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: BorderSide(
+                                        color: contColor.withOpacity(.1))),
+                                disabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: BorderSide(
+                                        color: contColor.withOpacity(.1))),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: BorderSide(
+                                        color: contColor.withOpacity(.1))),
                               ),
                               focusColor: borderColor,
                               borderRadius: BorderRadius.circular(12),
-                              dropdownColor: borderColor,
+                              dropdownColor: context.color.contColor,
                               items: state.selectAccount.cupons
-                                  .map((CuponEntity value) {
-                                return DropdownMenuItem<CuponEntity>(
+                                  .map((CuponModel value) {
+                                return DropdownMenuItem<CuponModel>(
                                   value: value,
-                                  child: Text(
-                                      "${value.title} / ${value.productDiscount}%"),
+                                  child: SizedBox(
+                                    width: 200,
+                                    child: Text(
+                                      "${value.title} / ${value.productDiscount}%",
+                                      style: TextStyle(
+                                        color: context.color.white,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
                                 );
                               }).toList(),
                               onChanged: (newValue) {

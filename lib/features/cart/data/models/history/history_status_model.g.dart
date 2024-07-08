@@ -8,11 +8,11 @@ part of 'history_status_model.dart';
 
 HistoryStatusModel _$HistoryStatusModelFromJson(Map<String, dynamic> json) =>
     HistoryStatusModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
-      flow: json['flow'] as int? ?? 0,
+      flow: (json['flow'] as num?)?.toInt() ?? 0,
       key: json['key'] as String? ?? '',
-      order: json['order'] as int? ?? 0,
+      order: (json['order'] as num?)?.toInt() ?? 0,
       isVisible: json['is_visible'] as bool? ?? false,
       toFinish: json['to_finish'] as bool? ?? false,
       toCancel: json['to_cancel'] as bool? ?? false,

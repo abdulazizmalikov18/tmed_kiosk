@@ -5,7 +5,7 @@ class PdfLine extends pw.StatelessWidget {
   final String line;
   PdfLine({
     required this.length,
-    this.line = '-',
+    this.line = '- ',
   });
   @override
   pw.Widget build(pw.Context context) {

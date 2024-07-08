@@ -32,7 +32,7 @@ class AccountsListTile extends StatelessWidget {
         if (Platform.isWindows || Platform.isMacOS) {
           context.read<MyNavigatorBloc>().add(NavId(1));
         }
-        vm.selectAccount(entity);
+        vm.selectAccount(entity, false);
       },
       title: isPhone
           ? Text(

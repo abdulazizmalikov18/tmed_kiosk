@@ -8,7 +8,6 @@ import 'package:tmed_kiosk/features/cart/domain/repo/cart_repo.dart';
 import 'package:tmed_kiosk/features/common/models/popular_category_filter.dart';
 import 'package:tmed_kiosk/features/common/pagination/models/generic_pagination.dart';
 
-
 class ProfessionUseCase
     extends UseCase<GenericPagination<ProfessionEntity>, Filter> {
   final CartRepo repository = serviceLocator<CartRepoImpl>();

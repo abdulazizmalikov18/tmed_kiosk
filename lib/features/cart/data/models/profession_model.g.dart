@@ -8,17 +8,17 @@ part of 'profession_model.dart';
 
 ProfessionModel _$ProfessionModelFromJson(Map<String, dynamic> json) =>
     ProfessionModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       isParent: json['is_parent'] as bool? ?? false,
-      childNumber: json['child_number'] as int? ?? 0,
+      childNumber: (json['child_number'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? "",
       hideFromOrgs: json['hide_from_orgs'] as bool? ?? false,
       hideFromUsers: json['hide_from_users'] as bool? ?? false,
       image: json['image'] as String? ?? "",
-      status: json['status'] as int? ?? 0,
+      status: (json['status'] as num?)?.toInt() ?? 0,
       description: json['description'] as String? ?? "",
-      firstLevelScore: json['first_level_score'] as int? ?? 0,
-      levelProgressBy: json['level_progress_by'] as int? ?? 0,
+      firstLevelScore: (json['first_level_score'] as num?)?.toInt() ?? 0,
+      levelProgressBy: (json['level_progress_by'] as num?)?.toInt() ?? 0,
       parent: json['parent'] ?? 0,
     );
 

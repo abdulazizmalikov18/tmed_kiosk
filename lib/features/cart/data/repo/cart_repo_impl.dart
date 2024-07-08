@@ -11,15 +11,16 @@ import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_filter.dart';
 import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_selection.dart';
 import 'package:tmed_kiosk/features/cart/data/models/history/history_filter.dart';
 import 'package:tmed_kiosk/features/cart/data/models/orders_creat_model.dart';
+import 'package:tmed_kiosk/features/cart/data/models/update_account.dart';
 import 'package:tmed_kiosk/features/cart/data/models/update_orders_model.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/accounts_entity.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/create_account.dart';
-import 'package:tmed_kiosk/features/cart/domain/entity/cupon_entity.dart';
+import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_model.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/cupon_res_entity.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/history/history_entity.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/process_status_entity.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/profession_entity.dart';
-import 'package:tmed_kiosk/features/cart/domain/entity/recommendation/recommendation_entity.dart';
+import 'package:tmed_kiosk/features/cart/data/models/recommendation/recommendation_model.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/region_entity.dart';
 import 'package:tmed_kiosk/features/cart/domain/repo/cart_repo.dart';
 import 'package:tmed_kiosk/features/common/controllers/auth/authentication_bloc.dart';
@@ -87,7 +88,8 @@ class CartRepoImpl extends CartRepo {
   }
 
   @override
-  Future<Either<Failure, CheckUserModel>> postPhone(AccountCreateModel parma) async {
+  Future<Either<Failure, CheckUserModel>> postPhone(
+      AccountCreateModel parma) async {
     try {
       final result = await dataSource.postPhone(parma);
       return Right(result);
@@ -210,7 +212,7 @@ class CartRepoImpl extends CartRepo {
   }
 
   @override
-  Future<Either<Failure, GenericPagination<CuponEntity>>> getCoupon(
+  Future<Either<Failure, GenericPagination<CuponModel>>> getCoupon(
       CFilter filter) async {
     bool isConnection = await isInternetConnected();
     if (isConnection) {
@@ -298,7 +300,7 @@ class CartRepoImpl extends CartRepo {
   }
 
   @override
-  Future<Either<Failure, GenericPagination<RecommendationEntity>>>
+  Future<Either<Failure, GenericPagination<RecommendationModel>>>
       getRecommendation(String username) async {
     try {
       final result = await dataSource.getRecommendation(username);
@@ -316,7 +318,7 @@ class CartRepoImpl extends CartRepo {
   }
 
   @override
-  Future<Either<Failure, CuponEntity>> getCouponID(int id) async {
+  Future<Either<Failure, CuponModel>> getCouponID(int id) async {
     try {
       final result = await localDataSource.getCouponID(id);
       return Right(result);
@@ -373,6 +375,27 @@ class CartRepoImpl extends CartRepo {
     }
     try {
       final result = await dataSource.accountUsername(param);
+      return Right(result);
+    } on DioException {
+      return Left(DioFailure());
+    } on ParsingException catch (e) {
+      return Left(ParsingFailure(errorMessage: e.errorMessage));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(
+        errorMessage: e.errorMessage,
+        statusCode: e.statusCode,
+      ));
+    }
+  }
+
+  @override
+  Future<Either<Failure, AccountsEntity>> accountUpdate(
+      UpdateAccount data) async {
+    if (!await isInternetConnected()) {
+      return Left(NetworkFailure(errorMessage: 'Connection failure'));
+    }
+    try {
+      final result = await dataSource.accountUpdate(data);
       return Right(result);
     } on DioException {
       return Left(DioFailure());

@@ -8,7 +8,7 @@ part of 'process_work_model.dart';
 
 ProcessWorkModel _$ProcessWorkModelFromJson(Map<String, dynamic> json) =>
     ProcessWorkModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
       description: json['description'] as String? ?? '',
       creator: json['creator'] as String? ?? '',

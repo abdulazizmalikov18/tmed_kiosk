@@ -7,12 +7,12 @@ part of 'a_region_model.dart';
 // **************************************************************************
 
 ARegionModel _$ARegionModelFromJson(Map<String, dynamic> json) => ARegionModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
-      status: json['status'] as int? ?? 0,
+      status: (json['status'] as num?)?.toInt() ?? 0,
       type: json['type'] ?? 0,
-      userCount: json['user_count'] as int? ?? 0,
-      parent: json['parent'] as int? ?? 0,
+      userCount: (json['user_count'] as num?)?.toInt() ?? 0,
+      parent: (json['parent'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$ARegionModelToJson(ARegionModel instance) =>

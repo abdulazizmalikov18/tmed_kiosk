@@ -9,7 +9,7 @@ part of 'history_reponsible_model.dart';
 HistoryResponsibleModel _$HistoryResponsibleModelFromJson(
         Map<String, dynamic> json) =>
     HistoryResponsibleModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
       lastname: json['lastname'] as String? ?? '',
       org: json['org'] as String? ?? '',

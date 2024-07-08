@@ -7,7 +7,7 @@ part of 'org_cart_model.dart';
 // **************************************************************************
 
 OrgCartModel _$OrgCartModelFromJson(Map<String, dynamic> json) => OrgCartModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       org: json['org'] as String? ?? '',
       user: json['user'] ?? '',
       creator: json['creator'] as String? ?? '',

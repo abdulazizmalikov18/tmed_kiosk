@@ -7,9 +7,9 @@ part of 'spec_cat_model.dart';
 // **************************************************************************
 
 SpecCatModel _$SpecCatModelFromJson(Map<String, dynamic> json) => SpecCatModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
-      specialistCount: json['specialist_count'] as int? ?? 0,
+      specialistCount: (json['specialist_count'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$SpecCatModelToJson(SpecCatModel instance) =>

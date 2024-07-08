@@ -9,11 +9,11 @@ part of 'history_order_model.dart';
 HistoryOrderModel _$HistoryOrderModelFromJson(Map<String, dynamic> json) =>
     HistoryOrderModel(
       id: json['id'] as String? ?? '',
-      status: json['status'] as int? ?? 0,
+      status: (json['status'] as num?)?.toInt() ?? 0,
       createDate: json['create_date'] as String? ?? '',
       finishDate: json['finish_date'] as String? ?? '',
-      paymentStatus: json['payment_status'] as int? ?? 0,
-      paymentMethod: json['payment_method'] as int? ?? 0,
+      paymentStatus: (json['payment_status'] as num?)?.toInt() ?? 0,
+      paymentMethod: (json['payment_method'] as num?)?.toInt() ?? 0,
       creator: json['creator'] == null
           ? const HistoryResponsibleEntity()
           : const HistoryResponsibleConverter()

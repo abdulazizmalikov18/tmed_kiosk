@@ -51,7 +51,7 @@ class _AddUserPhoneState extends State<AddUserPhone> {
     context.read<AccountsBloc>().add(GetRegion());
     context
         .read<AccountsBloc>()
-        .add(AccountsGet(onSucces: () {}, onError: () {}));
+        .add(AccountsGet(onSucces: (value) {}, onError: () {}));
     super.initState();
   }
 
@@ -84,7 +84,7 @@ class _AddUserPhoneState extends State<AddUserPhone> {
                   ),
                   onChanged: (value) {
                     context.read<AccountsBloc>().add(AccountsGet(
-                        search: value, onSucces: () {}, onError: () {}));
+                        search: value, onSucces: (value) {}, onError: () {}));
                   },
                 ),
               ),

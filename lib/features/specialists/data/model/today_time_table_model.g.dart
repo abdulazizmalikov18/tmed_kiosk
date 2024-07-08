@@ -8,7 +8,7 @@ part of 'today_time_table_model.dart';
 
 TodayTimetableModel _$TodayTimetableModelFromJson(Map<String, dynamic> json) =>
     TodayTimetableModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       breaksList: (json['breaks_list'] as List<dynamic>?)
               ?.map((e) => const BreaksListConverter()
                   .fromJson(e as Map<String, dynamic>?))
@@ -23,9 +23,9 @@ TodayTimetableModel _$TodayTimetableModelFromJson(Map<String, dynamic> json) =>
       startTime: json['start_time'] as String? ?? '',
       endTime: json['end_time'] as String? ?? '',
       isWorking: json['is_working'] as bool? ?? false,
-      repeatDayOff: json['repeat_day_off'] as int? ?? 0,
+      repeatDayOff: (json['repeat_day_off'] as num?)?.toInt() ?? 0,
       procInterval: (json['proc_interval'] as num?)?.toDouble() ?? 0,
-      spec: json['spec'] as int? ?? 0,
+      spec: (json['spec'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$TodayTimetableModelToJson(

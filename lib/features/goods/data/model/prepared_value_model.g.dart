@@ -8,9 +8,9 @@ part of 'prepared_value_model.dart';
 
 PreparedValueModel _$PreparedValueModelFromJson(Map<String, dynamic> json) =>
     PreparedValueModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       value: json['value'] as String? ?? '',
-      baseFeature: json['base_feature'] as int? ?? 0,
+      baseFeature: (json['base_feature'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$PreparedValueModelToJson(PreparedValueModel instance) =>

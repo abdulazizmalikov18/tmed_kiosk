@@ -8,12 +8,12 @@ part of 'product_special.dart';
 
 ProductSpecialModel _$ProductSpecialModelFromJson(Map<String, dynamic> json) =>
     ProductSpecialModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       specialist: json['specialist'] == null
           ? const SpecialistsEntity()
           : const SpecialistsConverter()
               .fromJson(json['specialist'] as Map<String, dynamic>?),
-      product: json['product'] as int? ?? 0,
+      product: (json['product'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$ProductSpecialModelToJson(

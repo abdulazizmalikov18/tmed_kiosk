@@ -8,22 +8,24 @@ class OrdersCreatModel {
   int? couponId;
   int? processStatus;
   String? clientUsername;
+  Map<String, dynamic>? info;
   // String? meetAddress;
 
-  OrdersCreatModel({
-    this.action = '',
-    this.payments,
-    this.processStatus,
-    this.cartProducts,
-    this.specsComment = '',
-    this.clientComment = '',
-    this.couponId,
-    this.paymentCard,
-    this.clientUsername,
-  });
+  OrdersCreatModel(
+      {this.action = '',
+      this.payments,
+      this.processStatus,
+      this.cartProducts,
+      this.specsComment = '',
+      this.clientComment = '',
+      this.couponId,
+      this.paymentCard,
+      this.clientUsername,
+      this.info});
 
   OrdersCreatModel.fromJson(Map<String, dynamic> json) {
     action = json['action'];
+    info = json['info'];
     payments = json['payments'];
     cartProducts = json['cart_products'];
     specsComment = json['specs_comment'];
@@ -37,6 +39,7 @@ class OrdersCreatModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['action'] = action;
+    data['info'] = info;
     data['payments'] = payments;
     data['cart_products'] = cartProducts;
     data['specs_comment'] = specsComment;

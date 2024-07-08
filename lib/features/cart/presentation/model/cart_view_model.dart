@@ -3,7 +3,7 @@ import 'package:tmed_kiosk/features/common/repo/log_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tmed_kiosk/core/utils/my_function.dart';
-import 'package:tmed_kiosk/features/cart/domain/entity/cupon_entity.dart';
+import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_model.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
 import 'package:tmed_kiosk/features/goods/domain/entity/list_count.dart';
 import 'package:tmed_kiosk/features/goods/domain/entity/org_product_entity.dart';
@@ -29,7 +29,7 @@ class CartViewModel {
 
   void cuponSelction({
     required BuildContext context,
-    required CuponEntity cupon,
+    required CuponModel cupon,
     required List<ListCount> counts,
     required Map<int, OrgProductEntity> cartMap,
   }) {
@@ -39,7 +39,7 @@ class CartViewModel {
       counts[i].price = cartMap[counts[i].id]!.prices[0].discountPrice == 0
           ? cartMap[counts[i].id]!.prices[0].value.toInt()
           : cartMap[counts[i].id]!.prices[0].discountPrice.toInt();
-      if (cupon.extra.products.contains(counts[i].id)) {
+      if (MyFunctions.isCupon(cupon, counts[i].id)) {
         counts[i].cuponPrice = cupon.productDiscount.toInt();
         counts[i].discountPrice = cupon.productDiscount.toInt() * (-1);
         double discoun = cupon.productDiscount / 100;
@@ -138,12 +138,15 @@ class CartViewModel {
     counts[index].count = int.parse(controller.text);
     if (counts[index].discount == 0) {
       for (var i = 0; i < prices.length; i++) {
-        if (counts[index].count >= prices[i].minQty &&
-                counts[index].count <= prices[i].maxQty ||
-            counts[index].count > prices[i].maxQty && i == prices.length - 1) {
-          counts[index].discount = prices[i].discount.toInt();
-          counts[index].price = prices[i].value.toInt();
-          counts[index].priceIndex = i;
+        if (prices[i].minQty != null) {
+          if (counts[index].count >= prices[i].minQty!.toInt() &&
+                  counts[index].count <= prices[i].maxQty!.toInt() ||
+              counts[index].count > prices[i].maxQty!.toInt() &&
+                  i == prices.length - 1) {
+            counts[index].discount = prices[i].discount.toInt();
+            counts[index].price = prices[i].value.toInt();
+            counts[index].priceIndex = i;
+          }
         }
       }
     }
@@ -158,19 +161,22 @@ class CartViewModel {
     for (var i = 0; i < prices.length; i++) {
       Log.w("MinQTY: ${prices[i].minQty}");
       Log.w("MaxQTY: ${prices[i].maxQty}");
-      if (counts[index].count >= prices[i].minQty &&
-              counts[index].count <= prices[i].maxQty ||
-          counts[index].count > prices[i].maxQty && i == prices.length - 1) {
-        allPrice -= counts[index].count * counts[index].price;
-        discount -= counts[index].count * counts[index].discount;
-        if (counts[index].cuponPrice == 0) {
-          counts[index].discount = prices[i].discount.toInt();
-          counts[index].price = prices[i].value.toInt();
-          counts[index].priceIndex = i;
+      if (prices[i].minQty != null) {
+        final maxQty = prices[i].maxQty == null ? 1 : prices[i].maxQty!.toInt();
+        if (counts[index].count >= prices[i].minQty!.toInt() &&
+                counts[index].count <= maxQty ||
+            counts[index].count > maxQty && i == prices.length - 1) {
+          allPrice -= counts[index].count * counts[index].price;
+          discount -= counts[index].count * counts[index].discount;
+          if (counts[index].cuponPrice == 0) {
+            counts[index].discount = prices[i].discount.toInt();
+            counts[index].price = prices[i].value.toInt();
+            counts[index].priceIndex = i;
+          }
+          counts[index].allPrice = counts[index].count * counts[index].price;
+          allPrice += counts[index].allPrice;
+          discount += counts[index].count * counts[index].discount;
         }
-        counts[index].allPrice = counts[index].count * counts[index].price;
-        allPrice += counts[index].allPrice;
-        discount += counts[index].count * counts[index].discount;
       }
     }
     return counts;

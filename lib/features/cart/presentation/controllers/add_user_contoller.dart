@@ -3,9 +3,8 @@ part of 'package:tmed_kiosk/features/cart/presentation/widgets/add_user_iteam.da
 mixin AddUserViweModel on State<AddUsetIteam> {
   final _dateFormKey = GlobalKey<FormState>();
   File? images;
-  Uint8List? bytes;
   DateTime selectedDate = DateTime.now();
-  bool isChanged = false;
+  ValueNotifier isChanged = ValueNotifier(false);
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -22,39 +21,98 @@ mixin AddUserViweModel on State<AddUsetIteam> {
   }
 
   changeInfo() {
-    if (!isChanged) {
-      isChanged = true;
-      setState(() {});
+    if (!isChanged.value) {
+      isChanged.value = true;
     }
+  }
+
+  bool isToday(DateTime date) {
+    DateTime now = DateTime.now();
+    return date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day;
+  }
+
+  updateAccount(String username) {
+    final data = {
+      "name": widget.vm.name.text,
+      "surname": widget.vm.surname.text,
+      "lastname": widget.vm.latname.text,
+      "gender": widget.vm.gender.text,
+      "birthday": isToday(selectedDate)
+          ? MyFunctions.formatDate2(widget.vm.age.text)
+          : MyFunctions.ageDate(selectedDate),
+      "nationality": widget.vm.nationality.text,
+      "birth_place": widget.vm.birthPlace.text,
+      "current_place": widget.vm.currentPlace.text,
+      "education": MyFunctions.information(widget.vm.information.text)
+    };
+    if (widget.vm.regionEntity?.id != null) {
+      data["region"] = widget.vm.regionEntity!.id.toString();
+    }
+    if (widget.vm.professionEntity?.id != null) {
+      data["profession"] = widget.vm.professionEntity!.id.toString();
+    }
+
+    context.read<AccountsBloc>().add(UpdateAccountEvent(
+          username: username,
+          data: data,
+          onSucces: (account) {
+            widget.vm.selectAccount(account, false);
+          },
+        ));
   }
 
   createUser() async {
     // widget.vm.createAccount(context, images);
+
     FormData formData = widget.vm.phone.text[0] == "+"
         ? FormData.fromMap({
             "name": widget.vm.name.text,
+            "surname": widget.vm.surname.text,
+            "lastname": widget.vm.latname.text,
             "gender": widget.vm.gender.text,
             "profession": widget.vm.professionEntity?.id,
-            "lastname": widget.vm.latname.text,
-            "birthday": MyFunctions.ageDate(selectedDate),
+            "birthday": isToday(selectedDate)
+                ? widget.vm.age.text.replaceAll("/", "-")
+                : MyFunctions.ageDate(selectedDate),
             "region": widget.vm.regionEntity?.id,
             "pvc": "000000",
+            "is_afgan": widget.vm.isAfgan.value,
+            "is_cherno": widget.vm.isCherno.value,
+            "is_invalid": widget.vm.isInvalid.value,
+            "is_uvu": widget.vm.isUvu.value,
+            "position": widget.vm.birthPlace.text,
             "phone": widget.vm.phone.text.substring(1),
-            "surname": widget.vm.latname.text,
+            "nationality": widget.vm.nationality.text,
+            "current_place": widget.vm.currentPlace.text,
+            "education": MyFunctions.information(widget.vm.information.text),
+            "type": "user",
             "avatar": images != null
                 ? await MultipartFile.fromFile(images!.path)
                 : images
           })
         : FormData.fromMap({
             "name": widget.vm.name.text,
+            "surname": widget.vm.surname.text,
+            "lastname": widget.vm.latname.text,
             "gender": widget.vm.gender.text,
             "profession": widget.vm.professionEntity?.id,
-            "lastname": widget.vm.latname.text,
-            "birthday": MyFunctions.ageDate(selectedDate),
+            "birthday": isToday(selectedDate)
+                ? widget.vm.age.text.replaceAll("/", "-")
+                : MyFunctions.ageDate(selectedDate),
             "region": widget.vm.regionEntity?.id,
             "pvc": "000000",
+            "is_afgan": widget.vm.isAfgan.value,
+            "is_cherno": widget.vm.isCherno.value,
+            "is_invalid": widget.vm.isInvalid.value,
+            "is_uvu": widget.vm.isUvu.value,
+            "position": widget.vm.birthPlace.text,
             "pinfl": widget.vm.phone.text,
-            "surname": widget.vm.latname.text,
+            "nationality": widget.vm.nationality.text,
+            "current_place": widget.vm.currentPlace.text,
+            "education": MyFunctions.information(widget.vm.information.text),
+            "type": "user",
             "avatar": images != null
                 ? await MultipartFile.fromFile(images!.path)
                 : images
@@ -65,7 +123,7 @@ mixin AddUserViweModel on State<AddUsetIteam> {
           CreateAccount(
             formData: formData,
             onSucces: () {
-              widget.vm.isCreat = true;
+              widget.vm.isCreat = false;
               context.read<ShowPopUpBloc>().add(ShowPopUp(
                     message: "User Yaratildi",
                     status: PopStatus.success,
@@ -82,20 +140,21 @@ mixin AddUserViweModel on State<AddUsetIteam> {
         );
   }
 
-  cuponSelText(List<CuponEntity> cupons) {
+  cuponSelText(List<CuponModel> cupons) {
     widget.vm.cupon.text = cupons.map((e) => e.title).toList().join(', ');
   }
 
-  getRegionDialog() {
+  getRegionDialog(AccountsBloc bloc) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: context.color.backGroundColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
         contentPadding: const EdgeInsets.all(24.0),
-        content: BlocProvider(
-          create: (context) => AccountsBloc(),
+        content: BlocProvider.value(
+          value: bloc,
           child: RegionDialog(vm: widget.vm),
         ),
       ),
@@ -108,16 +167,17 @@ mixin AddUserViweModel on State<AddUsetIteam> {
     });
   }
 
-  getCuponDialog(List<CuponEntity> cupons, String username) {
+  getCuponDialog(List<CuponModel> cupons, String username, AccountsBloc bloc) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (_) => AlertDialog(
+        backgroundColor: context.color.backGroundColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
         contentPadding: const EdgeInsets.all(24.0),
-        content: BlocProvider(
-          create: (context) => AccountsBloc(),
+        content: BlocProvider.value(
+          value: bloc,
           child: CuponDialog(
             vm: widget.vm,
             cupons: cupons,
@@ -130,16 +190,17 @@ mixin AddUserViweModel on State<AddUsetIteam> {
     });
   }
 
-  getProfissonDialog() {
+  getProfissonDialog(AccountsBloc bloc) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (_) => AlertDialog(
+        backgroundColor: context.color.backGroundColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
         contentPadding: const EdgeInsets.all(24.0),
-        content: BlocProvider(
-          create: (context) => AccountsBloc(),
+        content: BlocProvider.value(
+          value: bloc,
           child: ProfessionDialog(vm: widget.vm),
         ),
       ),
@@ -161,6 +222,7 @@ mixin AddUserViweModel on State<AddUsetIteam> {
         }
         if (Platform.isWindows) {
           return AlertDialog(
+            backgroundColor: context.color.backGroundColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),

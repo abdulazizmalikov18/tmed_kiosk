@@ -45,7 +45,8 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
   void initState() {
     if (widget.isAccount) {
       widget.vmA.selectAccount(
-          context.read<AccountsBloc>().state.selectAccount.selectAccount);
+          context.read<AccountsBloc>().state.selectAccount.selectAccount,
+          false);
       context.push(RoutsContact.userInfo, extra: widget.vm);
     }
 
@@ -185,7 +186,6 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                               .selectAccount
                                               .username,
                                           username: state.username,
-                                          context: context,
                                         );
                                       },
                                       text:

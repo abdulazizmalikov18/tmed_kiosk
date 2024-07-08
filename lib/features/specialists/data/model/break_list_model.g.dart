@@ -8,10 +8,10 @@ part of 'break_list_model.dart';
 
 BreaksListModel _$BreaksListModelFromJson(Map<String, dynamic> json) =>
     BreaksListModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       endTime: json['end_time'] as String? ?? '',
       startTime: json['start_time'] as String? ?? '',
-      timeTable: json['time_table'] as int? ?? 0,
+      timeTable: (json['time_table'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$BreaksListModelToJson(BreaksListModel instance) =>

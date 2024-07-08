@@ -10,7 +10,7 @@ TokenModel _$TokenModelFromJson(Map<String, dynamic> json) => TokenModel(
       access: json['access'] as String? ?? '',
       refresh: json['refresh'] as String? ?? '',
       isNewUser: json['is_new_user'] as bool? ?? false,
-      expireDate: json['expire_date'] as int? ?? 0,
+      expireDate: (json['expire_date'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$TokenModelToJson(TokenModel instance) =>

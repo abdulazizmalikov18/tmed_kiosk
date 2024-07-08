@@ -1,8 +1,11 @@
 import 'package:tmed_kiosk/assets/constants/storage_keys.dart';
+import 'package:tmed_kiosk/features/cart/data/models/recommendation/recommendation_model.dart';
+import 'package:tmed_kiosk/features/common/entity/order_product_entity.dart';
 import 'package:tmed_kiosk/features/common/entity/orders_entity.dart';
 import 'package:tmed_kiosk/features/common/repo/log_service.dart';
 import 'package:tmed_kiosk/features/common/repo/storage_repository.dart';
 import 'package:tmed_kiosk/features/goods/domain/usecase/org_product_id_usecase.dart';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,12 +15,11 @@ import 'package:tmed_kiosk/core/usecases/usecase.dart';
 import 'package:tmed_kiosk/core/utils/my_function.dart';
 import 'package:tmed_kiosk/features/cart/data/models/orders_creat_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/update_orders_model.dart';
-import 'package:tmed_kiosk/features/cart/domain/entity/cupon_entity.dart';
+import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_model.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/org_cart_entity.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/post_product_filter.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/process_status_entity.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/product_cart_entity.dart';
-import 'package:tmed_kiosk/features/cart/domain/entity/recommendation/rec_product_entity.dart';
 import 'package:tmed_kiosk/features/cart/domain/usecase/coupon_id_usecase.dart';
 import 'package:tmed_kiosk/features/cart/domain/usecase/order_create_usecase.dart';
 import 'package:tmed_kiosk/features/cart/domain/usecase/process_status_usecase.dart';
@@ -25,7 +27,7 @@ import 'package:tmed_kiosk/features/cart/domain/usecase/update_order_usecase.dar
 import 'package:tmed_kiosk/features/goods/domain/entity/list_count.dart';
 import 'package:tmed_kiosk/features/goods/domain/entity/org_product_entity.dart';
 import 'package:tmed_kiosk/features/goods/domain/usecase/get_products_list_usecase.dart';
-import 'package:tmed_kiosk/features/main/domain/entity/product_specia.dart';
+import 'package:tmed_kiosk/features/main/data/model/product_special.dart';
 
 part 'cart_event.dart';
 part 'cart_state.dart';
@@ -40,12 +42,76 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   CreatOrderUseCase useCase = CreatOrderUseCase();
   ProcessStatusUseCase processStatus = ProcessStatusUseCase();
   CuponIdUseCase cuponIDUse = CuponIdUseCase();
+  // PatchPayUseCase patchPay = PatchPayUseCase();
   ProductsIdListUseCase productsIdList = ProductsIdListUseCase();
   UpdateOrderUseCase update = UpdateOrderUseCase();
   OrgProductIDUseUseCase productsId = OrgProductIDUseUseCase();
   CartBloc() : super(const CartState()) {
+    on<StatusActive>((event, emit) async {
+      List<int> list = List.from(state.statusID);
+      final statusList = List<ProcessStatusEntity>.from(state.processStatus);
+      if (list.contains(event.id)) {
+        list.remove(event.id);
+        statusList.removeWhere((element) => element.id == event.id);
+      } else {
+        list.insert(0, event.id);
+        if (statusList.where((element) => element.id == event.id).isEmpty) {
+          final status = state.processStatusAll
+              .firstWhere((element) => element.id == event.id);
+          statusList.insert(0, status);
+        }
+      }
+      await StorageRepository.putList(
+        StorageKeys.STATUS,
+        List.generate(
+          list.length,
+          (index) => list[index].toString(),
+        ),
+      );
+      emit(state.copyWith(
+        selStatus: MyFunctions.checkStatus(statusList),
+        statusID: list,
+        processStatus: statusList,
+        status: FormzSubmissionStatus.success,
+      ));
+    });
+
+    on<GetProcessStatus>((event, emit) async {
+      final list = StorageRepository.getList(StorageKeys.STATUS);
+      final result = await processStatus.call(NoParams());
+      if (result.isRight) {
+        if (list.isEmpty) {
+          await StorageRepository.putList(
+            StorageKeys.STATUS,
+            List.generate(
+              result.right.results.length,
+              (index) => result.right.results[index].id.toString(),
+            ),
+          );
+        }
+        final listCategory = StorageRepository.getList(StorageKeys.STATUS);
+        List<int> statusID = [];
+        List<ProcessStatusEntity> status = [];
+        for (var element in listCategory) {
+          statusID.add(int.parse(element));
+          final st = result.right.results
+              .firstWhere((stat) => stat.id == int.parse(element));
+          status.add(st);
+        }
+        emit(state.copyWith(
+          processStatus: status,
+          processStatusAll: result.right.results,
+          statusID: statusID,
+          selStatus: MyFunctions.checkStatus(status),
+        ));
+      } else {
+        emit(state.copyWith(status: FormzSubmissionStatus.failure));
+      }
+    });
+
     on<SelStatus>(
-        (event, emit) => emit(state.copyWith(selStatus: event.selStatus)));
+      (event, emit) => emit(state.copyWith(selStatus: event.selStatus)),
+    );
 
     on<UpdateOrder>((event, emit) async {
       emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
@@ -59,24 +125,148 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       }
     });
 
-    on<CartAddRecommendation>((event, emit) async {
+    on<PayCloseOrder>((event, emit) {
+      int dis = 0;
+      for (var i = 0; i < event.orders.products.length; i++) {
+        dis +=
+            (event.orders.products[i].fullCost - event.orders.products[i].cost)
+                .toInt();
+      }
+      emit(state.copyWith(
+        allPrice: event.orders.totalCost.toInt(),
+        discount: dis,
+        avans: event.orders.insertedValue.toInt(),
+        isOrder: event.orders.id,
+        username: event.orders.user.username,
+      ));
+    });
+
+    on<CartAddOrder>((event, emit) async {
       emit(state.copyWith(aStatus: FormzSubmissionStatus.inProgress));
-      add(CartRemove());
-      List<int> list = event.products.map((e) => e.product).toList();
-      final result = await productsIdList.call(list);
-      if (result.isRight) {
-        if (result.right.isEmpty) {
-          event.onError("Mahsulot topilmadi");
-          emit(state.copyWith(aStatus: FormzSubmissionStatus.failure));
-        } else {
-          for (var i = 0; i < result.right.length; i++) {
-            add(CartAddMap(result.right[i], 0));
+      add(CartRemove(isOrder: true));
+      emit(state.copyWith(
+        isOrder: event.orders.id,
+        orders: event.orders,
+        username: event.orders.user.username,
+        avans: event.orders.prepaidAmount.toInt() == 0
+            ? event.orders.insertedValue.toInt()
+            : event.orders.prepaidAmount.toInt(),
+        aStatus: FormzSubmissionStatus.success,
+      ));
+      List<int> list = event.orders.products.map((e) => e.product).toList();
+      if (list.isNotEmpty) {
+        for (var i = 0; i < list.length; i++) {
+          final result = await productsId.call(list[i]);
+          if (result.isRight) {
+            final nima = ((event.orders.products[i].fullCost -
+                        event.orders.products[i].cost) /
+                    event.orders.products[i].fullCost) *
+                100;
+            if (event.orders.products[i].coupon.id != 0) {
+              final cupon =
+                  await cuponIDUse.call(event.orders.products[i].coupon.id);
+              if (cupon.isRight) {
+                add(CuponSel(cupon: cupon.right));
+              }
+            }
+            if (event.orders.products[i].responsible.id != 0) {
+              final cupon =
+                  await cuponIDUse.call(event.orders.products[i].coupon.id);
+              if (cupon.isRight) {
+                add(CuponSel(cupon: cupon.right));
+              }
+            }
+            try {
+              Map<int, OrderProductEntity> map = {};
+              map.addAll(state.cartMapDel);
+              Log.e(result.right.id);
+              if (!map.containsKey(result.right.id)) {
+                Log.e("${result.right.id} Bu ifdan");
+                add(CartAddMap(
+                  result.right,
+                  0,
+                  discountPrice: event.orders.products[i].coupon.discount != 0
+                      ? (event.orders.products[i].coupon.discount * (-1))
+                          .toInt()
+                      : (nima * (-1)).toInt(),
+                  count: event.orders.products[i].qty,
+                ));
+              }
+            } catch (e) {
+              Log.e("Bu Cart log error $e");
+              Map<int, OrderProductEntity> map = {};
+              map.addAll(state.cartMapDel);
+              if (!map.containsKey(result.right.id)) {
+                add(CartAddMap(
+                  result.right,
+                  0,
+                  discountPrice: 0,
+                  count: event.orders.products[i].qty,
+                ));
+              }
+            }
+          } else {
+            Log.e("Bu Cart bosh log");
+            Map<int, OrderProductEntity> map = {};
+            map.addAll(state.cartMapDel);
+            final product = event.orders.products[i];
+            if (!map.containsKey(product.id)) {
+              map[product.id] = product;
+              emit(state.copyWith(cartMapDel: map));
+            }
           }
-          event.onSuccess();
-          emit(state.copyWith(aStatus: FormzSubmissionStatus.success));
         }
+        emit(state.copyWith(aStatus: FormzSubmissionStatus.success));
+        event.onSuccess();
       } else {
-        event.onError((result.left as ServerFailure).errorMessage);
+        event.onError("Malumot topilmadi");
+        emit(state.copyWith(aStatus: FormzSubmissionStatus.failure));
+      }
+    });
+
+    on<CartAddRecommendation>((event, emit) async {
+      int intParse(String id) {
+        try {
+          return int.parse(id);
+        } catch (e) {
+          return 0;
+        }
+      }
+
+      emit(state.copyWith(aStatus: FormzSubmissionStatus.inProgress));
+      List<int> list =
+          event.products.map((e) => intParse(e.orgProductId)).toList();
+      if (list.isNotEmpty) {
+        for (var i = 0; i < list.length; i++) {
+          final result = await productsId.call(list[i]);
+          if (result.isRight) {
+            if (!state.cartMap.containsKey(list[i])) {
+              add(CartAddMap(
+                result.right,
+                0,
+                discountPrice: 0,
+                count: event.products[i].qty,
+              ));
+            }
+          } else {
+            Map<int, OrderProductEntity> map = {};
+            map.addAll(state.cartMapDel);
+            final product = event.products[i];
+
+            if (!map.containsKey(intParse(product.orgProductId))) {
+              map[product.id] = OrderProductEntity(
+                id: product.id,
+                qty: product.qty,
+                name: product.product.name,
+              );
+              emit(state.copyWith(cartMapDel: map));
+            }
+          }
+        }
+        emit(state.copyWith(aStatus: FormzSubmissionStatus.success));
+        event.onSuccess();
+      } else {
+        event.onError("Malumot topilmadi");
         emit(state.copyWith(aStatus: FormzSubmissionStatus.failure));
       }
     });
@@ -84,7 +274,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<CuponSel>((event, emit) => emit(state.copyWith(cupon: event.cupon)));
 
     on<RemoveCupon>(
-        (event, emit) => emit(state.copyWith(cupon: const CuponEntity())));
+        (event, emit) => emit(state.copyWith(cupon: const CuponModel())));
 
     on<CreatOrder>((event, emit) async {
       emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
@@ -113,13 +303,18 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         action: event.filter.method ? "pay" : "in_advance",
         clientComment: event.filter.clientComment,
         specsComment: event.filter.specsComment,
-        processStatus: StorageRepository.getInt(StorageKeys.STATUS),
+        processStatus: state.selStatus.id,
         cartProducts: carts,
+        info: event.filter.info,
         payments: event.filter.paymentinorderSet ??
             [
-              {"method": 1, "cost": 0}
+              {"method": 1, "cost": state.cupon.id != 0 ? state.discount : 0}
             ],
-        couponId: state.cupon.title.isNotEmpty ? state.cupon.id : null,
+        couponId: event.isCupon
+            ? state.cupon.title.isNotEmpty
+                ? state.cupon.id
+                : null
+            : null,
         clientUsername: event.username,
       );
       final result = await useCase.call(params);
@@ -127,7 +322,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         emit(state.copyWith(status: FormzSubmissionStatus.success));
         event.onSuccess(result.right);
         add(CartRemove());
-        add(RemoveCupon());
       } else {
         emit(state.copyWith(status: FormzSubmissionStatus.failure));
         if (result.left is ServerFailure) {
@@ -135,17 +329,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         } else {
           event.onError((result.left as DioFailure).hashCode.toString());
         }
-      }
-    });
-
-    on<GetProcessStatus>((event, emit) async {
-      final result = await processStatus.call(NoParams());
-      if (result.isRight) {
-        emit(state.copyWith(
-            processStatus: result.right.results,
-            selStatus: result.right.results[0]));
-      } else {
-        emit(state.copyWith(status: FormzSubmissionStatus.failure));
       }
     });
 
@@ -159,7 +342,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       map.addAll(state.cartMap);
       bool isCupon = false;
       if (state.cupon.title.isNotEmpty) {
-        isCupon = state.cupon.extra.products.contains(event.product.id);
+        isCupon = MyFunctions.isCupon(state.cupon, event.product.id);
       }
       double discoun = state.cupon.productDiscount / 100;
       if (discoun == 1) {
@@ -364,19 +547,21 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         if (event.isOrder) {
           emit(state.copyWith(
             cartMap: {},
+            cartMapDel: {},
             counts: [],
             allPrice: 0,
             discount: 0,
-            cupon: const CuponEntity(),
+            cupon: const CuponModel(),
           ));
         } else {
           emit(state.copyWith(
             cartMap: {},
+            cartMapDel: {},
             counts: [],
             allPrice: 0,
             discount: 0,
             avans: 0,
-            cupon: const CuponEntity(),
+            cupon: const CuponModel(),
             isOrder: '',
             username: '',
           ));
@@ -392,5 +577,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         discount: event.discount,
       ));
     });
+
+    // on<PatchPay>((event, emit) async {
+    //   emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+    //   final result = await patchPay.call(event.param);
+    //   if (result.isRight) {
+    //     emit(state.copyWith(status: FormzSubmissionStatus.success));
+    //     event.onSuccess();
+    //   } else {
+    //     event.onError((result.left as ServerFailure).errorMessage);
+    //     emit(state.copyWith(status: FormzSubmissionStatus.failure));
+    //   }
+    // });
   }
 }

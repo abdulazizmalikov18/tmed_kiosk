@@ -7,13 +7,13 @@ part of 'price_model.dart';
 // **************************************************************************
 
 PriceModel _$PriceModelFromJson(Map<String, dynamic> json) => PriceModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       value: (json['value'] as num?)?.toDouble() ?? 0,
       currency: json['currency'] as String? ?? '',
-      discount: json['discount'] as int? ?? 0,
+      discount: (json['discount'] as num?)?.toInt() ?? 0,
       active: json['active'] as bool? ?? false,
-      maxQty: json['max_qty'] as int? ?? 0,
-      minQty: json['min_qty'] as int? ?? 0,
+      maxQty: (json['max_qty'] as num?)?.toInt(),
+      minQty: (json['min_qty'] as num?)?.toInt(),
       discountPrice: (json['discount_price'] as num?)?.toDouble() ?? 0,
     );
 

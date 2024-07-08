@@ -8,7 +8,7 @@ part of 'cupon_res_model.dart';
 
 CuponResModel _$CuponResModelFromJson(Map<String, dynamic> json) =>
     CuponResModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       user: json['user'] as String? ?? "",
       date: json['date'] as String? ?? "",
     );

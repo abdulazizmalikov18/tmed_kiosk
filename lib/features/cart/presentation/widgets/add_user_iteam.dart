@@ -1,14 +1,14 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/services.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
 import 'package:tmed_kiosk/assets/constants/images.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
+import 'package:tmed_kiosk/core/utils/download_file.dart';
 import 'package:tmed_kiosk/core/utils/formatters.dart';
-import 'package:tmed_kiosk/features/cart/domain/entity/cupon_entity.dart';
+import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_model.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/profession_entity.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/region_entity.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
@@ -39,25 +39,47 @@ class AddUsetIteam extends StatefulWidget {
     super.key,
     required this.vm,
     this.isNew = false,
-    this.file,
-    this.url,
+    this.isChanged = false,
+    this.url = "",
+    // required this.vmC,
   });
-
   final AccountsViewModel vm;
+
   final bool isNew;
-  final File? file;
-  final String? url;
+  final bool isChanged;
+  final String url;
 
   @override
   State<AddUsetIteam> createState() => _AddUsetIteamState();
 }
 
 class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
+  late final DownloadFile _downloadFile = DownloadFile(
+    file: widget.url,
+    setState: setState,
+  );
   @override
   void initState() {
-    images = widget.file;
     super.initState();
-    Log.w(widget.url);
+    _downloadFile.initFile();
+    if (isChanged.value) {
+      changeInfo();
+    }
+    if (widget.url.isNotEmpty) {
+      downloadImage();
+    }
+  }
+
+  void downloadImage() async {
+    changeInfo();
+    _downloadFile.fileExists && !_downloadFile.dowloading
+        ? await _downloadFile.openfile()
+        : await _downloadFile.startDownload();
+    if (_downloadFile.fileExists) {
+      images = File(_downloadFile.filePath);
+      Log.d("Yes");
+      setState(() {});
+    }
   }
 
   @override
@@ -68,66 +90,70 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              images == null
-                  ? bytes != null
-                      ? Container(
-                          height: 220,
-                          width: 220,
-                          margin: const EdgeInsets.all(24),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: greyText),
-                            color: orang,
-                            image: DecorationImage(
-                              image: MemoryImage(bytes!),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        )
-                      : Container(
-                          height: 220,
-                          width: 220,
-                          margin: const EdgeInsets.all(24),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: greyText),
-                            image: state.selectAccount.selectAccount.avatar
-                                    .isNotEmpty
-                                ? DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(
-                                      widget.url != null
-                                          ? widget.url!
-                                          : state.selectAccount.selectAccount
-                                              .avatar[0],
-                                    ),
-                                    onError: (exception, stackTrace) =>
-                                        Image.asset(AppImages.logo),
-                                  )
-                                : DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(widget.url!),
-                                    onError: (exception, stackTrace) =>
-                                        Image.asset(AppImages.logo),
+              GestureDetector(
+                onTap: state.selectAccount.selectAccount.status != 5
+                    ? () {
+                        getSelectionImage();
+                        changeInfo();
+                      }
+                    : () {},
+                child: images == null
+                    ? Container(
+                        height: 160,
+                        width: 160,
+                        margin: const EdgeInsets.all(24),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: greyText),
+                          image: state
+                                  .selectAccount.selectAccount.avatar.isNotEmpty
+                              ? DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                    state.selectAccount.selectAccount.avatar[0],
                                   ),
-                          ),
-                          alignment: Alignment.center,
-                          child: AppIcons.camera.svg(),
-                        )
-                  : Container(
-                      height: 220,
-                      width: 220,
-                      margin: const EdgeInsets.all(24),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: red,
-                        border: Border.all(color: greyText),
-                        image: DecorationImage(
-                          image: FileImage(images!),
-                          fit: BoxFit.cover,
+                                  onError: (exception, stackTrace) =>
+                                      Image.asset(AppImages.logo),
+                                )
+                              : null,
                         ),
+                        alignment: Alignment.center,
+                        child: AppIcons.camera.svg(),
+                      )
+                    : Container(
+                        height: 160,
+                        width: 160,
+                        margin: const EdgeInsets.all(24),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: greyText),
+                          image: DecorationImage(
+                            image: FileImage(images!),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: _downloadFile.dowloading
+                            ? Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  CircularProgressIndicator(
+                                    value: _downloadFile.progress,
+                                    strokeWidth: 3,
+                                    backgroundColor: context.color.white,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      context.color.blue,
+                                    ),
+                                  ),
+                                  Text(
+                                    (_downloadFile.progress * 100)
+                                        .toStringAsFixed(2),
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                ],
+                              )
+                            : null,
                       ),
-                    ),
+              ),
               if (!widget.isNew)
                 WButton(
                   onTap: () {},
@@ -344,7 +370,7 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                             height: 100,
                             textStyle: const TextStyle(fontSize: 32),
                             isLoading: state.status.isInProgress,
-                            isDisabled: !isChanged,
+                            isDisabled: !isChanged.value,
                             onTap: () {
                               if (widget.vm.isCreat) {
                                 if (_dateFormKey.currentState!.validate()) {

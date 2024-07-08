@@ -9,7 +9,7 @@ part of 'current_workplace_model.dart';
 CurrentWorkplaceModel _$CurrentWorkplaceModelFromJson(
         Map<String, dynamic> json) =>
     CurrentWorkplaceModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       createDate: json['create_date'] as String? ?? '',
       type: json['type'] == null
           ? const SpecCatEntity()

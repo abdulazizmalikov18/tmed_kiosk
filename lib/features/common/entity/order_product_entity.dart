@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:tmed_kiosk/features/common/entity/creator_entity.dart';
 import 'package:tmed_kiosk/features/common/entity/cupon_entity.dart';
+import 'package:tmed_kiosk/features/common/entity/current_work_state_etity.dart';
 import 'package:tmed_kiosk/features/common/models/order_product_model.dart';
 
 class OrderProductEntity extends Equatable {
@@ -21,14 +22,18 @@ class OrderProductEntity extends Equatable {
   @CreatorConverter()
   final CreatorEntity responsible;
   final String image;
+  @CurrentWorkStateConverter()
+  final CurrentWorkStateEntity currentWorkState;
   final dynamic createDate;
   final dynamic finishDate;
+  final String textCheck;
 
   const OrderProductEntity({
     this.id = 0,
     this.order = '',
     this.product = 0,
     this.name = '',
+    this.textCheck = '',
     this.qty = 0,
     this.cost = 0,
     this.coupon = const OrderCouponEntity(),
@@ -39,6 +44,7 @@ class OrderProductEntity extends Equatable {
     this.expectedEndDate = '',
     this.responsible = const CreatorEntity(),
     this.image = '',
+    this.currentWorkState = const CurrentWorkStateEntity(),
     this.createDate = '',
     this.finishDate = '',
   });
@@ -48,6 +54,7 @@ class OrderProductEntity extends Equatable {
         id,
         order,
         product,
+        textCheck,
         name,
         qty,
         cost,
@@ -59,6 +66,7 @@ class OrderProductEntity extends Equatable {
         expectedEndDate,
         responsible,
         image,
+        currentWorkState,
         createDate,
         finishDate,
       ];

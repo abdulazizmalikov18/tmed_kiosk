@@ -7,7 +7,7 @@ part of 'group_model.dart';
 // **************************************************************************
 
 GroupModel _$GroupModelFromJson(Map<String, dynamic> json) => GroupModel(
-      group: json['group'] as int? ?? 0,
+      group: (json['group'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$GroupModelToJson(GroupModel instance) =>

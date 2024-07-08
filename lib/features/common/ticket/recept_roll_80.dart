@@ -26,42 +26,34 @@ class ReceiptRoll80 extends BaseReceiptWidget {
   @override
   pw.Widget build(pw.Context context) {
     return pw.Padding(
-      padding: const pw.EdgeInsets.only(left: 20),
+      padding: const pw.EdgeInsets.only(right: 28),
       child: pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
           // pw.Center(child: pw.Image(image)),
           pw.Container(
-            alignment: Alignment.center,
-            padding: const pw.EdgeInsets.symmetric(horizontal: 8),
-            child: pw.Text(
-              'TMED',
-              style: const pw.TextStyle(fontSize: 12),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          pw.Container(
             padding: const pw.EdgeInsets.only(top: 8),
             alignment: Alignment.center,
             child: pw.Text(
               tashkilot,
+              textAlign: TextAlign.center,
               style: pw.TextStyle(
                 fontSize: 10,
                 fontWeight: pw.FontWeight.bold,
               ),
             ),
           ),
-          PdfLine(length: 42),
+          PdfLine(length: 37),
           pw.Container(
             alignment: Alignment.center,
             padding: const pw.EdgeInsets.symmetric(horizontal: 8),
             child: pw.Text(
-              'Toshkent sh.M.Ulugbek tum. Labzak kochasi 12',
+              '------------',
               style: const pw.TextStyle(fontSize: 8),
               textAlign: TextAlign.center,
             ),
           ),
-          RowTitle(title: "INN", subtitle: "304343423"),
+          RowTitle(title: "INN", subtitle: "---------"),
           RowTitle(
             title: "Kuni",
             subtitle: MyFunctions.parseDate(data.createDate),
@@ -75,7 +67,7 @@ class ReceiptRoll80 extends BaseReceiptWidget {
             title: "Kassir/Qabul qiluvchi",
             subtitle: "${data.creator.lastname} ${data.creator.name}",
           ),
-          PdfLine(length: 42),
+          PdfLine(length: 37),
           if (data.products.isNotEmpty) ...[
             ...List.generate(
               data.products.length,
@@ -89,36 +81,50 @@ class ReceiptRoll80 extends BaseReceiptWidget {
               ),
             ),
           ],
-          PdfLine(length: 42),
-          RowTitle(
-            title: "Jami narxi:",
-            subtitle:
-                "${MyFunctions.getFormatCost(data.totalCost.toString())} UZS",
-          ),
-          RowTitle(
-            title: "Chegirma:",
-            subtitle: "-",
-          ),
-          if (MyFunctions.filterCupons(data.products) != null)
+          if (data.totalCost != data.insertedValue ||
+              MyFunctions.filterCupons(data.products) == null) ...[
+            PdfLine(length: 37),
             RowTitle(
-              title: "Kupon:",
+              title: "Jami narxi:",
               subtitle:
-                  "${MyFunctions.filterCupons(data.products)!.name}(${MyFunctions.filterCupons(data.products)!.discount}%)",
+                  "${MyFunctions.getFormatCost(data.totalCost.toString())} UZS",
             ),
-          RowTitle(
-            title: "To'langan summa:",
-            subtitle:
-                "${MyFunctions.getFormatCost(data.insertedValue.toString())} UZS",
-          ),
-          PdfLine(length: 42),
-          RowTitle(title: "Check raqami", subtitle: data.number.toString()),
-          RowTitle(title: "Terminal ID", subtitle: " EP00000000000151"),
-          // RowTitle(title: "Fiskal belgi", subtitle: " 383203056421"),
-          if (data.user.username.isNotEmpty) ...[
-            PdfLine(length: 42),
+            RowTitle(
+              title: "Chegirma:",
+              subtitle: "-",
+            ),
+            if (MyFunctions.filterCupons(data.products) != null)
+              RowTitle(
+                title: "Kupon:",
+                subtitle:
+                    "${MyFunctions.filterCupons(data.products)!.name}(${MyFunctions.filterCupons(data.products)!.discount}%)",
+              ),
+            RowTitle(
+              title: "To'langan summa:",
+              subtitle:
+                  "${MyFunctions.getFormatCost(data.insertedValue.toString())} UZS",
+            ),
+            PdfLine(length: 37),
+            RowTitle(title: "Check raqami", subtitle: data.number.toString()),
+            RowTitle(title: "Terminal ID", subtitle: " EP00000000000151"),
+            RowTitle(title: "Fiskal belgi", subtitle: " 383703056421"),
+            PdfLine(length: 37),
+          ],
+          if (data.totalCost == data.insertedValue ||
+              MyFunctions.filterCupons(data.products) != null) ...[
+            PdfLine(length: 26, line: "* "),
+            pw.Center(
+              child: pw.Text(
+                "TMEDID: ${data.number}",
+                style: pw.TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            PdfLine(length: 26, line: "* "),
             pw.Container(
               height: 96,
-              margin: const pw.EdgeInsets.only(top: 8),
               width: double.infinity,
               child: pw.Row(
                 children: [
@@ -134,19 +140,19 @@ class ReceiptRoll80 extends BaseReceiptWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        pw.Text(
-                          "Raqamingiz ${data.number}",
-                          style: pw.TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
                         // pw.Text(
-                        //   data.user.region != null
-                        //       ? data.user.region.toString()
-                        //       : "",
-                        //   style: const pw.TextStyle(fontSize: 8),
+                        //   "MedID ${data.number}",
+                        //   style: pw.TextStyle(
+                        //     fontSize: 12,
+                        //     fontWeight: FontWeight.bold,
+                        //   ),
                         // ),
+                        pw.Text(
+                          data.user.region != null
+                              ? data.user.region.toString()
+                              : "",
+                          style: const pw.TextStyle(fontSize: 8),
+                        ),
                         pw.Text(
                           MyFunctions.parseDate(data.user.birthdate),
                           style: const pw.TextStyle(fontSize: 8),
@@ -174,7 +180,68 @@ class ReceiptRoll80 extends BaseReceiptWidget {
                 textAlign: pw.TextAlign.center,
               ),
             ),
-          ]
+          ] else if (data.user.username.isNotEmpty &&
+              data.totalCost != data.insertedValue) ...[
+            pw.Container(
+              height: 96,
+              margin: const pw.EdgeInsets.only(top: 8),
+              width: double.infinity,
+              child: pw.Row(
+                children: [
+                  pw.Expanded(
+                    child: pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+                      children: [
+                        pw.Text(
+                          "${data.user.name} ${data.user.lastname}",
+                          style: pw.TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        pw.Text(
+                          "TMEDID ${data.number}",
+                          style: pw.TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        pw.Text(
+                          data.user.region != null
+                              ? data.user.region.toString()
+                              : "",
+                          style: const pw.TextStyle(fontSize: 8),
+                        ),
+                        pw.Text(
+                          MyFunctions.parseDate(data.user.birthdate),
+                          style: const pw.TextStyle(fontSize: 8),
+                        ),
+                      ],
+                    ),
+                  ),
+                  pw.Container(
+                    margin: const pw.EdgeInsets.only(left: 12),
+                    child: pw.BarcodeWidget(
+                      data: data.qrCode,
+                      barcode: pw.Barcode.qrCode(),
+                      width: 84,
+                      height: 84,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            pw.Padding(
+              padding: const pw.EdgeInsets.all(8),
+              child: pw.Text(
+                "Iltimos, shifokor eshigi oldida turmang, televizor paneli oldida navbat kuting! Uchrashuv paytida shifokorga QR kodini ko'rsating",
+                style: const pw.TextStyle(fontSize: 10),
+                textAlign: pw.TextAlign.center,
+              ),
+            ),
+          ] else
+            pw.SizedBox(height: 20)
         ],
       ),
     );
@@ -187,8 +254,11 @@ class ReceiptRoll80 extends BaseReceiptWidget {
       build: (context) => this,
       pageFormat: PdfPageFormat.roll80,
       theme: pw.ThemeData.withFont(
-        bold: Font.ttf(
-            await rootBundle.load("assets/fonts/arial_bolditalicmt.ttf")),
+        bold: Font.ttf(await rootBundle.load("assets/fonts/NotoSans-Bold.ttf")),
+        base: Font.ttf(
+            await rootBundle.load("assets/fonts/NotoSans-Regular.ttf")),
+        italic:
+            Font.ttf(await rootBundle.load("assets/fonts/NotoSans-Italic.ttf")),
       ),
     ));
     return await pdf.save();

@@ -8,8 +8,8 @@ part of 'feature_model.dart';
 
 FeatureModel _$FeatureModelFromJson(Map<String, dynamic> json) => FeatureModel(
       name: json['name'] as String? ?? '',
-      id: json['id'] as int? ?? 0,
-      requiredFormat: json['required_format'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
+      requiredFormat: (json['required_format'] as num?)?.toInt() ?? 0,
       multiValues: json['multi_values'] as bool? ?? false,
       required: json['required'] as bool? ?? false,
     );

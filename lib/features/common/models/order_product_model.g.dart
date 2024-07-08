@@ -8,17 +8,17 @@ part of 'order_product_model.dart';
 
 OrderProductModel _$OrderProductModelFromJson(Map<String, dynamic> json) =>
     OrderProductModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       order: json['order'] as String? ?? '',
-      product: json['product'] as int? ?? 0,
+      product: (json['product'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
-      qty: json['qty'] as int? ?? 0,
+      qty: (json['qty'] as num?)?.toInt() ?? 0,
       cost: (json['cost'] as num?)?.toDouble() ?? 0,
       coupon: json['coupon'] == null
           ? const OrderCouponEntity()
           : const OrderCouponConverter()
               .fromJson(json['coupon'] as Map<String, dynamic>?),
-      status: json['status'] as int? ?? 0,
+      status: (json['status'] as num?)?.toInt() ?? 0,
       fullCost: (json['full_cost'] as num?)?.toDouble() ?? 0,
       surcharge: (json['surcharge'] as num?)?.toDouble() ?? 0,
       meetDate: json['meet_date'] as String? ?? '',

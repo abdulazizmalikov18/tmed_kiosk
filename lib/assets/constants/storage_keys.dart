@@ -30,6 +30,7 @@ class StorageKeys {
   static const FINANCE = 'finance';
   static const PAYMENTS = 'payment';
   static const KSPECIAL = 'kspecial';
+  static const ISCOMPANY = 'iscompany';
   static const KPI = 'kpi';
   static const STATUS = 'status';
   static const ACCOUNTS = 'accounts';

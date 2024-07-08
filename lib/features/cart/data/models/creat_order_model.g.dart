@@ -14,15 +14,15 @@ CreateOrderModel _$CreateOrderModelFromJson(Map<String, dynamic> json) =>
                   .fromJson(e as Map<String, dynamic>?))
               .toList() ??
           const [],
-      paymentCard: json['payment_card'] as int? ?? 0,
+      paymentCard: (json['payment_card'] as num?)?.toInt() ?? 0,
       payments: (json['payments'] as List<dynamic>?)
               ?.map((e) => const PayOrderSetConverter()
                   .fromJson(e as Map<String, dynamic>?))
               .toList() ??
           const [],
       clientComment: json['client_comment'] as String? ?? "",
-      couponId: json['coupon_id'] as int? ?? 0,
-      processStatus: json['process_status'] as int? ?? 0,
+      couponId: (json['coupon_id'] as num?)?.toInt() ?? 0,
+      processStatus: (json['process_status'] as num?)?.toInt() ?? 0,
       clientUsername: json['client_username'] as String? ?? "",
     );
 

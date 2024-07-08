@@ -9,7 +9,7 @@ part of 'history_current_work_state_model.dart';
 HistoryCurrentWorkStateModel _$HistoryCurrentWorkStateModelFromJson(
         Map<String, dynamic> json) =>
     HistoryCurrentWorkStateModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       status: json['status'] == null
           ? const HistoryStatusEntity()
           : const HistoryStatusConverter()
@@ -23,7 +23,7 @@ HistoryCurrentWorkStateModel _$HistoryCurrentWorkStateModelFromJson(
       endTime: json['end_time'] as String? ?? '',
       createDate: json['create_date'] as String? ?? '',
       isCurrent: json['is_current'] as bool? ?? false,
-      product: json['product'] as int? ?? 0,
+      product: (json['product'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$HistoryCurrentWorkStateModelToJson(

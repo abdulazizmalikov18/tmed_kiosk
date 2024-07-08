@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:tmed_kiosk/features/cart/data/models/check_user_model.dart';
+import 'package:tmed_kiosk/features/cart/data/models/update_account.dart';
+import 'package:tmed_kiosk/features/cart/domain/usecase/account_update_usecase.dart';
 import 'package:tmed_kiosk/features/cart/domain/usecase/account_username_usecase.dart';
 import 'package:tmed_kiosk/features/cart/domain/usecase/del_cupon_usecase.dart';
 import 'package:equatable/equatable.dart';
@@ -13,10 +15,10 @@ import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_filter.dart';
 import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_selection.dart';
 import 'package:tmed_kiosk/features/cart/data/models/history/history_filter.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/accounts_entity.dart';
-import 'package:tmed_kiosk/features/cart/domain/entity/cupon_entity.dart';
+import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_model.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/history/history_entity.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/profession_entity.dart';
-import 'package:tmed_kiosk/features/cart/domain/entity/recommendation/recommendation_entity.dart';
+import 'package:tmed_kiosk/features/cart/data/models/recommendation/recommendation_model.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/region_entity.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/user_set/selection_account.dart';
 import 'package:tmed_kiosk/features/cart/domain/usecase/accounts_usecase.dart';
@@ -48,6 +50,7 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
   RecommendationUseCase recommendUse = RecommendationUseCase();
   DelCuponUseCase delCuponUseCase = DelCuponUseCase();
   AccountUsernameUseCase accountUsernameUseCase = AccountUsernameUseCase();
+  AccountUpdateUseCase accountUpdateUseCase = AccountUpdateUseCase();
   AccountsBloc() : super(const AccountsState()) {
     on<SelectionAccount>((event, emit) async {
       SelectionAccountEntity selectionA = SelectionAccountEntity(
@@ -69,17 +72,43 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
       }
     });
 
+    on<UpdateAccountEvent>((event, emit) async {
+      emit(state.copyWith(statusd: FormzSubmissionStatus.inProgress));
+      final data = UpdateAccount(
+        username: event.username,
+        formData: event.data,
+      );
+      final result = await accountUpdateUseCase.call(data);
+      if (result.isRight) {
+        emit(state.copyWith(
+          selectAccount: SelectionAccountEntity(
+            selectAccount: result.right,
+            cupons: state.selectAccount.cupons,
+            selectCupon: const CuponModel(),
+          ),
+          statusd: FormzSubmissionStatus.success,
+        ));
+        event.onSucces(result.right);
+      } else {
+        emit(state.copyWith(statusd: FormzSubmissionStatus.failure));
+      }
+    });
+
     on<SelectionCupon>((event, emit) {
       SelectionAccountEntity account = SelectionAccountEntity(
         selectAccount: state.selectAccount.selectAccount,
         cupons: state.selectAccount.cupons,
         selectCupon: event.isDisebled
-            ? state.selectAccount.cupons[event.id]
-            : const CuponEntity(),
+            ? state.selectAccount.cupons.isEmpty
+                ? const CuponModel()
+                : state.selectAccount.cupons[event.id]
+            : const CuponModel(),
       );
       event.onCupon(event.isDisebled
-          ? state.selectAccount.cupons[event.id]
-          : const CuponEntity());
+          ? state.selectAccount.cupons.isEmpty
+              ? const CuponModel()
+              : state.selectAccount.cupons[event.id]
+          : const CuponModel());
       emit(state.copyWith(selectAccount: account));
     });
 
@@ -87,7 +116,7 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
       SelectionAccountEntity account = SelectionAccountEntity(
         selectAccount: state.selectAccount.selectAccount,
         cupons: state.selectAccount.cupons,
-        selectCupon: const CuponEntity(),
+        selectCupon: const CuponModel(),
       );
       emit(state.copyWith(selectAccount: account));
     });
@@ -112,7 +141,16 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
       final result =
           await delCuponUseCase.call(CuSel(user: event.username, id: event.id));
       if (result.isRight) {
-        emit(state.copyWith(status: FormzSubmissionStatus.success));
+        List<CuponModel> listCupon = List.from(state.selectAccount.cupons);
+        listCupon.removeWhere((element) => element.id == event.id);
+        emit(state.copyWith(
+          status: FormzSubmissionStatus.success,
+          selectAccount: SelectionAccountEntity(
+            selectAccount: state.selectAccount.selectAccount,
+            cupons: listCupon,
+            selectCupon: const CuponModel(),
+          ),
+        ));
         event.onSuccess();
       } else {
         event.onError((result.left as ServerFailure).errorMessage);
@@ -138,16 +176,26 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     });
 
     on<GetCupon>((event, emit) async {
-      emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
-      final result =
-          await cuponUse.call(CFilter(user: event.user, search: event.search));
+      if (!event.feetchMore) {
+        emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+      }
+      final result = await cuponUse.call(CFilter(
+          user: event.user,
+          search: event.search,
+          limit: 10,
+          offset: event.feetchMore ? state.cupons.length : null));
       if (result.isRight) {
         if (event.user == null) {
+          Log.w("message");
           emit(state.copyWith(
-            cupons: result.right.results,
+            cupons: event.feetchMore
+                ? [...state.cupons, ...result.right.results]
+                : result.right.results,
+            countCupon: result.right.count,
             status: FormzSubmissionStatus.success,
           ));
         } else {
+          Log.w("message 2");
           SelectionAccountEntity account = SelectionAccountEntity(
             selectAccount: state.selectAccount.selectAccount,
             cupons: result.right.results,
@@ -155,6 +203,10 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
           );
           emit(state.copyWith(
             selectAccount: account,
+            cupons: event.feetchMore
+                ? [...state.cupons, ...result.right.results]
+                : result.right.results,
+            countCupon: result.right.count,
             status: FormzSubmissionStatus.success,
           ));
         }
@@ -166,6 +218,7 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     on<DelSelectionAcccount>(
       (event, emit) {
         emit(state.copyWith(selectAccount: const SelectionAccountEntity()));
+        add(AccountsGet());
       },
     );
 
@@ -194,6 +247,7 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
           onSucces: event.onSucces,
           onError: () {},
         ));
+        add(AccountsGet());
       } else {
         event.onError();
         emit(state.copyWith(status: FormzSubmissionStatus.failure));
@@ -294,27 +348,27 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     });
 
     on<AccountsGet>((event, emit) async {
-      Log.w("Biz Keldik");
-      AccountsFilter filter = AccountsFilter(search: event.search);
-      emit(state.copyWith(statusAccounts: FormzSubmissionStatus.inProgress));
-      final result = await accounts.call(filter);
-      if (result.isRight) {
-        if (result.right.results.isNotEmpty) {
-          add(SelectionAccount(account: result.right.results.first));
+      if (state.accounts.isEmpty || event.search != null) {
+        AccountsFilter filter = AccountsFilter(search: event.search);
+        emit(state.copyWith(statusAccounts: FormzSubmissionStatus.inProgress));
+        final result = await accounts.call(filter);
+        if (result.isRight) {
+          if (result.right.results.isNotEmpty && event.onSucces != null) {
+            add(SelectionAccount(account: result.right.results.first));
+            event.onSucces!(result.right.results.first);
+          } else if (event.onError != null) {
+            event.onError!();
+          }
           emit(state.copyWith(
             accounts: result.right.results,
             count: result.right.count,
             statusAccounts: FormzSubmissionStatus.success,
           ));
-          event.onSucces();
         } else {
-          event.onError();
+          emit(state.copyWith(statusAccounts: FormzSubmissionStatus.failure));
         }
-      } else {
-        emit(state.copyWith(statusAccounts: FormzSubmissionStatus.failure));
       }
     });
-
     on<GetMoreAccounts>((event, emit) async {
       AccountsFilter filter = AccountsFilter(
         offset: state.accounts.length,

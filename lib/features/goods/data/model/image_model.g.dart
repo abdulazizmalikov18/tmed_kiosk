@@ -7,11 +7,11 @@ part of 'image_model.dart';
 // **************************************************************************
 
 ImageModel _$ImageModelFromJson(Map<String, dynamic> json) => ImageModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       file: json['file'] as String? ?? '',
       main: json['main'] as bool? ?? false,
       org: json['org'] ?? '',
-      product: json['product'] as int? ?? 0,
+      product: (json['product'] as num?)?.toInt() ?? 0,
       status: json['status'] as bool? ?? false,
     );
 

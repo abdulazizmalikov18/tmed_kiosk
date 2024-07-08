@@ -8,7 +8,7 @@ part of 'legal_form_model.dart';
 
 LegalFormModel _$LegalFormModelFromJson(Map<String, dynamic> json) =>
     LegalFormModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
       description: json['description'] as String? ?? '',
       short: json['short'] as String? ?? '',

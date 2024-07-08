@@ -15,7 +15,7 @@ class PrOrderSetModel extends PrOrderSetEntity {
     super.surcharge,
     // super.meetDate,
     // super.expectedEndDate,
-    // super.responsible,
+    super.coupon,
     super.image,
   });
 

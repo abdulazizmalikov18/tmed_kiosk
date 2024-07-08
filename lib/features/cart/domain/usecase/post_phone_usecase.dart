@@ -11,6 +11,7 @@ class PostPhoneUseCase extends UseCase<CheckUserModel, AccountCreateModel> {
   final CartRepo repository = serviceLocator<CartRepoImpl>();
 
   @override
-  Future<Either<Failure, CheckUserModel>> call(AccountCreateModel params) async =>
+  Future<Either<Failure, CheckUserModel>> call(
+          AccountCreateModel params) async =>
       await repository.postPhone(params);
 }

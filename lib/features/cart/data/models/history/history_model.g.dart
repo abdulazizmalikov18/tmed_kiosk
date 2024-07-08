@@ -7,7 +7,7 @@ part of 'history_model.dart';
 // **************************************************************************
 
 HistoryModel _$HistoryModelFromJson(Map<String, dynamic> json) => HistoryModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? "",
       order: json['order'] == null
           ? const HistoryOrderEntity()
@@ -15,7 +15,7 @@ HistoryModel _$HistoryModelFromJson(Map<String, dynamic> json) => HistoryModel(
               .fromJson(json['order'] as Map<String, dynamic>?),
       cost: (json['cost'] as num?)?.toDouble() ?? 0,
       fullCost: (json['full_cost'] as num?)?.toDouble() ?? 0,
-      vat: json['vat'] as int? ?? 0,
+      vat: (json['vat'] as num?)?.toInt() ?? 0,
       coupon: json['coupon'] ?? 0,
       surcharge: (json['surcharge'] as num?)?.toDouble() ?? 0,
       currentWorkState: json['current_work_state'] == null
@@ -32,7 +32,7 @@ HistoryModel _$HistoryModelFromJson(Map<String, dynamic> json) => HistoryModel(
           : const HistoryResponsibleConverter()
               .fromJson(json['responsible'] as Map<String, dynamic>?),
       discountType: json['discount_type'] as String? ?? "",
-      queueNumber: json['queue_number'] as int? ?? 0,
+      queueNumber: (json['queue_number'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$HistoryModelToJson(HistoryModel instance) =>

@@ -2,7 +2,11 @@
 
 import 'dart:io';
 
+import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/formatters.dart';
+import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_model.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/profession_entity.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/region_entity.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/user_bottom_button.dart';
@@ -21,8 +25,14 @@ import 'package:tmed_kiosk/features/cart/presentation/widgets/cupon/cupon_dialog
 import 'package:tmed_kiosk/features/cart/presentation/widgets/gender_drop_down.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/profession/profession_dalog.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/region/region_dialog.dart';
+import 'package:tmed_kiosk/features/cart/presentation/widgets/user_camera.dart';
+import 'package:tmed_kiosk/features/cart/presentation/widgets/user_camera_macos.dart';
+import 'package:tmed_kiosk/features/common/controllers/show_pop_up/show_pop_up_bloc.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_scale_animation.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_textfield.dart';
+import 'package:tmed_kiosk/features/main/presentation/controllers/bloc/navigator_bloc.dart';
+
+part 'package:tmed_kiosk/features/cart/presentation/controllers/add_user_contoller_phone.dart';
 
 class AddUsetIteamPhone extends StatefulWidget {
   const AddUsetIteamPhone({
@@ -40,9 +50,8 @@ class AddUsetIteamPhone extends StatefulWidget {
   State<AddUsetIteamPhone> createState() => _AddUsetIteamPhoneState();
 }
 
-class _AddUsetIteamPhoneState extends State<AddUsetIteamPhone> {
-  DateTime selectedDate = DateTime.now();
-
+class _AddUsetIteamPhoneState extends State<AddUsetIteamPhone>
+    with AddUserViweModel {
   Widget buildDatePicker() => SizedBox(
         height: 180,
         child: CupertinoDatePicker(

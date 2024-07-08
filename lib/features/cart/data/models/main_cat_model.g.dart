@@ -7,12 +7,12 @@ part of 'main_cat_model.dart';
 // **************************************************************************
 
 MainCatModel _$MainCatModelFromJson(Map<String, dynamic> json) => MainCatModel(
-      id: json['id'] as int? ?? 0,
+      id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
       description: json['description'] as String? ?? '',
       image: json['image'] as String? ?? '',
-      parent: json['parent'] as int? ?? 0,
-      userCount: json['user_count'] as int? ?? 0,
+      parent: (json['parent'] as num?)?.toInt() ?? 0,
+      userCount: (json['user_count'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$MainCatModelToJson(MainCatModel instance) =>
