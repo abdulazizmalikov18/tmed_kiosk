@@ -1,32 +1,4 @@
-import 'package:go_router/go_router.dart';
-import 'package:tmed_kiosk/assets/constants/storage_keys.dart';
-import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
-import 'package:tmed_kiosk/features/cart/domain/entity/post_product_filter.dart';
-import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
-import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
-import 'package:tmed_kiosk/features/cart/presentation/views/card_list_iteam.dart';
-import 'package:tmed_kiosk/features/cart/presentation/widgets/payme_dialog.dart';
-import 'package:tmed_kiosk/features/common/controllers/auth/authentication_bloc.dart';
-import 'package:tmed_kiosk/features/common/controllers/show_pop_up/show_pop_up_bloc.dart';
-import 'package:tmed_kiosk/features/common/entity/orders_entity.dart';
-import 'package:tmed_kiosk/features/common/navigation/routs_contact.dart';
-import 'package:tmed_kiosk/features/common/repo/log_service.dart';
-import 'package:tmed_kiosk/features/common/repo/storage_repository.dart';
-import 'package:tmed_kiosk/features/common/ticket/recept_roll_80.dart';
-import 'package:tmed_kiosk/features/common/ticket/tickets/recept_roll_product.dart';
-import 'package:tmed_kiosk/features/common/ticket/w_dialog_printer.dart';
-import 'package:tmed_kiosk/features/common/widgets/dialog_title.dart';
-import 'package:tmed_kiosk/features/goods/domain/entity/list_count.dart';
-import 'package:tmed_kiosk/features/goods/domain/entity/org_product_entity.dart';
-import 'package:tmed_kiosk/features/goods/presentation/controllers/bloc/goods_bloc.dart';
-import 'package:tmed_kiosk/features/main/presentation/controllers/bloc/navigator_bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/services.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:pdf/widgets.dart';
-import 'package:tmed_kiosk/features/main/presentation/controllers/tts_controller_mixin.dart';
+part of 'package:tmed_kiosk/features/cart/presentation/views/card_list_iteam.dart';
 
 mixin CartMixin on State<CardListIteam> {
   late final vm = widget.vm;
@@ -202,11 +174,11 @@ mixin CartMixin on State<CardListIteam> {
           build: (pw.Context context) => listTicket[i],
           pageFormat: PdfPageFormat.roll80,
           theme: pw.ThemeData.withFont(
-            bold: Font.ttf(
+            bold: pw.Font.ttf(
                 await rootBundle.load("assets/fonts/NotoSans-Bold.ttf")),
-            base: Font.ttf(
+            base: pw.Font.ttf(
                 await rootBundle.load("assets/fonts/NotoSans-Regular.ttf")),
-            italic: Font.ttf(
+            italic: pw.Font.ttf(
                 await rootBundle.load("assets/fonts/NotoSans-Italic.ttf")),
           ),
         ));
