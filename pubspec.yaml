@@ -104,12 +104,12 @@ flutter:
     - assets/icons/logout.svg
 
   fonts:
-    - family: NotoSans
-      fonts:
-        - asset: assets/fonts/NotoSans-Regular.ttf
-        - asset: assets/fonts/NotoSans-Italic.ttf
-        - asset: assets/fonts/NotoSans-Bold.ttf
-          weight: 600
+    # - family: NotoSans
+    #   fonts:
+    #     - asset: assets/fonts/NotoSans-Regular.ttf
+    #     - asset: assets/fonts/NotoSans-Italic.ttf
+    #     - asset: assets/fonts/NotoSans-Bold.ttf
+    #       weight: 600
     - family: Roboto
       fonts:
         - asset: assets/fonts/Roboto-Regular.ttf
