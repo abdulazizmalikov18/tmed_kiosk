@@ -101,7 +101,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     bloc = InternetBloc();
     Connectivity().onConnectivityChanged.listen((status) async {
-      debugPrint("=====>>> Conection ${status.name}");
       bloc.add(GlobalCheck(isConnected: await isInternetConnected()));
     });
     super.initState();
