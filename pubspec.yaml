@@ -11,72 +11,85 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.6
-  connectivity_plus: ^5.0.2
+  cupertino_icons: ^1.0.8
+  connectivity_plus: ^6.0.3
   equatable: ^2.0.5
   hive: ^2.2.3
   shimmer: ^3.0.0
-  json_annotation: ^4.8.1
+  json_annotation: ^4.9.0
   carousel_slider: ^4.2.1
-  image_picker: ^1.1.0
+  image_picker: ^1.0.7
   cached_network_image: ^3.3.1
   hive_flutter: ^1.1.0
   shared_preferences: ^2.2.3
+  yandex_mapkit: ^3.4.0
+  # panorama: ^0.4.1
+  open_app_file: ^4.0.2
   path: ^1.9.0
   image: ^4.1.7
-  web_socket_channel: ^2.4.4
+  web_socket_channel: ^2.4.5
   pretty_dio_logger: ^1.3.1
   dropdown_button2: ^2.3.9
   flutter_widget_from_html: ^0.14.11
+  flutter_map_cancellable_tile_provider: ^2.0.0
+  flutter_map: ^6.1.0
+  flutter_map_location_marker: ^8.0.7
   internet_connection_checker: ^1.0.0+1
-  path_provider: ^2.1.2
+  path_provider: ^2.1.3
+  window_manager: ^0.3.8
   flutter_svg: ^2.0.10+1
-  lottie: ^3.0.0
+  lottie: ^3.1.1
   qr_code_scanner: ^1.0.1
   keyboard_dismisser: ^3.0.0
   get_it: ^7.7.0
+  open_route_service: ^1.2.4
   printing: ^5.12.0
   pdf: ^3.10.8
-  syncfusion_flutter_sliders: ^25.1.35
-  syncfusion_flutter_charts: ^25.1.35
+  syncfusion_flutter_sliders: ^25.1.40
+  syncfusion_flutter_charts: ^25.1.40
   responsive_framework: ^1.4.0
   teledart: ^0.6.1
-  fl_chart: ^0.66.2
+  fl_chart: ^0.67.0
   camera_platform_interface: ^2.7.4
   camera_macos: ^0.0.8
   flutter_bloc: ^8.1.5
   formz: ^0.7.0
-  easy_localization: ^3.0.5
+  win32: ^5.5.0
+  easy_localization: ^3.0.7
   mask_text_input_formatter: ^2.9.0
   audioplayers: ^6.0.0
-  dio: ^5.4.2+1
-  intl: ^0.18.1
-  logger: ^2.2.0
-  go_router: ^13.2.1
+  dio: ^5.4.3+1
+  latlong2: ^0.9.1
+  logger: ^2.3.0
+  go_router: ^14.1.1
   ffi: ^2.1.2
   easy_date_timeline: ^1.0.3
   table_calendar: ^3.0.9
-  visibility_detector: ^0.4.0+2
-  flutter_barcode_listener: ^0.1.4
+  panorama_viewer: ^1.0.5
+  intl: ^0.19.0
+  local_auth: ^2.2.0
+  flutter_screen_lock: ^9.1.0
+  html: ^0.15.4
+  package_info_plus: ^8.0.0
+  xml: ^6.5.0
+  pinput: ^5.0.0
+  device_info_plus: ^10.1.0
+  permission_handler: ^11.3.1
+  geolocator: ^11.1.0
   qr_flutter: ^4.1.0
-  kiosk_mode: ^0.5.0+2
   flutter_tts: ^4.0.2
-  panorama_viewer: ^1.0.4
-  http: ^1.2.1
-  open_app_file: ^4.0.2
-  # camera_windows:
-  #   git:
-  #     url: https://github.com/yushulx/flutter_camera_windows.git
-  # flutter_barcode_sdk: ^2.2.6
+  flutter_barcode_listener: ^0.1.4
+  visibility_detector: ^0.4.0+2
+  kiosk_mode: ^0.5.0+2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^3.0.0
-  build_runner: ^2.4.6
-  json_serializable: ^6.7.1
-  rename: ^3.0.2
+  flutter_lints: ^3.0.2
+  build_runner: ^2.4.9
+  json_serializable: ^6.8.0
+  rename: ^3.0.1
 
 flutter:
   uses-material-design: true
@@ -91,6 +104,12 @@ flutter:
     - assets/icons/logout.svg
 
   fonts:
+    - family: NotoSans
+      fonts:
+        - asset: assets/fonts/NotoSans-Regular.ttf
+        - asset: assets/fonts/NotoSans-Italic.ttf
+        - asset: assets/fonts/NotoSans-Bold.ttf
+          weight: 600
     - family: Roboto
       fonts:
         - asset: assets/fonts/Roboto-Regular.ttf
