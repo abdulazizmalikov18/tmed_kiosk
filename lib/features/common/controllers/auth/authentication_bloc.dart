@@ -28,11 +28,11 @@ enum AuthenticationStatus {
 Future<bool> isInternetConnected() async {
   var connectivityResult = await (Connectivity().checkConnectivity());
   var connectionChecker = InternetConnectionChecker();
-  if (connectivityResult == ConnectivityResult.mobile ||
-      connectivityResult == ConnectivityResult.wifi ||
-      connectivityResult == ConnectivityResult.ethernet ||
-      connectivityResult == ConnectivityResult.vpn ||
-      connectivityResult == ConnectivityResult.bluetooth &&
+  if (connectivityResult.contains(ConnectivityResult.mobile) ||
+      connectivityResult.contains(ConnectivityResult.wifi) ||
+      connectivityResult.contains(ConnectivityResult.ethernet) ||
+      connectivityResult.contains(ConnectivityResult.vpn) ||
+      connectivityResult.contains(ConnectivityResult.bluetooth) &&
           await connectionChecker.hasConnection) {
     return true; // Connected to mobile data or Wi-Fi
   } else {
