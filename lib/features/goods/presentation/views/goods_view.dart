@@ -213,7 +213,7 @@ class _GoodsViewState extends State<GoodsView> {
                       "Чтобы продолжить покупку пожалуйста нажмите в нижнем меню кнопку оформить");
                 }
                 return WButton(
-                  height: 80,
+                  height: 120,
                   margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                   onTap: () {
                     context.push(RoutsContact.cart, extra: false);

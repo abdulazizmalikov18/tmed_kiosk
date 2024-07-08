@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/constants/images.dart';
+import 'package:tmed_kiosk/assets/constants/storage_keys.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/my_function.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/cart_view_model.dart';
+import 'package:tmed_kiosk/features/common/controllers/auth/authentication_bloc.dart';
 import 'package:tmed_kiosk/features/common/controllers/show_pop_up/show_pop_up_bloc.dart';
+import 'package:tmed_kiosk/features/common/entity/orders_entity.dart';
+import 'package:tmed_kiosk/features/common/repo/log_service.dart';
+import 'package:tmed_kiosk/features/common/repo/storage_repository.dart';
+import 'package:tmed_kiosk/features/common/ticket/recept_roll_80.dart';
+import 'package:tmed_kiosk/features/common/ticket/w_dialog_printer.dart';
 import 'package:tmed_kiosk/features/goods/presentation/controllers/bloc/goods_bloc.dart';
 
 class PaymeDialog extends StatefulWidget {
@@ -21,6 +29,7 @@ class PaymeDialog extends StatefulWidget {
     required this.username,
     required this.context,
   });
+
   final CartBloc bloc;
   final CartViewModel vm;
   final AccountsViewModel vmA;
@@ -34,6 +43,7 @@ class PaymeDialog extends StatefulWidget {
 
 class _PaymeDialogState extends State<PaymeDialog> {
   int index = -1;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -156,15 +166,8 @@ class _PaymeDialogState extends State<PaymeDialog> {
                   CreatOrder(
                     username:
                         widget.username.isNotEmpty ? widget.username : null,
-                    onSuccess: (data) {
-                      context.read<ShowPopUpBloc>().add(ShowPopUp(
-                            message: MyFunctions.createPrice(context),
-                            status: PopStatus.success,
-                          ));
-                      widget.goodsBloc.add(GetOrgProduct(isLoading: false));
-                      widget.vmA.clearAccount(widget.context);
-                      widget.vm.controllerComment.clear();
-                      Navigator.pop(context);
+                    onSuccess: (data) async {
+                      await ticket(data);
                     },
                     onError: (nima) {
                       context.read<ShowPopUpBloc>().add(
@@ -209,5 +212,40 @@ class _PaymeDialogState extends State<PaymeDialog> {
         ],
       ),
     );
+  }
+
+  Future<void> ticket(OrdersEntity data) async {
+    final tashkilot = context
+        .read<AuthenticationBloc>()
+        .state
+        .listSpecial
+        .where((element) =>
+            element.id == StorageRepository.getString(StorageKeys.SPID))
+        .first
+        .org
+        .name;
+
+    try {
+      final dataPrint = await ReceiptRoll80(
+        data: data,
+        vat: 12,
+        tashkilot: tashkilot,
+      ).show();
+      showDialog(
+        context: context,
+        builder: (context) => PrinterDialog(data: dataPrint),
+      ).then(
+        (value) {
+          widget.goodsBloc.add(GetOrgProduct(isLoading: false));
+          widget.vmA.clearAccount(widget.context);
+          widget.vm.controllerComment.clear();
+          Navigator.pop(context);
+          context.pop();
+        },
+      );
+    } catch (e) {
+      // Handle any exceptions here
+      Log.e(e);
+    }
   }
 }

@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/accounts_entity.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
@@ -10,11 +12,13 @@ import 'package:tmed_kiosk/features/cart/presentation/widgets/add_user_iteam.dar
 import 'package:tmed_kiosk/features/cart/presentation/widgets/create_ph_jsh.dart';
 import 'package:tmed_kiosk/features/common/controllers/show_pop_up/show_pop_up_bloc.dart';
 import 'package:tmed_kiosk/features/common/repo/log_service.dart';
+import 'package:tmed_kiosk/features/common/widgets/w_button.dart';
 import 'package:tmed_kiosk/features/main/presentation/controllers/bloc/navigator_bloc.dart';
 import 'package:tmed_kiosk/generated/locale_keys.g.dart';
 
 class UserAddView extends StatefulWidget {
   const UserAddView({super.key, required this.vm});
+
   final AccountsViewModel vm;
 
   @override
@@ -36,7 +40,19 @@ class _UserAddViewState extends State<UserAddView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          WButton(
+            onTap: () {
+              context.pop();
+            },
+            text: "Vazifa berish",
+            color: blue,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            margin: const EdgeInsets.symmetric(horizontal: 12),
+          )
+        ],
+      ),
       body: BlocBuilder<AccountsBloc, AccountsState>(
         builder: (context, state) {
           return SingleChildScrollView(
@@ -123,6 +139,7 @@ class _UserAddViewState extends State<UserAddView> {
                   AddUsetIteam(
                     vm: vm,
                     isNew: true,
+                    isChanged: vm.name.text.isNotEmpty,
                     url: url,
                   ),
               ],

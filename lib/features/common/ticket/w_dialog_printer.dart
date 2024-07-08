@@ -6,6 +6,7 @@ import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:printing/printing.dart';
 import 'package:pdf/pdf.dart';
+import 'package:tmed_kiosk/features/common/widgets/dialog_title.dart';
 
 class PrinterDialog extends StatefulWidget {
   final Uint8List data;
@@ -27,12 +28,13 @@ class _PrinterDialogState extends State<PrinterDialog> {
           ? const EdgeInsets.all(16)
           : null,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      title: const DialogTitle(title: "Ro'yhat raqamingiz",),
       content: SizedBox(
         width: Platform.isIOS || Platform.isAndroid
             ? MediaQuery.of(context).size.width
             : MediaQuery.of(context).size.width * 0.6,
         height: Platform.isIOS || Platform.isAndroid
-            ? MediaQuery.of(context).size.height * 0.6
+            ? MediaQuery.of(context).size.height * 0.9
             : MediaQuery.of(context).size.height * 0.8,
         child: Platform.isIOS || Platform.isAndroid
             ? SizedBox(
