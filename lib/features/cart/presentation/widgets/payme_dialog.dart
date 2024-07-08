@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/assets/constants/images.dart';
@@ -158,8 +157,6 @@ class _PaymeDialogState extends State<PaymeDialog> {
                     username:
                         widget.username.isNotEmpty ? widget.username : null,
                     onSuccess: (data) {
-                      Navigator.pop(context);
-                      context.pop();
                       context.read<ShowPopUpBloc>().add(ShowPopUp(
                             message: MyFunctions.createPrice(context),
                             status: PopStatus.success,
@@ -167,6 +164,7 @@ class _PaymeDialogState extends State<PaymeDialog> {
                       widget.goodsBloc.add(GetOrgProduct(isLoading: false));
                       widget.vmA.clearAccount(widget.context);
                       widget.vm.controllerComment.clear();
+                      Navigator.pop(context);
                     },
                     onError: (nima) {
                       context.read<ShowPopUpBloc>().add(

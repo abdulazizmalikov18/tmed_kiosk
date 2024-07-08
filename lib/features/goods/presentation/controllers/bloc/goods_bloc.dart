@@ -65,17 +65,11 @@ class GoodsBloc extends Bloc<GoodsEvent, GoodsState> {
       GoodsQueryParam param = GoodsQueryParam();
       final resultt = await useCase.call(param);
       if (resultt.isRight) {
-        param.isOffline = true;
-        final result = await useCase.call(param);
-        if (result.isRight) {
-          emit(state.copyWith(
-            orgProduct: result.right.results,
-            count: resultt.right.count,
-            statusProduct: FormzSubmissionStatus.success,
-          ));
-        } else {
-          emit(state.copyWith(statusProduct: FormzSubmissionStatus.failure));
-        }
+        emit(state.copyWith(
+          orgProduct: resultt.right.results,
+          count: resultt.right.count,
+          statusProduct: FormzSubmissionStatus.success,
+        ));
       } else {
         emit(state.copyWith(statusProduct: FormzSubmissionStatus.failure));
       }

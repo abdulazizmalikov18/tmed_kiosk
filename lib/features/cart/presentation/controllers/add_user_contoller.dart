@@ -131,6 +131,7 @@ mixin AddUserViweModel on State<AddUsetIteam> {
               context.read<MyNavigatorBloc>().add(NavId(1));
               widget.vm.controller.text =
                   "${widget.vm.name.text} ${widget.vm.latname.text}";
+              context.pop();
             },
             onError: () {
               context.read<ShowPopUpBloc>().add(ShowPopUp(

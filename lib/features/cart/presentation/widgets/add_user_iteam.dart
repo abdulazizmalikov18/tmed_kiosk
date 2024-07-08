@@ -338,18 +338,6 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                             onTap: () {
                               if (widget.vm.isCreat) {
                                 if (_dateFormKey.currentState!.validate()) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Processing Data',
-                                        style: TextStyle(
-                                            color: context.color.white),
-                                      ),
-                                    ),
-                                  );
-                                }
-                              } else {
-                                if (_dateFormKey.currentState!.validate()) {
                                   createUser();
                                 }
                               }
@@ -366,29 +354,25 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                       if (state.selectAccount.selectAccount.status != 2 &&
                           widget.isNew)
                         Expanded(
-                          child: WButton(
-                            height: 100,
-                            textStyle: const TextStyle(fontSize: 32),
-                            isLoading: state.status.isInProgress,
-                            isDisabled: !isChanged.value,
-                            onTap: () {
-                              if (widget.vm.isCreat) {
-                                if (_dateFormKey.currentState!.validate()) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content:
-                                          Text(LocaleKeys.processing_data.tr()),
-                                    ),
-                                  );
-                                }
-                              } else {
-                                if (_dateFormKey.currentState!.validate()) {
-                                  createUser();
-                                }
-                              }
-                            },
-                            text: LocaleKeys.adduser_save.tr(),
-                          ),
+                          child: ValueListenableBuilder(
+                              valueListenable: isChanged,
+                              builder: (context, _, __) {
+                                return WButton(
+                                  height: 100,
+                                  textStyle: const TextStyle(fontSize: 32),
+                                  isLoading: state.status.isInProgress,
+                                  isDisabled: !isChanged.value,
+                                  onTap: () {
+                                    if (widget.vm.isCreat) {
+                                      if (_dateFormKey.currentState!
+                                          .validate()) {
+                                        createUser();
+                                      }
+                                    }
+                                  },
+                                  text: LocaleKeys.adduser_save.tr(),
+                                );
+                              }),
                         ),
                     ],
                   ),
