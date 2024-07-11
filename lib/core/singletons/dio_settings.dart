@@ -17,7 +17,7 @@ class DioSettings {
     headers: <String, dynamic>{
       'Accept-Language': StorageRepository.getString(
         StorageKeys.LANGUAGE,
-        defValue: 'uz',
+        defValue: 'ru',
       ),
     },
     validateStatus: (status) => status != null && status <= 500,

@@ -219,7 +219,7 @@ class _GoodsViewState extends State<GoodsView> {
                     context.push(RoutsContact.cart, extra: false);
                   },
                   text: "${LocaleKeys.checkout.tr()} / ${cartMap.length}",
-                  textStyle: const TextStyle(fontSize: 32),
+                  textStyle: const TextStyle(fontSize: 42),
                 );
               }
               return const SizedBox();

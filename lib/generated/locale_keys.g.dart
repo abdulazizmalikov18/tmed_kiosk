@@ -230,6 +230,11 @@ abstract class  LocaleKeys {
   static const description_of_the_task = 'description_of_the_task';
   static const payment = 'payment';
   static const premium = 'premium';
+  static const select_payment_type = 'select_payment_type';
+  static const payment_via_Pay_Me = 'payment_via_Pay_Me';
+  static const payment_via_click = 'payment_via_click';
+  static const payment_by_cash = 'payment_by_cash';
+  static const nod_date_tIme = 'nod_date_tIme';
   static const number_has_user = 'number_has_user';
   static const user_this_PINFL = 'user_this_PINFL';
   static const user_info = 'user_info';
@@ -300,6 +305,9 @@ abstract class  LocaleKeys {
   static const select_account = 'select_account';
   static const show_money = 'show_money';
   static const profile = 'profile';
+  static const yes = 'yes';
+  static const no = 'no';
+  static const place_an_order = 'place_an_order';
   static const profile_logout_yes = 'profile_logout_yes';
   static const log_out_profile = 'log_out_profile';
   static const number = 'number';

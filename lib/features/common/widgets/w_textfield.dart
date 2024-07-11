@@ -174,13 +174,13 @@ class _WTextFieldState extends State<WTextField>
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(
-                      color: widget.hasError ? red : context.color.white.withOpacity(0.3),
+                      color: widget.hasError ? red : context.color.white.withOpacity(0.1),
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide:
-                    BorderSide(color: widget.hasError ? red : inputBlue),
+                    BorderSide(color: widget.hasError ? red :  context.color.white.withOpacity(0.1)),
                   ),
                   hintText: widget.hintText,
                   hintStyle: widget.hintStyle ??
@@ -188,7 +188,7 @@ class _WTextFieldState extends State<WTextField>
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                         color:
-                        widget.hasError ? red : context.color.white.withOpacity(.5),
+                        widget.hasError ? red : context.color.white.withOpacity(.1),
                       ),
                   contentPadding: widget.contentPadding,
                   suffixIconConstraints:

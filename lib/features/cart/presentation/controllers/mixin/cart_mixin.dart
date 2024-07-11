@@ -43,7 +43,7 @@ mixin CartMixin on State<CardListIteam> {
           contentPadding: const EdgeInsets.symmetric(horizontal: 20),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          title: const DialogTitle(title: "Tolov turini tanlang"),
+          title: DialogTitle(title: "select_payment_type".tr()),
           content: PaymeDialog(
             bloc: context.read<CartBloc>(),
             vm: widget.vm,

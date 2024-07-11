@@ -75,8 +75,6 @@ class _CreateUserState extends State<CreateUser> {
                     },
                     child: WContainer(
                       margin: const EdgeInsets.symmetric(vertical: 10),
-                      height: 44,
-                      width: 44,
                       child: SvgPicture.asset(
                         AppIcons.search,
                         height: 24,

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
+import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/accounts_entity.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
@@ -41,15 +42,36 @@ class _UserAddViewState extends State<UserAddView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15)
+              .copyWith(bottom: 18, top: 0),
+          child: IconButton(
+            onPressed: () {
+              context.pop();
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: context.color.white,
+              size: 32,
+            ),
+          ),
+        ),
+        toolbarHeight: 76,
         actions: [
           WButton(
+            height: 64,
             onTap: () {
               context.pop();
             },
-            text: "Vazifa berish",
+            text: "place_an_order".tr(),
+            textStyle: const TextStyle(
+              fontSize: 22,
+              color: white,
+            ),
             color: blue,
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            margin: const EdgeInsets.symmetric(horizontal: 12),
+            margin: const EdgeInsets.symmetric(horizontal: 15)
+                .copyWith(bottom: 18, top: 0),
           )
         ],
       ),

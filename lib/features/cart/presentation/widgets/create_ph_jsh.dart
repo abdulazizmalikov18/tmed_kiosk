@@ -38,7 +38,7 @@ class _CreatePhJshState extends State<CreatePhJsh> {
               : state.selectAccount.selectAccount.pinfl;
         }
         return Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             color: context.color.whiteBlack,
@@ -49,93 +49,94 @@ class _CreatePhJshState extends State<CreatePhJsh> {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              const SizedBox(height: 12),
               Text(
                 "create_account".tr(),
                 style: AppTheme.displayLarge
-                    .copyWith(fontSize: 20, color: context.color.white),
+                    .copyWith(fontSize: 28, color: context.color.white),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
               Divider(
                 color: context.color.white.withOpacity(.1),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
               Text(
                 'jshshir'.tr(),
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: 22,
                   fontWeight: FontWeight.w400,
                   color: white50,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Row(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Column(
                   children: [
-                    Expanded(
-                      flex: 5,
-                      child: WTextField(
-                        height: 48,
-                        fillColor: context.color.borderColor,
-                        autoFocus: true,
-                        maxLength: first == '+' ? 13 : 14,
-                        keyboardType: TextInputType.phone,
-                        controller: widget.vm.phone,
-                        inputFormatters: [Formatters.pnflFormat],
-                        enabled: !widget.vm.isChek &&
-                            state.selectAccount.selectAccount.name.isEmpty,
-                        prefix: widget.vm.phone.text.isEmpty
-                            ? const SizedBox(width: 12)
-                            : widget.vm.phone.text[0] == '+' ||
-                                    widget.vm.phone.text.startsWith("998")
-                                ? Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 12,
-                                      right: 8,
-                                    ),
-                                    child: SvgPicture.asset(
-                                      AppIcons.call,
-                                    ),
-                                  )
-                                : Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 12,
-                                      right: 8,
-                                    ),
-                                    child: SvgPicture.asset(
-                                      AppIcons.personalcard,
-                                    ),
+                    WTextField(
+                      cursorHeight: 40,
+                      height: 100,
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 16),
+                      fillColor: context.color.borderColor,
+                      autoFocus: true,
+                      maxLength: first == '+' ? 13 : 14,
+                      keyboardType: TextInputType.phone,
+                      controller: widget.vm.phone,
+                      inputFormatters: [Formatters.pnflFormat],
+                      enabled: !widget.vm.isChek &&
+                          state.selectAccount.selectAccount.name.isEmpty,
+                      prefixMaxWidth: 70,
+                      prefix : widget.vm.phone.text.isEmpty
+                          ? const SizedBox(width: 12)
+                          : widget.vm.phone.text[0] == '+' ||
+                                  widget.vm.phone.text.startsWith("998")
+                              ? Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 18,
+                                    right: 12,
                                   ),
-                        onChanged: (value) {
-                          if (value.isNotEmpty) {
-                            first = value[0];
-                          } else {
-                            first = '';
-                          }
+                                  child: SvgPicture.asset(
+                                    AppIcons.call,
+                                    color: context.color.white,
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 18,
+                                    right: 12,
+                                  ),
+                                  child: SvgPicture.asset(
+                                    AppIcons.personalcard,
+                                    color: context.color.white,
+                                  ),
+                                ),
+                      onChanged: (value) {
+                        if (value.isNotEmpty) {
+                          first = value[0];
+                        } else {
+                          first = '';
+                        }
 
-                          setState(() {});
-                        },
-                        hintText: 'phone_or_jshir'.tr(),
-                        hintStyle: const TextStyle(color: white50),
-                        style: TextStyle(color: context.color.white),
-                      ),
+                        setState(() {});
+                      },
+                      hintText: 'phone_or_jshir'.tr(),
+                      hintStyle: const TextStyle(color: white50, fontSize: 22),
+                      style: TextStyle(color: context.color.white, fontSize: 25),
                     ),
                     const SizedBox(width: 16),
-                    Expanded(
-                      flex: 2,
-                      child: WButton(
-                        height: 48,
-                        isDisabled: !(widget.vm.phone.text.startsWith("+998")
-                                ? widget.vm.phone.text.length == 13
-                                : widget.vm.phone.text.length == 14) ||
-                            widget.vm.isChek,
-                        onTap: widget.onTap,
-                        text: "adduser_phone_button".tr(),
-                        isLoading: state.status.isInProgress,
-                        textStyle: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: white,
-                        ),
+                    WButton(
+                      height: 80,
+                      isDisabled: !(widget.vm.phone.text.startsWith("+998")
+                              ? widget.vm.phone.text.length == 13
+                              : widget.vm.phone.text.length == 14) ||
+                          widget.vm.isChek,
+                      onTap: widget.onTap,
+                      text: "adduser_phone_button".tr(),
+                      isLoading: state.status.isInProgress,
+                      textStyle: const TextStyle(
+                        fontSize: 32,
+                        // fontWeight: FontWeight.w400,
+                        color: white,
                       ),
                     ),
                   ],

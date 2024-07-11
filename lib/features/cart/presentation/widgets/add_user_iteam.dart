@@ -259,22 +259,23 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                             if (value.length == 10) {
                               _dateFormKey.currentState!.validate();
                             }
-                            if (value.length >= 2 &&
+                           else if (value.length >= 2 &&
                                 int.tryParse(value.substring(0, 2))! >= 32) {
                               widget.vm.age.text =
                                   value.replaceRange(0, 2, "30");
-                              "30";
+                              // "30";
                             }
-                            if (value.length >= 5 &&
+                           else if (value.length >= 5 &&
                                 int.tryParse(value.substring(3, 5))! >= 12) {
                               widget.vm.age.text =
                                   value.replaceRange(3, 5, "02");
-                              "02";
-                            } else if (value.length >= 9 &&
+                              // "02";
+                            }
+                           else if (value.length >= 9 &&
                                 int.tryParse(value.substring(6, 9))! >= 2025) {
                               widget.vm.age.text =
                                   value.replaceRange(6, 10, "2000");
-                              "2024";
+                              // "2024";
                             }
                           },
                           validator: (value) {
@@ -284,7 +285,7 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                                 return null;
                               } else {
                                 Log.e("NImagp");
-                                return "No DateTIme";
+                                return "nod_date_tIme".tr();
                               }
                             } else {
                               return null;

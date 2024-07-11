@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -47,7 +48,7 @@ class _PaymeDialogState extends State<PaymeDialog> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 600,
+      width: 400,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -74,10 +75,8 @@ class _PaymeDialogState extends State<PaymeDialog> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  Image.asset(AppImages.payme),
-                  const SizedBox(height: 12),
                   Text(
-                    "Payment via Pay Me",
+                    "payment_via_Pay_Me".tr(),
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
@@ -128,10 +127,8 @@ class _PaymeDialogState extends State<PaymeDialog> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  Image.asset(AppImages.click),
-                  const SizedBox(height: 12),
                   Text(
-                    "Payment via Click",
+                    "payment_via_click".tr(),
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
@@ -195,10 +192,8 @@ class _PaymeDialogState extends State<PaymeDialog> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  Image.asset(AppImages.cash),
-                  const SizedBox(height: 12),
                   Text(
-                    "Payment by cash",
+                    "payment_by_cash".tr(),
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w400,

@@ -17,6 +17,7 @@ import 'package:tmed_kiosk/features/common/user_type/user_type.dart';
 import 'package:tmed_kiosk/features/common/widgets/dialog_title.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_button.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_textfield.dart';
+import 'package:tmed_kiosk/features/common/widgets/w_timer_dialog.dart';
 import 'package:tmed_kiosk/features/goods/presentation/controllers/bloc/goods_bloc.dart';
 import 'package:tmed_kiosk/features/main/presentation/controllers/main_view_modal.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
@@ -83,7 +84,8 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
   void _startTimer() {
     // Start a timer to navigate to the home page after 15 seconds of inactivity
     _timer = Timer(const Duration(seconds: 60), () {
-      context.go(RoutsContact.infoView);
+      // context.go(RoutsContact.infoView);
+      openTimer(context);
     });
   }
 

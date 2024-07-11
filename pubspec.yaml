@@ -65,6 +65,7 @@ dependencies:
   connectivity_plus: ^6.0.3
   dio: ^5.5.0+1
   html: ^0.15.4
+  circular_countdown_timer: ^0.2.3
   # camera_windows:
   #   git:
   #     url: https://github.com/yushulx/flutter_camera_windows.git

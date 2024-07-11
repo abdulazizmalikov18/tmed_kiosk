@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:tmed_kiosk/assets/themes/theme.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/user_set/selection_account.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class VCartItem extends StatefulWidget {
   const VCartItem({super.key, required this.isAccount});
+
   final bool isAccount;
 
   @override
@@ -31,6 +33,20 @@ class _VCartItemState extends State<VCartItem> {
           appBar: state.navid != 2
               ? AppBar(
                   backgroundColor: context.color.backGroundColor,
+                  leading: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15)
+                        .copyWith(bottom: 18, top: 0),
+                    child: IconButton(
+                      onPressed: () {
+                        context.pop();
+                      },
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: context.color.white,
+                        size: 32,
+                      ),
+                    ),
+                  ),
                   title: BlocSelector<AccountsBloc, AccountsState,
                       SelectionAccountEntity>(
                     builder: (context, state) {
