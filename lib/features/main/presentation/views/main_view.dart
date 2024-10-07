@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_barcode_listener/flutter_barcode_listener.dart';
+import 'package:http/http.dart';
 import 'package:tmed_kiosk/assets/colors/theme_changer.dart';
 import 'package:tmed_kiosk/assets/themes/theme.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/accounts_entity.dart';
+import 'package:tmed_kiosk/features/cart/domain/entity/process_status_entity.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
 import 'package:tmed_kiosk/features/category/presentation/controllers/bloc/category_bloc.dart';
@@ -280,7 +282,6 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                 resizeToAvoidBottomInset: false,
                 // floatingActionButton: FloatingActionButton(
                 //   onPressed: () {
-                //     dialog(context);
                 //   },
                 // ),
                 body: Padding(

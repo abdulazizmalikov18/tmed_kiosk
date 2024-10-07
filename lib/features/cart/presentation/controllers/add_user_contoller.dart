@@ -19,8 +19,16 @@ mixin AddUserViweModel on State<AddUsetIteam> {
       widget.vm.age.text = MyFunctions.formattedDate(selectedDate);
     }
   }
+  ValueNotifier<bool> isDis = ValueNotifier(false);
+
+  bool get isDisabled =>
+      widget.vm.name.text.isEmpty ||
+          widget.vm.gender.text.isEmpty ||
+          widget.vm.latname.text.isEmpty ||
+          widget.vm.age.text.isEmpty;
 
   changeInfo() {
+    isDis.value = !isDisabled;
     if (!isChanged.value) {
       isChanged.value = true;
     }
@@ -32,7 +40,39 @@ mixin AddUserViweModel on State<AddUsetIteam> {
         date.month == now.month &&
         date.day == now.day;
   }
-
+  checkOrder(String username) {
+    context.read<AccountsBloc>().add(
+      CheckOrderEvent(
+        username: username,
+        onSucces: () {},
+        onSuccesOrder: (entity) {
+          final bloc = context.read<CartBloc>();
+          final blocNav = context.read<MyNavigatorBloc>();
+          final blocAccount = context.read<AccountsBloc>();
+          final tashkilot = context.read<AuthenticationBloc>().state.listSpecial.where((element) => element.id == StorageRepository.getString(StorageKeys.SPID)).first.org.name;
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              backgroundColor: context.color.contColor,
+              content: ChechOrderDialog(
+                bloc: bloc,
+                tashkilot: tashkilot,
+                orders: entity,
+                blocAccount: blocAccount,
+                blocNavigator: blocNav,
+              ),
+            ),
+          );
+        },
+        onError: () {
+          context.read<MyNavigatorBloc>().add(NavId(0));
+        },
+        onErrorOrder: () {
+          context.read<MyNavigatorBloc>().add(NavId(0));
+        },
+      ),
+    );
+  }
   updateAccount(String username) {
     final data = {
       "name": widget.vm.name.text,

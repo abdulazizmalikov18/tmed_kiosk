@@ -22,6 +22,7 @@ import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
 class AddUserPhone extends StatefulWidget {
   const AddUserPhone({super.key, required this.vm, required this.vmC});
+
   final AccountsViewModel vm;
   final CartViewModel vmC;
 
@@ -49,9 +50,7 @@ class _AddUserPhoneState extends State<AddUserPhone> {
   @override
   void initState() {
     context.read<AccountsBloc>().add(GetRegion());
-    context
-        .read<AccountsBloc>()
-        .add(AccountsGet(onSucces: (value) {}, onError: () {}));
+    context.read<AccountsBloc>().add(AccountsGet(onSucces: (value) {}, onError: () {}));
     super.initState();
   }
 
@@ -83,8 +82,7 @@ class _AddUserPhoneState extends State<AddUserPhone> {
                     prefixIconConstraints: const BoxConstraints(maxWidth: 40),
                   ),
                   onChanged: (value) {
-                    context.read<AccountsBloc>().add(AccountsGet(
-                        search: value, onSucces: (value) {}, onError: () {}));
+                    context.read<AccountsBloc>().add(AccountsGet(search: value, onSucces: (value) {}, onError: () {}));
                   },
                 ),
               ),
@@ -92,28 +90,22 @@ class _AddUserPhoneState extends State<AddUserPhone> {
                 if (state.selectAccount.selectAccount.name.isEmpty)
                   WScaleAnimation(
                     onTap: () {
-                      Navigator.of(context).push(
-                          fade(page: CreateUser(vm: vm, vmC: widget.vmC)));
+                      Navigator.of(context).push(fade(page: CreateUser(vm: vm, vmC: widget.vmC)));
                     },
                     child: WContainer(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 4),
+                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                       height: 44,
                       width: 44,
                       child: SvgPicture.asset(
                         AppIcons.userAdd,
-                        colorFilter: state
-                                .selectAccount.selectAccount.name.isNotEmpty
-                            ? null
-                            : const ColorFilter.mode(white, BlendMode.srcIn),
+                        colorFilter: state.selectAccount.selectAccount.name.isNotEmpty ? null : const ColorFilter.mode(white, BlendMode.srcIn),
                       ),
                     ),
                   ),
                 if (state.selectAccount.selectAccount.name.isEmpty)
                   WScaleAnimation(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ScannerPage(vm: widget.vmC)));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ScannerPage(vm: widget.vmC)));
                     },
                     child: WContainer(
                       margin: const EdgeInsets.symmetric(vertical: 4),
@@ -143,7 +135,11 @@ class _AddUserPhoneState extends State<AddUserPhone> {
                     vm: vm,
                   );
                 } else {
-                  return UserInfoView(vm: vm, isPhone: true);
+                  return UserInfoView(
+                    vm: vm,
+                    isPhone: true,
+                    vmC: widget.vmC,
+                  );
                 }
               },
             ),

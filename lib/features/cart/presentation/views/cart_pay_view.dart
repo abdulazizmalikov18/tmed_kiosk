@@ -210,7 +210,7 @@ class _CartPayViewState extends State<CartPayView>
                     Padding(
                       padding: EdgeInsets.all(MyFunctions.paddingRespons(
                           MediaQuery.sizeOf(context).height)),
-                      child: OrderStatusSelection(state: state),
+                      child: const OrderStatusSelection(),
                     ),
                   ChekPriceIteam(
                     allPrice: state.allPrice,

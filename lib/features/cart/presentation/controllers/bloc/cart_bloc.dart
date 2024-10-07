@@ -85,7 +85,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             StorageKeys.STATUS,
             List.generate(
               result.right.results.length,
-              (index) => result.right.results[index].id.toString(),
+                  (index) => result.right.results[index].id.toString(),
             ),
           );
         }
@@ -93,10 +93,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         List<int> statusID = [];
         List<ProcessStatusEntity> status = [];
         for (var element in listCategory) {
-          statusID.add(int.parse(element));
-          final st = result.right.results
-              .firstWhere((stat) => stat.id == int.parse(element));
-          status.add(st);
+          try {
+            statusID.add(int.parse(element));
+            final st = result.right.results
+                .firstWhere((stat) => stat.id == int.parse(element));
+            status.add(st);
+          } catch (e) {
+            Log.e(e);
+          }
         }
         emit(state.copyWith(
           processStatus: status,

@@ -66,9 +66,7 @@ class _PaymeDialogState extends State<PaymeDialog> {
               duration: const Duration(microseconds: 300),
               width: double.infinity,
               decoration: BoxDecoration(
-                color: index == 0
-                    ? blue.withOpacity(.1)
-                    : context.color.white.withOpacity(.1),
+                color: index == 0 ? blue.withOpacity(.1) : context.color.white.withOpacity(.1),
                 borderRadius: BorderRadius.circular(12),
                 border: index == 0 ? Border.all(color: blue) : null,
               ),
@@ -77,10 +75,7 @@ class _PaymeDialogState extends State<PaymeDialog> {
                 children: [
                   Text(
                     "payment_via_Pay_Me".tr(),
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
-                        color: context.color.white),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: context.color.white),
                   ),
                   if (index == 0)
                     Padding(
@@ -118,9 +113,7 @@ class _PaymeDialogState extends State<PaymeDialog> {
               duration: const Duration(microseconds: 300),
               width: double.infinity,
               decoration: BoxDecoration(
-                color: index == 1
-                    ? blue.withOpacity(.1)
-                    : context.color.white.withOpacity(.1),
+                color: index == 1 ? blue.withOpacity(.1) : context.color.white.withOpacity(.1),
                 borderRadius: BorderRadius.circular(12),
                 border: index == 1 ? Border.all(color: blue) : null,
               ),
@@ -129,10 +122,7 @@ class _PaymeDialogState extends State<PaymeDialog> {
                 children: [
                   Text(
                     "payment_via_click".tr(),
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
-                        color: context.color.white),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: context.color.white),
                   ),
                   if (index == 1)
                     Padding(
@@ -161,14 +151,12 @@ class _PaymeDialogState extends State<PaymeDialog> {
               if (index == 2) {
                 widget.bloc.add(
                   CreatOrder(
-                    username:
-                        widget.username.isNotEmpty ? widget.username : null,
+                    username: widget.username.isNotEmpty ? widget.username : null,
                     onSuccess: (data) async {
                       await ticket(data);
                     },
                     onError: (nima) {
-                      context.read<ShowPopUpBloc>().add(
-                          ShowPopUp(message: nima, status: PopStatus.error));
+                      context.read<ShowPopUpBloc>().add(ShowPopUp(message: nima, status: PopStatus.error));
                     },
                     isCupon: true,
                   ),
@@ -183,9 +171,7 @@ class _PaymeDialogState extends State<PaymeDialog> {
               duration: const Duration(microseconds: 300),
               width: double.infinity,
               decoration: BoxDecoration(
-                color: index == 2
-                    ? blue.withOpacity(.1)
-                    : context.color.white.withOpacity(.1),
+                color: index == 2 ? blue.withOpacity(.1) : context.color.white.withOpacity(.1),
                 borderRadius: BorderRadius.circular(12),
                 border: index == 2 ? Border.all(color: blue) : null,
               ),
@@ -194,10 +180,7 @@ class _PaymeDialogState extends State<PaymeDialog> {
                 children: [
                   Text(
                     "payment_by_cash".tr(),
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
-                        color: context.color.white),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: context.color.white),
                   )
                 ],
               ),
@@ -210,15 +193,7 @@ class _PaymeDialogState extends State<PaymeDialog> {
   }
 
   Future<void> ticket(OrdersEntity data) async {
-    final tashkilot = context
-        .read<AuthenticationBloc>()
-        .state
-        .listSpecial
-        .where((element) =>
-            element.id == StorageRepository.getString(StorageKeys.SPID))
-        .first
-        .org
-        .name;
+    final tashkilot = context.read<AuthenticationBloc>().state.listSpecial.where((element) => element.id == StorageRepository.getString(StorageKeys.SPID)).first.org.name;
 
     try {
       final dataPrint = await ReceiptRoll80(

@@ -24,6 +24,21 @@ class AccountsUsernameEvent extends AccountsEvent {
     required this.onError,
   });
 }
+class CheckOrderEvent extends AccountsEvent {
+  final String username;
+  final VoidCallback onSucces;
+  final Function(OrdersEntity entity) onSuccesOrder;
+  final VoidCallback onError;
+  final VoidCallback onErrorOrder;
+
+  CheckOrderEvent({
+    required this.username,
+    required this.onSucces,
+    required this.onSuccesOrder,
+    required this.onError,
+    required this.onErrorOrder,
+  });
+}
 
 class GetMoreAccounts extends AccountsEvent {
   final String? search;

@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tmed_kiosk/assets/constants/storage_keys.dart';
@@ -199,6 +197,8 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                     child: WButton(
                                       height: 80,
                                       onTap: () {
+                                        Log.w(state.selStatus);
+                                        Log.w(state.processStatus);
                                         controllerMixin.speak(
                                             "Пожалуйста подведите к нижней камере  QR вашего ID паспорта либо зарегистируйтесь по ПИНФЛ либо  по номеру телефона.");
                                         checkUser(
@@ -253,7 +253,7 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                             ),
                           ),
                           const SizedBox(height: 32),
-                          OrderStatusSelection(state: state),
+                          const OrderStatusSelection(),
                           // const SizedBox(height: 16),
                           // TaskComment(
                           //   vm: vm,

@@ -168,7 +168,7 @@ class _CartPhoneViewState extends State<CartPhoneView> with CartPhoneMixin {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                OrderStatusSelection(state: state),
+                                const OrderStatusSelection(),
                                 const SizedBox(height: 16),
                                 WButton(
                                   onTap: () {

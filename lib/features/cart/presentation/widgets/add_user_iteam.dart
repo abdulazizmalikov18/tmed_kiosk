@@ -5,6 +5,7 @@ import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tmed_kiosk/assets/constants/icons.dart';
 import 'package:tmed_kiosk/assets/constants/images.dart';
+import 'package:tmed_kiosk/assets/constants/storage_keys.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/download_file.dart';
 import 'package:tmed_kiosk/core/utils/formatters.dart';
@@ -12,7 +13,10 @@ import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_model.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/profession_entity.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/region_entity.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
+import 'package:tmed_kiosk/features/cart/presentation/model/cart_view_model.dart';
+import 'package:tmed_kiosk/features/cart/presentation/widgets/chech_order_dialog.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/user_camera_macos.dart';
+import 'package:tmed_kiosk/features/common/controllers/auth/authentication_bloc.dart';
 import 'package:tmed_kiosk/features/common/repo/log_service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +31,7 @@ import 'package:tmed_kiosk/features/cart/presentation/widgets/profession/profess
 import 'package:tmed_kiosk/features/cart/presentation/widgets/region/region_dialog.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/user_camera.dart';
 import 'package:tmed_kiosk/features/common/controllers/show_pop_up/show_pop_up_bloc.dart';
+import 'package:tmed_kiosk/features/common/repo/storage_repository.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_button.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_textfield.dart';
 import 'package:tmed_kiosk/features/main/presentation/controllers/bloc/navigator_bloc.dart';
@@ -41,10 +46,11 @@ class AddUsetIteam extends StatefulWidget {
     this.isNew = false,
     this.isChanged = false,
     this.url = "",
-    // required this.vmC,
+    required this.vmC,
   });
-  final AccountsViewModel vm;
 
+  final AccountsViewModel vm;
+  final CartViewModel vmC;
   final bool isNew;
   final bool isChanged;
   final String url;
@@ -58,6 +64,7 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
     file: widget.url,
     setState: setState,
   );
+
   @override
   void initState() {
     super.initState();
@@ -72,9 +79,7 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
 
   void downloadImage() async {
     changeInfo();
-    _downloadFile.fileExists && !_downloadFile.dowloading
-        ? await _downloadFile.openfile()
-        : await _downloadFile.startDownload();
+    _downloadFile.fileExists && !_downloadFile.dowloading ? await _downloadFile.openfile() : await _downloadFile.startDownload();
     if (_downloadFile.fileExists) {
       images = File(_downloadFile.filePath);
       Log.d("Yes");
@@ -105,15 +110,13 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(color: greyText),
-                          image: state
-                                  .selectAccount.selectAccount.avatar.isNotEmpty
+                          image: state.selectAccount.selectAccount.avatar.isNotEmpty
                               ? DecorationImage(
                                   fit: BoxFit.cover,
                                   image: NetworkImage(
                                     state.selectAccount.selectAccount.avatar[0],
                                   ),
-                                  onError: (exception, stackTrace) =>
-                                      Image.asset(AppImages.logo),
+                                  onError: (exception, stackTrace) => Image.asset(AppImages.logo),
                                 )
                               : null,
                         ),
@@ -145,8 +148,7 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                                     ),
                                   ),
                                   Text(
-                                    (_downloadFile.progress * 100)
-                                        .toStringAsFixed(2),
+                                    (_downloadFile.progress * 100).toStringAsFixed(2),
                                     style: const TextStyle(fontSize: 12),
                                   ),
                                 ],
@@ -161,9 +163,7 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                   height: 64,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   textStyle: const TextStyle(fontSize: 28),
-                  text: state.selectAccount.selectAccount.phone.isNotEmpty
-                      ? "+${state.selectAccount.selectAccount.phone}"
-                      : "PNFL ${state.selectAccount.selectAccount.pinfl}",
+                  text: state.selectAccount.selectAccount.phone.isNotEmpty ? "+${state.selectAccount.selectAccount.phone}" : "PNFL ${state.selectAccount.selectAccount.pinfl}",
                   // text: state.selectAccount.selectAccount.status != 2
                   //     ? state.selectAccount.selectAccount.phone.isNotEmpty
                   //         ? "+${state.selectAccount.selectAccount.phone}"
@@ -176,8 +176,7 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                   WTextField(
                     cursorHeight: 50,
                     height: 100,
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 14, horizontal: 16),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
                     textCapitalization: TextCapitalization.words,
                     onChanged: (value) {
                       widget.vm.name.value = TextEditingValue(
@@ -191,16 +190,13 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                     hintText: "${LocaleKeys.adduser_firstname.tr()}*",
                     controller: widget.vm.name,
                     fillColor: context.color.whiteBlack,
-                    hintStyle: TextStyle(
-                        fontSize: 32,
-                        color: context.color.white.withOpacity(.5)),
+                    hintStyle: TextStyle(fontSize: 32, color: context.color.white.withOpacity(.5)),
                     style: TextStyle(color: context.color.white, fontSize: 32),
                   ),
                   WTextField(
                     cursorHeight: 50,
                     height: 100,
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 14, horizontal: 16),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
                     enabled: state.selectAccount.selectAccount.status != 2,
                     onChanged: (value) {
                       widget.vm.latname.value = TextEditingValue(
@@ -214,9 +210,7 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                     textCapitalization: TextCapitalization.words,
                     controller: widget.vm.latname,
                     fillColor: context.color.whiteBlack,
-                    hintStyle: TextStyle(
-                        fontSize: 32,
-                        color: context.color.white.withOpacity(.5)),
+                    hintStyle: TextStyle(fontSize: 32, color: context.color.white.withOpacity(.5)),
                     style: TextStyle(color: context.color.white, fontSize: 32),
                   ),
                   Container(
@@ -233,24 +227,18 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                           cursorHeight: 50,
                           height: 100,
                           keyboardType: TextInputType.number,
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 14, horizontal: 16),
-                          enabled:
-                              state.selectAccount.selectAccount.status != 2,
+                          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                          enabled: state.selectAccount.selectAccount.status != 2,
                           inputFormatters: [Formatters.dateFormatter],
                           onChanged: (value) {
                             // if(!RegExp("[0-9]").hasMatch(value[value.length-1])){
                             //   widget.vm.age.text = value.substring(0, value.length-2);
                             // }
-                            if (value.length == 3 &&
-                                value[value.length - 1] != "/") {
-                              widget.vm.age.text =
-                                  "${value.substring(0, 2)}/${value[2]}";
+                            if (value.length == 3 && value[value.length - 1] != "/") {
+                              widget.vm.age.text = "${value.substring(0, 2)}/${value[2]}";
                             }
-                            if (value.length == 6 &&
-                                value[value.length - 1] != "/") {
-                              widget.vm.age.text =
-                                  "${value.substring(0, 5)}/${value[5]}";
+                            if (value.length == 6 && value[value.length - 1] != "/") {
+                              widget.vm.age.text = "${value.substring(0, 5)}/${value[5]}";
                             }
                             if (value.length >= 9) {
                               widget.vm.age.text = value;
@@ -258,23 +246,14 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                             changeInfo();
                             if (value.length == 10) {
                               _dateFormKey.currentState!.validate();
-                            }
-                           else if (value.length >= 2 &&
-                                int.tryParse(value.substring(0, 2))! >= 32) {
-                              widget.vm.age.text =
-                                  value.replaceRange(0, 2, "30");
+                            } else if (value.length >= 2 && int.tryParse(value.substring(0, 2))! >= 32) {
+                              widget.vm.age.text = value.replaceRange(0, 2, "30");
                               // "30";
-                            }
-                           else if (value.length >= 5 &&
-                                int.tryParse(value.substring(3, 5))! >= 12) {
-                              widget.vm.age.text =
-                                  value.replaceRange(3, 5, "02");
+                            } else if (value.length >= 5 && int.tryParse(value.substring(3, 5))! >= 12) {
+                              widget.vm.age.text = value.replaceRange(3, 5, "02");
                               // "02";
-                            }
-                           else if (value.length >= 9 &&
-                                int.tryParse(value.substring(6, 9))! >= 2025) {
-                              widget.vm.age.text =
-                                  value.replaceRange(6, 10, "2000");
+                            } else if (value.length >= 9 && int.tryParse(value.substring(6, 9))! >= 2025) {
+                              widget.vm.age.text = value.replaceRange(6, 10, "2000");
                               // "2024";
                             }
                           },
@@ -292,13 +271,10 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                             }
                           },
                           hintText: "${LocaleKeys.age.tr()}*",
-                          hintStyle: TextStyle(
-                              fontSize: 32,
-                              color: context.color.white.withOpacity(.5)),
+                          hintStyle: TextStyle(fontSize: 32, color: context.color.white.withOpacity(.5)),
                           controller: widget.vm.age,
                           fillColor: context.color.whiteBlack,
-                          style: TextStyle(
-                              color: context.color.white, fontSize: 32),
+                          style: TextStyle(color: context.color.white, fontSize: 32),
                         ),
                       ),
                     ),
@@ -325,8 +301,7 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                             widget.vm.clearAccount(context);
                           },
                           color: red,
-                          isDisabled:
-                              context.read<CartBloc>().state.isOrder.isNotEmpty,
+                          isDisabled: context.read<CartBloc>().state.isOrder.isNotEmpty,
                           text: LocaleKeys.cart_order_cancel_button.tr(),
                         ),
                       ),
@@ -345,28 +320,29 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                               context.pop();
                             },
                             color: green,
+                            isLoading: state.statusOrder.isInProgress,
                             text: LocaleKeys.adduser_move_to_order.tr(),
                           ),
                         ),
-                        if (state.selectAccount.selectAccount.status != 2 &&
-                            widget.isNew)
-                          const SizedBox(width: 16),
+                        if (state.selectAccount.selectAccount.status != 2 && widget.isNew) const SizedBox(width: 16),
                       ],
-                      if (state.selectAccount.selectAccount.status != 2 &&
-                          widget.isNew)
+                      if (state.selectAccount.selectAccount.status != 2 && widget.isNew)
                         Expanded(
                           child: ValueListenableBuilder(
-                              valueListenable: isChanged,
-                              builder: (context, _, __) {
+                              valueListenable: isDis,
+                              builder: (context, ss, __) {
                                 return WButton(
                                   height: 100,
                                   textStyle: const TextStyle(fontSize: 32),
                                   isLoading: state.status.isInProgress,
-                                  isDisabled: !isChanged.value,
+                                  isDisabled: !ss & widget.isNew,
                                   onTap: () {
                                     if (widget.vm.isCreat) {
-                                      if (_dateFormKey.currentState!
-                                          .validate()) {
+                                      if (_dateFormKey.currentState!.validate()) {
+                                        createUser();
+                                      }
+                                    } else {
+                                      if (_dateFormKey.currentState!.validate()) {
                                         createUser();
                                       }
                                     }

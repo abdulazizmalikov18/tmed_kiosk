@@ -9,6 +9,7 @@ import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/accounts_entity.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
+import 'package:tmed_kiosk/features/cart/presentation/model/cart_view_model.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/add_user_iteam.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/create_ph_jsh.dart';
 import 'package:tmed_kiosk/features/common/controllers/show_pop_up/show_pop_up_bloc.dart';
@@ -18,9 +19,10 @@ import 'package:tmed_kiosk/features/main/presentation/controllers/bloc/navigator
 import 'package:tmed_kiosk/generated/locale_keys.g.dart';
 
 class UserAddView extends StatefulWidget {
-  const UserAddView({super.key, required this.vm});
+  const UserAddView({super.key, required this.vm, required this.vmC});
 
   final AccountsViewModel vm;
+  final CartViewModel vmC;
 
   @override
   State<UserAddView> createState() => _UserAddViewState();
@@ -56,24 +58,24 @@ class _UserAddViewState extends State<UserAddView> {
             ),
           ),
         ),
-        toolbarHeight: 76,
-        actions: [
-          WButton(
-            height: 64,
-            onTap: () {
-              context.pop();
-            },
-            text: "place_an_order".tr(),
-            textStyle: const TextStyle(
-              fontSize: 22,
-              color: white,
-            ),
-            color: blue,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            margin: const EdgeInsets.symmetric(horizontal: 15)
-                .copyWith(bottom: 18, top: 0),
-          )
-        ],
+        // toolbarHeight: 76,
+        // actions: [
+        //   WButton(
+        //     height: 64,
+        //     onTap: () {
+        //       context.pop();
+        //     },
+        //     text: "place_an_order".tr(),
+        //     textStyle: const TextStyle(
+        //       fontSize: 22,
+        //       color: white,
+        //     ),
+        //     color: blue,
+        //     padding: const EdgeInsets.symmetric(horizontal: 12),
+        //     margin: const EdgeInsets.symmetric(horizontal: 15)
+        //         .copyWith(bottom: 18, top: 0),
+        //   )
+        // ],
       ),
       body: BlocBuilder<AccountsBloc, AccountsState>(
         builder: (context, state) {
@@ -84,77 +86,70 @@ class _UserAddViewState extends State<UserAddView> {
                 CreatePhJsh(
                   vm: vm,
                   onTap: () {
+                    Log.w("Tuzukmi gap");
                     context.read<AccountsBloc>().add(PostPhone(
-                          phoneJshshr: vm.phone.text,
-                          onSuccess: (exodim) {
-                            if (exodim.id != 0) {
-                              url = exodim.photo;
-                              vm.selectAccount(
-                                AccountsEntity(
-                                  name: exodim.firstName,
-                                  lastname: exodim.lastName,
-                                  surname: exodim.middleName,
-                                  education: exodim.education,
-                                  pinfl: vm.phone.text,
-                                  phone: exodim.phone,
-                                  gender: exodim.sex,
-                                  birthday: exodim.birthday,
-                                  birthPlace: exodim.birthPlace,
-                                  nationality: exodim.nationality,
-                                  currentPlace: exodim.currentPlace,
-                                  position: exodim.positions
-                                      .map((e) => e.position)
-                                      .toList()
-                                      .join(", "),
-                                  isAfgan: exodim.comment.afghan != "-",
-                                  isCherno: exodim.comment.chernobyl != "-",
-                                  isInvalid: exodim.comment.invalid != "-",
-                                  isUvu: exodim.comment.railwayTitle != "-",
-                                ),
-                                true,
-                              );
-                              setState(() {});
-                            } else {
-                              setState(() {
-                                vm.isChek = true;
-                                vm.isCreat = true;
-                              });
-                            }
+                      phoneJshshr: vm.phone.text,
+                      onSuccess: (exodim) {
+                        if (exodim.id != 0) {
+                          final name = exodim.name.split(' ');
+                          url = exodim.photo;
+                          vm.selectAccount(
+                            AccountsEntity(
+                              name: exodim.name.isNotEmpty
+                                  ? name[1]
+                                  : "",
+                              lastname: name.last,
+                              surname: name.first,
+                              education: exodim.education,
+                              pinfl: vm.phone.text,
+                              phone: exodim.phone,
+                              birthPlace: exodim.birthPlace,
+                              nationality: exodim.nationality,
+                              currentPlace: exodim.currentPlace,
+                            ),
+                            true,
+                          );
+                          setState(() {});
+                        } else {
+                          setState(() {
+                            vm.isChek = true;
+                          });
+                        }
+                      },
+                      onError: (error) {
+                        Log.w("NIma gap");
+                        context
+                            .read<AccountsBloc>()
+                            .add(AccountsGet(
+                          search: vm.phone.text,
+                          onSucces: (account) {
+                            context.read<AccountsBloc>().add(
+                                GetCupon(
+                                    user: account.username));
+                            vm.selectAccount(account, true);
+                            Navigator.of(context).pop();
+                            context.read<AccountsBloc>().add(
+                                IsFocused(isFocused: false));
                           },
-                          onError: (error) {
-                            context.read<AccountsBloc>().add(AccountsGet(
-                                  search: vm.phone.text.contains("+")
-                                      ? vm.phone.text.substring(1)
-                                      : vm.phone.text,
-                                  onSucces: (account) {
-                                    context
-                                        .read<AccountsBloc>()
-                                        .add(GetCupon(user: account.username));
-                                    Log.d(account);
-
-                                    Log.d(account.name);
-                                    vm.selectAccount(account, false);
-
-                                    context
-                                        .read<MyNavigatorBloc>()
-                                        .add(NavId(1));
-                                  },
-                                  onError: () {
-                                    context.read<ShowPopUpBloc>().add(
-                                          ShowPopUp(
-                                            message: widget.vm.phone.text
-                                                    .startsWith("+")
-                                                ? LocaleKeys.number_has_user
-                                                    .tr()
-                                                : LocaleKeys.user_this_PINFL
-                                                    .tr(),
-                                            status: PopStatus.error,
-                                          ),
-                                        );
-                                  },
-                                ));
+                          onError: () {
+                            context.read<ShowPopUpBloc>().add(
+                              ShowPopUp(
+                                message: widget
+                                    .vm.phone.text
+                                    .startsWith("+")
+                                    ? LocaleKeys
+                                    .number_has_user
+                                    .tr()
+                                    : LocaleKeys
+                                    .user_this_PINFL
+                                    .tr(),
+                                status: PopStatus.error,
+                              ),
+                            );
                           },
                         ));
+                      },
+                    ));
                   },
                 ),
                 if (vm.isChek)
@@ -163,6 +158,7 @@ class _UserAddViewState extends State<UserAddView> {
                     isNew: true,
                     isChanged: vm.name.text.isNotEmpty,
                     url: url,
+                    vmC: widget.vmC,
                   ),
               ],
             ),

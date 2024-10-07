@@ -57,7 +57,7 @@ class _WGoodsItemState extends State<WGoodsItem> {
     isNull = widget.product.remains != 0 ||
         widget.product.product.type.name != 'product';
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
         boxShadow: wboxShadow,

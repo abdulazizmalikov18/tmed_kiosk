@@ -2,9 +2,12 @@ part of 'accounts_bloc.dart';
 
 class AccountsState extends Equatable {
   final FormzSubmissionStatus status;
+  final FormzSubmissionStatus statusPhone;
   final FormzSubmissionStatus statusd;
   final FormzSubmissionStatus statusAccounts;
+  final FormzSubmissionStatus statusOrder;
   final List<AccountsEntity> accounts;
+  final List<AccountsEntity> accountsPhone;
   final SelectionAccountEntity selectAccount;
   final List<RegionEntity> regions;
   final List<RegionEntity> regions1;
@@ -17,6 +20,8 @@ class AccountsState extends Equatable {
   final bool isFocused;
   final int count;
   final int countCupon;
+  final AccountBalanceModel accountBalanceModel;
+
   const AccountsState({
     this.status = FormzSubmissionStatus.initial,
     this.statusd = FormzSubmissionStatus.initial,
@@ -34,13 +39,20 @@ class AccountsState extends Equatable {
     this.recommendations = const [],
     this.count = 0,
     this.countCupon = 0,
+    this.accountBalanceModel = const AccountBalanceModel(),
+    this.accountsPhone = const [],
+    this.statusPhone = FormzSubmissionStatus.initial,
+    this.statusOrder = FormzSubmissionStatus.initial,
   });
 
   AccountsState copyWith({
     FormzSubmissionStatus? status,
+    FormzSubmissionStatus? statusPhone,
     FormzSubmissionStatus? statusd,
     FormzSubmissionStatus? statusAccounts,
+    FormzSubmissionStatus? statusOrder,
     List<AccountsEntity>? accounts,
+    List<AccountsEntity>? accountsPhone,
     List<RegionEntity>? regions,
     List<RegionEntity>? regions1,
     List<RegionEntity>? regions2,
@@ -53,9 +65,13 @@ class AccountsState extends Equatable {
     List<RecommendationModel>? recommendations,
     int? count,
     int? countCupon,
+    AccountBalanceModel? accountBalanceModel,
   }) =>
       AccountsState(
         status: status ?? this.status,
+        statusOrder: statusOrder ?? this.statusOrder,
+        statusPhone: statusPhone ?? this.statusPhone,
+        accountsPhone: accountsPhone ?? this.accountsPhone,
         statusd: statusd ?? this.statusd,
         statusAccounts: statusAccounts ?? this.statusAccounts,
         accounts: accounts ?? this.accounts,
@@ -71,25 +87,28 @@ class AccountsState extends Equatable {
         recommendations: recommendations ?? this.recommendations,
         count: count ?? this.count,
         countCupon: countCupon ?? this.countCupon,
+        accountBalanceModel: accountBalanceModel ?? this.accountBalanceModel,
       );
 
   @override
   List<Object> get props => [
-        status,
-        statusd,
-        statusAccounts,
-        accounts,
-        regions,
-        regions1,
-        regions2,
-        isFocused,
-        selectAccount,
-        profession,
-        profession2,
-        historys,
-        cupons,
-        recommendations,
-        count,
-        countCupon
-      ];
+    status,
+    statusd,statusOrder,
+    statusAccounts,
+    accounts,
+    regions,
+    regions1,
+    regions2,
+    accountsPhone,
+    accountBalanceModel,
+    isFocused,
+    selectAccount,
+    profession,
+    profession2,
+    historys,
+    cupons,
+    recommendations,
+    count,
+    countCupon
+  ];
 }

@@ -2,6 +2,7 @@ import 'package:tmed_kiosk/features/auth/presentation/views/auth_main_view.dart'
 import 'package:tmed_kiosk/features/cart/presentation/controllers/accounts/accounts_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/controllers/bloc/cart_bloc.dart';
 import 'package:tmed_kiosk/features/cart/presentation/model/accounts_view_model.dart';
+import 'package:tmed_kiosk/features/cart/presentation/model/cart_view_model.dart';
 import 'package:tmed_kiosk/features/cart/presentation/views/user_add_view.dart';
 import 'package:tmed_kiosk/features/cart/presentation/views/user_info_view.dart';
 import 'package:tmed_kiosk/features/cart/presentation/views/v_cart_item.dart';
@@ -24,10 +25,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 sealed class AppRouts {
-  static final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey<NavigatorState>();
-  static final GlobalKey<NavigatorState> _sectionANavigatorKey =
-      GlobalKey<NavigatorState>(debugLabel: 'sectionANav');
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> _sectionANavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'sectionANav');
   static GoRouter router = GoRouter(
     navigatorKey: navigatorKey,
     initialLocation: RoutsContact.splash,
@@ -47,7 +46,7 @@ sealed class AppRouts {
       ),
       GoRoute(
         path: RoutsContact.profile,
-        builder: (context, state) =>  ProfileView(
+        builder: (context, state) => ProfileView(
           cartBloc: (state.extra as CartBloc),
         ),
       ),
@@ -79,13 +78,17 @@ sealed class AppRouts {
               ),
               GoRoute(
                 path: RoutsContact.userAdd,
-                builder: (context, state) =>
-                    UserAddView(vm: (state.extra as AccountsViewModel)),
+                builder: (context, state) => UserAddView(
+                  vm: (state.extra as AccountsViewModel),
+                  vmC: CartViewModel(),
+                ),
               ),
               GoRoute(
                 path: RoutsContact.userInfo,
-                builder: (context, state) =>
-                    UserInfoView(vm: (state.extra as AccountsViewModel)),
+                builder: (context, state) => UserInfoView(
+                  vm: (state.extra as AccountsViewModel),
+                  vmC: CartViewModel(),
+                ),
               ),
             ],
           ),

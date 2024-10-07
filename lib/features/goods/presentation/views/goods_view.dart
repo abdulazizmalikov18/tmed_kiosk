@@ -69,10 +69,7 @@ class _GoodsViewState extends State<GoodsView> {
                 child: SizedBox(
                   height: 24,
                   width: 24,
-                  child: AppIcons.size.svg(
-                      color: stateN.isImage
-                          ? null
-                          : context.color.white.withOpacity(.5)),
+                  child: AppIcons.size.svg(color: stateN.isImage ? null : context.color.white.withOpacity(.5)),
                 ),
               ),
             ],
@@ -83,9 +80,7 @@ class _GoodsViewState extends State<GoodsView> {
                 WSearchButton(
                   controller: searchController,
                   onEditingComplete: () {
-                    context
-                        .read<GoodsBloc>()
-                        .add(GetOrgProduct(search: searchController.text));
+                    context.read<GoodsBloc>().add(GetOrgProduct(search: searchController.text));
                   },
                   onChanged: (String value) {},
                 )
@@ -116,8 +111,7 @@ class _GoodsViewState extends State<GoodsView> {
                             : SizeConfig.h(440),
                       ),
                       itemCount: 40,
-                      itemBuilder: (context, index) =>
-                          const GoodsShimmerIteam(),
+                      itemBuilder: (context, index) => const GoodsShimmerIteam(),
                     );
                   } else {
                     if (state.orgProduct.isNotEmpty) {
@@ -126,38 +120,15 @@ class _GoodsViewState extends State<GoodsView> {
                         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                           crossAxisSpacing: SizeConfig.v(16),
                           mainAxisSpacing: SizeConfig.h(16),
-                          mainAxisExtent: stateN.isImage
-                              ? statePrice.isPrice
-                                  ? SizeConfig.h(328)
-                                  : SizeConfig.h(302)
-                              : statePrice.isPrice
-                                  ? SizeConfig.h(168)
-                                  : SizeConfig.h(118),
-                          maxCrossAxisExtent: stateN.openCart
-                              ? statePrice.isPrice
-                                  ? SizeConfig.h(700)
-                                  : SizeConfig.h(440)
-                              : SizeConfig.h(440),
+                          mainAxisExtent: stateN.isImage ? 352 : 164,
+                          maxCrossAxisExtent: stateN.openCart ? 700 : 440,
                         ),
-                        itemCount:
-                            context.read<CategoryBloc>().state.selIndex == 0
-                                ? state.orgProduct.length
-                                : state.catigoryPro.length,
+                        itemCount: context.read<CategoryBloc>().state.selIndex == 0 ? state.orgProduct.length : state.catigoryPro.length,
                         itemBuilder: (context, index) => WGoodsItem(
                           isImage: stateN.isImage,
-                          product:
-                              context.watch<CategoryBloc>().state.selIndex == 0
-                                  ? state.orgProduct[index]
-                                  : state.catigoryPro[index],
-                          isLiked: context
-                              .watch<CartBloc>()
-                              .state
-                              .cartMap
-                              .containsKey(
-                                context.watch<CategoryBloc>().state.selIndex ==
-                                        0
-                                    ? state.orgProduct[index].id
-                                    : state.catigoryPro[index].id,
+                          product: context.watch<CategoryBloc>().state.selIndex == 0 ? state.orgProduct[index] : state.catigoryPro[index],
+                          isLiked: context.watch<CartBloc>().state.cartMap.containsKey(
+                                context.watch<CategoryBloc>().state.selIndex == 0 ? state.orgProduct[index].id : state.catigoryPro[index].id,
                               ),
                           vm: vm,
                           isPrice: statePrice.isPrice,
@@ -166,27 +137,14 @@ class _GoodsViewState extends State<GoodsView> {
                         ),
                         errorWidget: const SizedBox(),
                         fetchMoreFunction: () {
-                          if (context.watch<CategoryBloc>().state.selIndex ==
-                              0) {
+                          if (context.watch<CategoryBloc>().state.selIndex == 0) {
                             context.read<GoodsBloc>().add(GetMoreOrgProduct());
                           } else {
-                            context.read<GoodsBloc>().add(
-                                GetMoreProductCategory(context
-                                    .watch<CategoryBloc>()
-                                    .state
-                                    .category[context
-                                        .watch<CategoryBloc>()
-                                        .state
-                                        .selIndex]
-                                    .id!));
+                            context.read<GoodsBloc>().add(GetMoreProductCategory(context.watch<CategoryBloc>().state.category[context.watch<CategoryBloc>().state.selIndex].id!));
                           }
                         },
                         loadingWidget: const GoodsShimmerIteam(),
-                        hasMoreToFetch:
-                            context.watch<CategoryBloc>().state.selIndex == 0
-                                ? (state.count > state.orgProduct.length)
-                                : (state.countCategory >
-                                    state.catigoryPro.length),
+                        hasMoreToFetch: context.watch<CategoryBloc>().state.selIndex == 0 ? (state.count > state.orgProduct.length) : (state.countCategory > state.catigoryPro.length),
                         paginatorStatus: state.statusProduct,
                       );
                     } else {
@@ -203,14 +161,12 @@ class _GoodsViewState extends State<GoodsView> {
               );
             },
           ),
-          bottomNavigationBar:
-              BlocSelector<CartBloc, CartState, Map<int, OrgProductEntity>>(
+          bottomNavigationBar: BlocSelector<CartBloc, CartState, Map<int, OrgProductEntity>>(
             selector: (state) => state.cartMap,
             builder: (context, cartMap) {
               if (cartMap.isNotEmpty) {
                 if (cartMap.length == 1) {
-                  controllerMixin.speak(
-                      "Чтобы продолжить покупку пожалуйста нажмите в нижнем меню кнопку оформить");
+                  controllerMixin.speak("Чтобы продолжить покупку пожалуйста нажмите в нижнем меню кнопку оформить");
                 }
                 return WButton(
                   height: 120,

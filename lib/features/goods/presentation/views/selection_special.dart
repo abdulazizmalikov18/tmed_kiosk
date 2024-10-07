@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:tmed_kiosk/features/common/controllers/price_bloc/price_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
