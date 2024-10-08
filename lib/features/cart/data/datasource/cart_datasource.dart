@@ -2,6 +2,8 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:tmed_kiosk/features/cart/data/models/account_balance_model.dart';
+import 'package:tmed_kiosk/features/cart/data/models/check_order_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/check_user_model.dart';
 import 'package:hive/hive.dart';
 import 'package:tmed_kiosk/assets/constants/storage_keys.dart';
@@ -19,6 +21,7 @@ import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_res_model.dart'
 import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_selection.dart';
 import 'package:tmed_kiosk/features/cart/data/models/history/history_filter.dart';
 import 'package:tmed_kiosk/features/cart/data/models/history/history_model.dart';
+import 'package:tmed_kiosk/features/cart/data/models/merge_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/orders_creat_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/process_status_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/profession_model.dart';
@@ -31,6 +34,7 @@ import 'package:tmed_kiosk/features/common/models/popular_category_filter.dart';
 import 'package:tmed_kiosk/features/common/pagination/models/generic_pagination.dart';
 import 'package:tmed_kiosk/features/common/repo/error_handle.dart';
 import 'package:tmed_kiosk/features/common/repo/storage_repository.dart';
+
 
 abstract class CartDataSource {
   Future<OrdersModel> createOrder(OrdersCreatModel param);
@@ -45,13 +49,16 @@ abstract class CartDataSource {
   Future<bool> postPhoneConfir(String phone);
   Future<CreateAccountModel> createAccount(FormData formData);
   Future<GenericPagination<ProcessStatusModel>> processStatus();
-  // Future<GenericPagination<ProcessWorkModel>> prcessWork();
+  Future<bool> mergeAccount(MergeModel model);
   Future<GenericPagination<HistoryModel>> getHistory(HFilter filter);
   Future<CuponResModel> postCupon(CuSel param);
   Future<CuponResModel> delateCupon(CuSel param);
+  Future<AccountBalanceModel> accountBalance(String param);
   Future<bool> updateOrder(UpdateOrdersModel param);
   Future<GenericPagination<RecommendationModel>> getRecommendation(
       String username);
+  Future<CheckOrderModel> checkOrder(String username);
+  Future<OrdersModel> orderId(String id);
 }
 
 class CartDataSourceImpl extends CartDataSource {
@@ -67,9 +74,9 @@ class CartDataSourceImpl extends CartDataSource {
         options: Options(
           headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
               ? {
-                  'Authorization':
-                      'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
-                }
+            'Authorization':
+            'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+          }
               : {},
         ),
       );
@@ -98,21 +105,21 @@ class CartDataSourceImpl extends CartDataSource {
         options: Options(
           headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
               ? {
-                  'Authorization':
-                      'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
-                }
+            'Authorization':
+            'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+          }
               : {},
         ),
         queryParameters: param.toJson(),
       );
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         final List<dynamic> existingData =
-            box.get(StorageKeys.ACCOUNTS, defaultValue: []);
+        box.get(StorageKeys.ACCOUNTS, defaultValue: []);
         final List<dynamic> newData = response.data['results'];
         final mergedData = List.from(existingData);
         for (final item in newData) {
           final existingItemIndex =
-              mergedData.indexWhere((e) => e['id'] == item['id']);
+          mergedData.indexWhere((e) => e['id'] == item['id']);
           if (existingItemIndex == -1) {
             mergedData.add(item);
           } else {
@@ -122,7 +129,7 @@ class CartDataSourceImpl extends CartDataSource {
         await box.put(StorageKeys.ACCOUNTS, mergedData);
         return GenericPagination.fromJson(
           response.data,
-          (p0) => AccountsModel.fromJson(p0 as Map<String, dynamic>),
+              (p0) => AccountsModel.fromJson(p0 as Map<String, dynamic>),
         );
       }
 
@@ -147,9 +154,9 @@ class CartDataSourceImpl extends CartDataSource {
         options: Options(
           headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
               ? {
-                  'Authorization':
-                      'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
-                }
+            'Authorization':
+            'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+          }
               : {},
         ),
         queryParameters: param.toJson(),
@@ -157,7 +164,7 @@ class CartDataSourceImpl extends CartDataSource {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         return GenericPagination.fromJson(
           response.data,
-          (p0) => RegionModel.fromJson(p0 as Map<String, dynamic>),
+              (p0) => RegionModel.fromJson(p0 as Map<String, dynamic>),
         );
       }
 
@@ -182,9 +189,9 @@ class CartDataSourceImpl extends CartDataSource {
         options: Options(
           headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
               ? {
-                  'Authorization':
-                      'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
-                }
+            'Authorization':
+            'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+          }
               : {},
         ),
         data: parma.mydata,
@@ -214,9 +221,9 @@ class CartDataSourceImpl extends CartDataSource {
         options: Options(
           headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
               ? {
-                  'Authorization':
-                      'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
-                }
+            'Authorization':
+            'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+          }
               : {},
         ),
         data: {"phone": phone.substring(1), "pvc": "000000"},
@@ -245,9 +252,9 @@ class CartDataSourceImpl extends CartDataSource {
         options: Options(
           headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
               ? {
-                  'Authorization':
-                      'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
-                }
+            'Authorization':
+            'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+          }
               : {},
         ),
         data: formData,
@@ -309,20 +316,20 @@ class CartDataSourceImpl extends CartDataSource {
         options: Options(
           headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
               ? {
-                  'Authorization':
-                      'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
-                }
+            'Authorization':
+            'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+          }
               : {},
         ),
       );
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         final List<dynamic> existingData =
-            box.get(StorageKeys.PRSTATUS, defaultValue: []);
+        box.get(StorageKeys.PRSTATUS, defaultValue: []);
         final List<dynamic> newData = response.data['results'];
         final mergedData = List.from(existingData);
         for (final item in newData) {
           final existingItemIndex =
-              mergedData.indexWhere((e) => e['id'] == item['id']);
+          mergedData.indexWhere((e) => e['id'] == item['id']);
           if (existingItemIndex == -1) {
             mergedData.add(item);
           } else {
@@ -332,7 +339,7 @@ class CartDataSourceImpl extends CartDataSource {
         await box.put(StorageKeys.PRSTATUS, mergedData);
         return GenericPagination.fromJson(
           response.data,
-          (p0) => ProcessStatusModel.fromJson(p0 as Map<String, dynamic>),
+              (p0) => ProcessStatusModel.fromJson(p0 as Map<String, dynamic>),
         );
       }
       throw ServerException(
@@ -356,9 +363,9 @@ class CartDataSourceImpl extends CartDataSource {
         options: Options(
           headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
               ? {
-                  'Authorization':
-                      'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
-                }
+            'Authorization':
+            'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+          }
               : {},
         ),
         data: param.toJson(),
@@ -368,7 +375,19 @@ class CartDataSourceImpl extends CartDataSource {
       }
       throw ServerException(
         statusCode: response.statusCode ?? 0,
-        errorMessage: response.statusMessage ?? "",
+        errorMessage: (response.data is List)
+            ? (response.data as List)
+            .map(
+              (e) {
+            if (e["message"] is List) {
+              return (e["message"] as List).join();
+            }
+            return "";
+          },
+        )
+            .toList()
+            .join()
+            : response.statusMessage.toString(),
       );
     } on ServerException {
       rethrow;
@@ -388,16 +407,16 @@ class CartDataSourceImpl extends CartDataSource {
         options: Options(
           headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
               ? {
-                  'Authorization':
-                      'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
-                }
+            'Authorization':
+            'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+          }
               : {},
         ),
       );
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         return GenericPagination.fromJson(
           response.data,
-          (p0) => ProfessionModel.fromJson(p0 as Map<String, dynamic>),
+              (p0) => ProfessionModel.fromJson(p0 as Map<String, dynamic>),
         );
       }
 
@@ -422,21 +441,21 @@ class CartDataSourceImpl extends CartDataSource {
         options: Options(
           headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
               ? {
-                  'Authorization':
-                      'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
-                }
+            'Authorization':
+            'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+          }
               : {},
         ),
         queryParameters: filter.toJson(),
       );
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         final List<dynamic> existingData =
-            box.get(StorageKeys.CUPONS, defaultValue: []);
+        box.get(StorageKeys.CUPONS, defaultValue: []);
         final List<dynamic> newData = response.data['results'];
         final mergedData = List.from(existingData);
         for (final item in newData) {
           final existingItemIndex =
-              mergedData.indexWhere((e) => e['id'] == item['id']);
+          mergedData.indexWhere((e) => e['id'] == item['id']);
           if (existingItemIndex == -1) {
             mergedData.add(item);
           } else {
@@ -446,7 +465,7 @@ class CartDataSourceImpl extends CartDataSource {
         await box.put(StorageKeys.CUPONS, mergedData);
         return GenericPagination.fromJson(
           response.data,
-          (p0) => CuponModel.fromJson(p0 as Map<String, dynamic>),
+              (p0) => CuponModel.fromJson(p0 as Map<String, dynamic>),
         );
       }
       throw ServerException(
@@ -470,16 +489,16 @@ class CartDataSourceImpl extends CartDataSource {
         options: Options(
           headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
               ? {
-                  'Authorization':
-                      'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
-                }
+            'Authorization':
+            'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+          }
               : {},
         ),
       );
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         return GenericPagination.fromJson(
           response.data,
-          (p0) => HistoryModel.fromJson(p0 as Map<String, dynamic>),
+              (p0) => HistoryModel.fromJson(p0 as Map<String, dynamic>),
         );
       }
       throw ServerException(
@@ -503,9 +522,9 @@ class CartDataSourceImpl extends CartDataSource {
         options: Options(
           headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
               ? {
-                  'Authorization':
-                      'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
-                }
+            'Authorization':
+            'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+          }
               : {},
         ),
         data: {"user": param.user},
@@ -536,16 +555,16 @@ class CartDataSourceImpl extends CartDataSource {
           options: Options(
             headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
                 ? {
-                    'Authorization':
-                        'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
-                  }
+              'Authorization':
+              'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+            }
                 : {},
           ),
         );
       },
       body: (response) => GenericPagination.fromJson(
         response,
-        (p0) => RecommendationModel.fromJson(p0 as Map<String, dynamic>),
+            (p0) => RecommendationModel.fromJson(p0 as Map<String, dynamic>),
       ),
     );
   }
@@ -559,9 +578,9 @@ class CartDataSourceImpl extends CartDataSource {
           options: Options(
             headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
                 ? {
-                    'Authorization':
-                        'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
-                  }
+              'Authorization':
+              'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+            }
                 : {},
           ),
         );
@@ -578,9 +597,9 @@ class CartDataSourceImpl extends CartDataSource {
         options: Options(
           headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
               ? {
-                  'Authorization':
-                      'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
-                }
+            'Authorization':
+            'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+          }
               : {},
         ),
         data: param.toJson(),
@@ -610,9 +629,9 @@ class CartDataSourceImpl extends CartDataSource {
           options: Options(
             headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
                 ? {
-                    'Authorization':
-                        'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
-                  }
+              'Authorization':
+              'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+            }
                 : {},
           ),
         );
@@ -630,9 +649,9 @@ class CartDataSourceImpl extends CartDataSource {
           options: Options(
             headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
                 ? {
-                    'Authorization':
-                        'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
-                  }
+              'Authorization':
+              'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+            }
                 : {},
           ),
           data: json.encode(data.formData),
@@ -640,6 +659,88 @@ class CartDataSourceImpl extends CartDataSource {
       },
       body: (response) =>
           AccountsModel.fromJson(response as Map<String, dynamic>),
+    );
+  }
+
+  @override
+  Future<AccountBalanceModel> accountBalance(String param) {
+    return _handle.apiCantrol(
+      request: () {
+        return dio.get(
+          "UMS/api/v1.0/account/org/${StorageRepository.getString(StorageKeys.COMPID)}/$param/balance/",
+          options: Options(
+            headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
+                ? {
+              'Authorization':
+              'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+            }
+                : {},
+          ),
+        );
+      },
+      body: (response) =>
+          AccountBalanceModel.fromJson(response as Map<String, dynamic>),
+    );
+  }
+
+  @override
+  Future<bool> mergeAccount(MergeModel model) {
+    return _handle.apiCantrol(
+      request: () {
+        return dio.patch(
+          "http://82.215.78.34/UMS/api/v1.0/account/merge-user/",
+          data: model.toJson(),
+          options: Options(
+            headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
+                ? {
+              'Authorization':
+              'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+            }
+                : {},
+          ),
+        );
+      },
+      body: (response) => true,
+    );
+  }
+
+  @override
+  Future<CheckOrderModel> checkOrder(String username) {
+    return _handle.apiCantrol(
+      request: () {
+        return dio.get(
+          'OMS/api/v1.0/business/${StorageRepository.getString(StorageKeys.COMPID)}/order/check-order/?username=$username',
+          options: Options(
+            headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
+                ? {
+              'Authorization':
+              'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+            }
+                : {},
+          ),
+        );
+      },
+      body: (response) => CheckOrderModel.fromJson(response),
+    );
+  }
+
+  @override
+  Future<OrdersModel> orderId(String id) {
+    return _handle.apiCantrol(
+      request: () {
+        return dio.get(
+          'OMS/api/v1.0/business/${StorageRepository.getString(StorageKeys.COMPID)}/order/$id/',
+          options: Options(
+            headers: StorageRepository.getString(StorageKeys.TOKEN).isNotEmpty
+                ? {
+              'Authorization':
+              'Bearer ${StorageRepository.getString(StorageKeys.TOKEN)}'
+            }
+                : {},
+          ),
+        );
+      },
+      body: (response) => OrdersModel.fromJson(response),
     );
   }
 }

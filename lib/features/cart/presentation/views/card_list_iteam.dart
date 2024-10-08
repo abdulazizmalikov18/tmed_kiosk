@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tmed_kiosk/assets/constants/storage_keys.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
+import 'package:tmed_kiosk/core/utils/my_function.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/post_product_filter.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/cupon/cupon_iteam.dart';
 import 'package:tmed_kiosk/features/cart/presentation/widgets/payme_dialog.dart';
@@ -52,6 +53,7 @@ class CardListIteam extends StatefulWidget {
     required this.vmA,
     required this.isAccount,
   });
+
   final CartViewModel vm;
   final AccountsViewModel vmA;
   final bool isAccount;
@@ -64,9 +66,7 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
   @override
   void initState() {
     if (widget.isAccount) {
-      widget.vmA.selectAccount(
-          context.read<AccountsBloc>().state.selectAccount.selectAccount,
-          false);
+      widget.vmA.selectAccount(context.read<AccountsBloc>().state.selectAccount.selectAccount, false);
       context.push(RoutsContact.userInfo, extra: widget.vm);
     }
 
@@ -99,24 +99,19 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                 itemBuilder: (context, index) => CartListIteam(
                                   vm: vm,
                                   index: index,
-                                  product: state.cartMap[
-                                      (state.cartMap.keys).toList()[index]]!,
+                                  product: state.cartMap[(state.cartMap.keys).toList()[index]]!,
                                 ),
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(height: 12),
+                                separatorBuilder: (context, index) => const SizedBox(height: 12),
                               ),
                             ),
                           ),
                         ),
-                        state.isOrder.isEmpty
-                            ? CuponIteam(vm: vm)
-                            : const SizedBox(),
+                        state.isOrder.isEmpty ? CuponIteam(vm: vm) : const SizedBox(),
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             color: context.color.whiteBlack,
-                            border: Border.all(
-                                color: context.color.white.withOpacity(.1)),
+                            border: Border.all(color: context.color.white.withOpacity(.1)),
                           ),
                           margin: const EdgeInsets.all(16),
                           padding: const EdgeInsets.all(12),
@@ -147,18 +142,18 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                 type: '',
                                 isDiscount: true,
                               ),
-                              // InfoPriceRow(
-                              //   name: '${LocaleKeys.payTotalPriceVat.tr()}:',
-                              //   price: (state.allPrice *
-                              //           (state
-                              //                   .cartMap[(state.cartMap.keys)
-                              //                       .toList()[0]]
-                              //                   ?.vat ??
-                              //               0 / 100))
-                              //       .toInt(),
-                              //   type:
-                              //       "${state.cartMap[(state.cartMap.keys).toList()[0]]?.vat ?? 0} %",
-                              // ),
+                              InfoPriceRow(
+                                name: '${LocaleKeys.pay_total_price_vat.tr()}:',
+                                price: (state.allPrice *
+                                        (state
+                                                .cartMap[(state.cartMap.keys)
+                                                    .toList()[0]]
+                                                ?.vat ??
+                                            0 / 100))
+                                    .toInt(),
+                                type:
+                                    "${state.cartMap[(state.cartMap.keys).toList()[0]]?.vat ?? 0} %",
+                              ),
 
                               if (stateAccount.selectAccount.selectCupon.id !=
                                   0)
@@ -181,13 +176,10 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                       height: 80,
                                       onTap: () {
                                         widget.vmA.clearAccount(context);
-                                        context
-                                            .read<CartBloc>()
-                                            .add(CartRemove());
+                                        context.read<CartBloc>().add(CartRemove());
                                         context.pop();
                                       },
-                                      text: LocaleKeys.cart_order_cancel_button
-                                          .tr(),
+                                      text: LocaleKeys.cart_order_cancel_button.tr(),
                                       textStyle: const TextStyle(fontSize: 32),
                                       color: red,
                                     ),
@@ -199,20 +191,15 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                       onTap: () {
                                         Log.w(state.selStatus);
                                         Log.w(state.processStatus);
-                                        controllerMixin.speak(
-                                            "Пожалуйста подведите к нижней камере  QR вашего ID паспорта либо зарегистируйтесь по ПИНФЛ либо  по номеру телефона.");
+                                        controllerMixin.speak("Пожалуйста подведите к нижней камере  QR вашего ID паспорта либо зарегистируйтесь по ПИНФЛ либо  по номеру телефона.");
                                         checkUser(
                                           cartMap: state.cartMap,
-                                          selUsername: stateAccount
-                                              .selectAccount
-                                              .selectAccount
-                                              .username,
+                                          selUsername: stateAccount.selectAccount.selectAccount.username,
                                           username: state.username,
                                           context: context,
                                         );
                                       },
-                                      text:
-                                          LocaleKeys.check_payment_button.tr(),
+                                      text: LocaleKeys.check_payment_button.tr(),
                                       textStyle: const TextStyle(fontSize: 32),
                                       isLoading: state.status.isInProgress,
                                     ),
@@ -236,19 +223,16 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                               child: ListView.separated(
                                 shrinkWrap: true,
                                 itemCount: state.cartMap.length,
-                                itemBuilder: (context, index) =>
-                                    CartListIteamNoPrice(
+                                itemBuilder: (context, index) => CartListIteamNoPrice(
                                   vm: vm,
                                   index: index,
-                                  product: state.cartMap[
-                                      (state.cartMap.keys).toList()[index]]!,
+                                  product: state.cartMap[(state.cartMap.keys).toList()[index]]!,
                                   counts: state.counts,
                                   allPrice: state.allPrice,
                                   discount: state.discount,
                                   bloc: context.read<GoodsBloc>(),
                                 ),
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(height: 12),
+                                separatorBuilder: (context, index) => const SizedBox(height: 12),
                               ),
                             ),
                           ),
@@ -273,15 +257,12 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                 const Divider(height: 24),
                                 WButton(
                                   onTap: () {
-                                    context
-                                        .read<MyNavigatorBloc>()
-                                        .add(NavId(5));
+                                    context.read<MyNavigatorBloc>().add(NavId(5));
                                   },
                                   color: blue,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       AppIcons.addCircle.svg(),
                                       const SizedBox(width: 8),
@@ -297,15 +278,11 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                         onTap: () {
                                           context.pop();
                                           widget.vmA.clearAccount(context);
-                                          context
-                                              .read<CartBloc>()
-                                              .add(CartRemove());
+                                          context.read<CartBloc>().add(CartRemove());
                                           vm.controllerComment.clear();
                                           vm.task.clear();
                                         },
-                                        text: LocaleKeys
-                                            .cart_order_cancel_button
-                                            .tr(),
+                                        text: LocaleKeys.cart_order_cancel_button.tr(),
                                         color: red,
                                       ),
                                     ),
@@ -313,9 +290,7 @@ class _CardListIteamState extends State<CardListIteam> with CartMixin {
                                     Expanded(
                                       child: WButton(
                                         onTap: () {
-                                          context
-                                              .read<MyNavigatorBloc>()
-                                              .add(NavId(2));
+                                          context.read<MyNavigatorBloc>().add(NavId(2));
                                         },
                                         text: "assignment".tr(),
                                         color: green,

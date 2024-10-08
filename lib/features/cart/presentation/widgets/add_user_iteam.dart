@@ -77,6 +77,7 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
     }
   }
 
+
   void downloadImage() async {
     changeInfo();
     _downloadFile.fileExists && !_downloadFile.dowloading ? await _downloadFile.openfile() : await _downloadFile.startDownload();
@@ -95,67 +96,67 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              GestureDetector(
-                onTap: state.selectAccount.selectAccount.status != 5
-                    ? () {
-                        getSelectionImage();
-                        changeInfo();
-                      }
-                    : () {},
-                child: images == null
-                    ? Container(
-                        height: 160,
-                        width: 160,
-                        margin: const EdgeInsets.all(24),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: greyText),
-                          image: state.selectAccount.selectAccount.avatar.isNotEmpty
-                              ? DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                    state.selectAccount.selectAccount.avatar[0],
-                                  ),
-                                  onError: (exception, stackTrace) => Image.asset(AppImages.logo),
-                                )
-                              : null,
-                        ),
-                        alignment: Alignment.center,
-                        child: AppIcons.camera.svg(),
-                      )
-                    : Container(
-                        height: 160,
-                        width: 160,
-                        margin: const EdgeInsets.all(24),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: greyText),
-                          image: DecorationImage(
-                            image: FileImage(images!),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        child: _downloadFile.dowloading
-                            ? Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  CircularProgressIndicator(
-                                    value: _downloadFile.progress,
-                                    strokeWidth: 3,
-                                    backgroundColor: context.color.white,
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                      context.color.blue,
-                                    ),
-                                  ),
-                                  Text(
-                                    (_downloadFile.progress * 100).toStringAsFixed(2),
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                ],
-                              )
-                            : null,
-                      ),
-              ),
+              // GestureDetector(
+              //   onTap: state.selectAccount.selectAccount.status != 5
+              //       ? () {
+              //           getSelectionImage();
+              //           changeInfo();
+              //         }
+              //       : () {},
+              //   child: images == null
+              //       ? Container(
+              //           height: 160,
+              //           width: 160,
+              //           margin: const EdgeInsets.all(24),
+              //           decoration: BoxDecoration(
+              //             shape: BoxShape.circle,
+              //             border: Border.all(color: greyText),
+              //             image: state.selectAccount.selectAccount.avatar.isNotEmpty
+              //                 ? DecorationImage(
+              //                     fit: BoxFit.cover,
+              //                     image: NetworkImage(
+              //                       state.selectAccount.selectAccount.avatar[0],
+              //                     ),
+              //                     onError: (exception, stackTrace) => Image.asset(AppImages.logo),
+              //                   )
+              //                 : null,
+              //           ),
+              //           alignment: Alignment.center,
+              //           child: AppIcons.camera.svg(),
+              //         )
+              //       : Container(
+              //           height: 160,
+              //           width: 160,
+              //           margin: const EdgeInsets.all(24),
+              //           decoration: BoxDecoration(
+              //             shape: BoxShape.circle,
+              //             border: Border.all(color: greyText),
+              //             image: DecorationImage(
+              //               image: FileImage(images!),
+              //               fit: BoxFit.cover,
+              //             ),
+              //           ),
+              //           child: _downloadFile.dowloading
+              //               ? Stack(
+              //                   alignment: Alignment.center,
+              //                   children: [
+              //                     CircularProgressIndicator(
+              //                       value: _downloadFile.progress,
+              //                       strokeWidth: 3,
+              //                       backgroundColor: context.color.white,
+              //                       valueColor: AlwaysStoppedAnimation<Color>(
+              //                         context.color.blue,
+              //                       ),
+              //                     ),
+              //                     Text(
+              //                       (_downloadFile.progress * 100).toStringAsFixed(2),
+              //                       style: const TextStyle(fontSize: 12),
+              //                     ),
+              //                   ],
+              //                 )
+              //               : null,
+              //         ),
+              // ),
               if (!widget.isNew)
                 WButton(
                   onTap: () {},
@@ -184,10 +185,20 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                         selection: widget.vm.name.selection,
                       );
                       changeInfo();
+                      String formattedText = widget.vm.name.value.text;
+                      if (formattedText.isNotEmpty) {
+                        formattedText = formattedText[0].toUpperCase() + formattedText.substring(1).toLowerCase();
+                      }
+                      widget.vm.name.value = TextEditingValue(
+                        text: formattedText,
+                        selection: TextSelection.fromPosition(
+                          TextPosition(offset: formattedText.length),
+                        ),
+                      );
                     },
                     inputFormatters: [Formatters.lotinFormat],
                     enabled: state.selectAccount.selectAccount.status != 2,
-                    hintText: "${LocaleKeys.adduser_firstname.tr()}*",
+                    hintText: LocaleKeys.adduser_firstname.tr(),
                     controller: widget.vm.name,
                     fillColor: context.color.whiteBlack,
                     hintStyle: TextStyle(fontSize: 32, color: context.color.white.withOpacity(.5)),
@@ -204,9 +215,19 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                         selection: widget.vm.latname.selection,
                       );
                       changeInfo();
+                      String formattedText = widget.vm.latname.value.text;
+                      if (formattedText.isNotEmpty) {
+                        formattedText = formattedText[0].toUpperCase() + formattedText.substring(1).toLowerCase();
+                      }
+                      widget.vm.latname.value = TextEditingValue(
+                        text: formattedText,
+                        selection: TextSelection.fromPosition(
+                          TextPosition(offset: formattedText.length),
+                        ),
+                      );
                     },
                     inputFormatters: [Formatters.lotinFormat],
-                    hintText: "${LocaleKeys.adduser_lastname.tr()}*",
+                    hintText: LocaleKeys.adduser_lastname.tr(),
                     textCapitalization: TextCapitalization.words,
                     controller: widget.vm.latname,
                     fillColor: context.color.whiteBlack,
@@ -217,65 +238,64 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                     margin: const EdgeInsets.only(top: 8),
                     child: Form(
                       key: _dateFormKey,
-                      child: Focus(
-                        onFocusChange: (value) {
-                          if (!value) {
-                            _dateFormKey.currentState!.validate();
-                          }
-                        },
-                        child: WTextField(
-                          cursorHeight: 50,
-                          height: 100,
-                          keyboardType: TextInputType.number,
-                          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-                          enabled: state.selectAccount.selectAccount.status != 2,
-                          inputFormatters: [Formatters.dateFormatter],
-                          onChanged: (value) {
-                            // if(!RegExp("[0-9]").hasMatch(value[value.length-1])){
-                            //   widget.vm.age.text = value.substring(0, value.length-2);
-                            // }
-                            if (value.length == 3 && value[value.length - 1] != "/") {
-                              widget.vm.age.text = "${value.substring(0, 2)}/${value[2]}";
-                            }
-                            if (value.length == 6 && value[value.length - 1] != "/") {
-                              widget.vm.age.text = "${value.substring(0, 5)}/${value[5]}";
-                            }
-                            if (value.length >= 9) {
-                              widget.vm.age.text = value;
-                            }
+                      child: WTextField(
+                        cursorHeight: 50,
+                        height: 100,
+                        keyboardType: TextInputType.number,
+                        contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                        enabled: state.selectAccount.selectAccount.status != 2,
+                        inputFormatters: [Formatters.dateFormatter],
+                        onChanged: (value) {
+                          setState(() {
+                            _onDateChanged;
                             changeInfo();
-                            if (value.length == 10) {
-                              _dateFormKey.currentState!.validate();
-                            } else if (value.length >= 2 && int.tryParse(value.substring(0, 2))! >= 32) {
-                              widget.vm.age.text = value.replaceRange(0, 2, "30");
-                              // "30";
-                            } else if (value.length >= 5 && int.tryParse(value.substring(3, 5))! >= 12) {
-                              widget.vm.age.text = value.replaceRange(3, 5, "02");
-                              // "02";
-                            } else if (value.length >= 9 && int.tryParse(value.substring(6, 9))! >= 2025) {
-                              widget.vm.age.text = value.replaceRange(6, 10, "2000");
-                              // "2024";
-                            }
-                          },
-                          validator: (value) {
-                            if (value != null && value.isNotEmpty) {
-                              if (parseDate(value) != null) {
-                                Log.w(parseDate(value));
-                                return null;
-                              } else {
-                                Log.e("NImagp");
-                                return "nod_date_tIme".tr();
-                              }
-                            } else {
-                              return null;
-                            }
-                          },
-                          hintText: "${LocaleKeys.age.tr()}*",
-                          hintStyle: TextStyle(fontSize: 32, color: context.color.white.withOpacity(.5)),
-                          controller: widget.vm.age,
-                          fillColor: context.color.whiteBlack,
-                          style: TextStyle(color: context.color.white, fontSize: 32),
-                        ),
+                          });
+                        },
+                        // onChanged: (value) {
+                        //   // if(!RegExp("[0-9]").hasMatch(value[value.length-1])){
+                        //   //   widget.vm.age.text = value.substring(0, value.length-2);
+                        //   // }
+                        //   if (value.length == 3 && value[value.length - 1] != "/") {
+                        //     widget.vm.age.text = "${value.substring(0, 2)}/${value[2]}";
+                        //   }
+                        //   if (value.length == 6 && value[value.length - 1] != "/") {
+                        //     widget.vm.age.text = "${value.substring(0, 5)}/${value[5]}";
+                        //   }
+                        //   if (value.length >= 9) {
+                        //     widget.vm.age.text = value;
+                        //   }
+                        //   changeInfo();
+                        //   if (value.length == 10) {
+                        //     _dateFormKey.currentState!.validate();
+                        //   } else if (value.length >= 2 && int.tryParse(value.substring(0, 2))! >= 32) {
+                        //     widget.vm.age.text = value.replaceRange(0, 2, "30");
+                        //     // "30";
+                        //   } else if (value.length >= 5 && int.tryParse(value.substring(3, 5))! >= 12) {
+                        //     widget.vm.age.text = value.replaceRange(3, 5, "02");
+                        //     // "02";
+                        //   } else if (value.length >= 9 && int.tryParse(value.substring(6, 9))! >= 2025) {
+                        //     widget.vm.age.text = value.replaceRange(6, 10, "2000");
+                        //     // "2024";
+                        //   }
+                        // },
+                        // validator: (value) {
+                          // if (value != null && value.isNotEmpty) {
+                          //   if (parseDate(value) != null) {
+                          //     Log.w(parseDate(value));
+                          //     return null;
+                          //   } else {
+                          //     Log.e("NImagp");
+                          //     return "nod_date_tIme".tr();
+                          //   }
+                          // } else {
+                          //   return null;
+                          // }
+                        // },
+                        hintText: "15/08/2020 ${LocaleKeys.age.tr()}",
+                        hintStyle: TextStyle(fontSize: 32, color: context.color.white.withOpacity(.5)),
+                        controller: widget.vm.age,
+                        fillColor: context.color.whiteBlack,
+                        style: TextStyle(color: context.color.white, fontSize: 32),
                       ),
                     ),
                   ),
@@ -337,7 +357,7 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                                   isLoading: state.status.isInProgress,
                                   isDisabled: !ss & widget.isNew,
                                   onTap: () {
-                                    if (widget.vm.isCreat) {
+                                   if (widget.vm.isCreat) {
                                       if (_dateFormKey.currentState!.validate()) {
                                         createUser();
                                       }
@@ -346,6 +366,9 @@ class _AddUsetIteamState extends State<AddUsetIteam> with AddUserViweModel {
                                         createUser();
                                       }
                                     }
+                                   if(const Duration(microseconds: 10) == 0){
+                                     context.pop();
+                                   }
                                   },
                                   text: LocaleKeys.adduser_save.tr(),
                                 );

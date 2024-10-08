@@ -86,6 +86,7 @@ class _WCallTimerDialogState extends State<WCallTimerDialog>
                       if(timer == 0) {
                         context.go(RoutsContact.infoView);
                       }
+                     context.go(RoutsContact.infoView);
                     },
                     borderRadius: 12,
                     color: blue,

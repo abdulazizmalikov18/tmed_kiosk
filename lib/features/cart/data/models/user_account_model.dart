@@ -1,3 +1,5 @@
+import 'package:tmed_kiosk/features/cart/domain/entity/a_region_entity.dart';
+import 'package:tmed_kiosk/features/cart/domain/entity/main_cat_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:tmed_kiosk/features/cart/domain/entity/user_account_entity.dart';
 

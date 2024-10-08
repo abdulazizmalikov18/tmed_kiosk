@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:tmed_kiosk/assets/colors/colors.dart';
 import 'package:tmed_kiosk/features/auth/presentation/widgets/lenguage_select.dart';
 import 'package:tmed_kiosk/features/common/user_type/user_type.dart';
+import 'package:tmed_kiosk/features/goods/domain/entity/list_count.dart';
 import 'package:tmed_kiosk/generated/locale_keys.g.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:html/parser.dart' as html_parser;

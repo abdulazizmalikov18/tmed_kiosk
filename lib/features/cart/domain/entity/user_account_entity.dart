@@ -1,3 +1,5 @@
+import 'package:tmed_kiosk/features/cart/domain/entity/a_region_entity.dart';
+import 'package:tmed_kiosk/features/cart/domain/entity/main_cat_entity.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:tmed_kiosk/features/cart/data/models/user_account_model.dart';
@@ -10,8 +12,10 @@ class UserAccountEntity extends Equatable {
   final String phone;
   final String gender;
   final String birthday;
-  final String mainCat;
-  final int region;
+  @MainCatConverter()
+  final MainCatEntity mainCat;
+  @ARegionConverter()
+  final ARegionEntity region;
   final String qrcode;
   final String pinfl;
 
@@ -23,8 +27,8 @@ class UserAccountEntity extends Equatable {
     this.phone = "",
     this.gender = "",
     this.birthday = "",
-    this.mainCat = "",
-    this.region = 0,
+    this.mainCat = const MainCatEntity(),
+    this.region = const ARegionEntity(),
     this.qrcode = "",
     this.pinfl = "",
   });

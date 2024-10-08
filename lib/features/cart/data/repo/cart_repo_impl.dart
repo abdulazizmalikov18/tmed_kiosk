@@ -4,12 +4,15 @@ import 'package:tmed_kiosk/core/exceptions/failures.dart';
 import 'package:tmed_kiosk/core/utils/either.dart';
 import 'package:tmed_kiosk/features/cart/data/datasource/cart_datasource.dart';
 import 'package:tmed_kiosk/features/cart/data/datasource/cart_local_datasource.dart';
+import 'package:tmed_kiosk/features/cart/data/models/account_balance_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/account_create_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/accounts_filter.dart';
+import 'package:tmed_kiosk/features/cart/data/models/check_order_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/check_user_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_filter.dart';
 import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_selection.dart';
 import 'package:tmed_kiosk/features/cart/data/models/history/history_filter.dart';
+import 'package:tmed_kiosk/features/cart/data/models/merge_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/orders_creat_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/update_account.dart';
 import 'package:tmed_kiosk/features/cart/data/models/update_orders_model.dart';
@@ -160,7 +163,7 @@ class CartRepoImpl extends CartRepo {
 
   @override
   Future<Either<Failure, GenericPagination<ProcessStatusEntity>>>
-      processStatus() async {
+  processStatus() async {
     bool isConnection = await isInternetConnected();
     if (isConnection) {
       try {
@@ -301,7 +304,7 @@ class CartRepoImpl extends CartRepo {
 
   @override
   Future<Either<Failure, GenericPagination<RecommendationModel>>>
-      getRecommendation(String username) async {
+  getRecommendation(String username) async {
     try {
       final result = await dataSource.getRecommendation(username);
       return Right(result);
@@ -396,6 +399,75 @@ class CartRepoImpl extends CartRepo {
     }
     try {
       final result = await dataSource.accountUpdate(data);
+      return Right(result);
+    } on DioException {
+      return Left(DioFailure());
+    } on ParsingException catch (e) {
+      return Left(ParsingFailure(errorMessage: e.errorMessage));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(
+        errorMessage: e.errorMessage,
+        statusCode: e.statusCode,
+      ));
+    }
+  }
+
+  @override
+  Future<Either<Failure, AccountBalanceModel>> accountBalance(
+      String param) async {
+    try {
+      final result = await dataSource.accountBalance(param);
+      return Right(result);
+    } on DioException {
+      return Left(DioFailure());
+    } on ParsingException catch (e) {
+      return Left(ParsingFailure(errorMessage: e.errorMessage));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(
+        errorMessage: e.errorMessage,
+        statusCode: e.statusCode,
+      ));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> mergeAccount(MergeModel model) async {
+    try {
+      final result = await dataSource.mergeAccount(model);
+      return Right(result);
+    } on DioException {
+      return Left(DioFailure());
+    } on ParsingException catch (e) {
+      return Left(ParsingFailure(errorMessage: e.errorMessage));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(
+        errorMessage: e.errorMessage,
+        statusCode: e.statusCode,
+      ));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CheckOrderModel>> checkOrder(String data) async {
+    try {
+      final result = await dataSource.checkOrder(data);
+      return Right(result);
+    } on DioException {
+      return Left(DioFailure());
+    } on ParsingException catch (e) {
+      return Left(ParsingFailure(errorMessage: e.errorMessage));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(
+        errorMessage: e.errorMessage,
+        statusCode: e.statusCode,
+      ));
+    }
+  }
+
+  @override
+  Future<Either<Failure, OrdersEntity>> orderId(String data) async {
+    try {
+      final result = await dataSource.orderId(data);
       return Right(result);
     } on DioException {
       return Left(DioFailure());

@@ -31,7 +31,7 @@ class Formatters {
     RegExp(r'[+0-9]'),
   );
   static final lotinFormat = FilteringTextInputFormatter.allow(
-    RegExp(r'[a-zA-Z0-9]'),
+    RegExp(r'[a-zA-Z]'),
   );
 
   static String capitalize(String value) {

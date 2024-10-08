@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:tmed_kiosk/features/cart/data/models/account_balance_model.dart';
+import 'package:tmed_kiosk/features/cart/data/models/check_order_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/check_user_model.dart';
 import 'package:hive/hive.dart';
 import 'package:tmed_kiosk/assets/constants/storage_keys.dart';
@@ -17,6 +19,7 @@ import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_res_model.dart'
 import 'package:tmed_kiosk/features/cart/data/models/cupon/cupon_selection.dart';
 import 'package:tmed_kiosk/features/cart/data/models/history/history_filter.dart';
 import 'package:tmed_kiosk/features/cart/data/models/history/history_model.dart';
+import 'package:tmed_kiosk/features/cart/data/models/merge_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/orders_creat_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/process_status_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/profession_model.dart';
@@ -43,9 +46,9 @@ class CartLocalDataSource extends CartDataSource {
       if (param.search != null) {
         accounts = accounts
             .where((element) =>
-                "${element.name}${element.lastname}${element.pinfl}${element.phone}"
-                    .toLowerCase()
-                    .contains(param.search!.toLowerCase()))
+            "${element.name}${element.lastname}${element.pinfl}${element.phone}"
+                .toLowerCase()
+                .contains(param.search!.toLowerCase()))
             .toList();
       }
       return GenericPagination<AccountsModel>(
@@ -180,7 +183,26 @@ class CartLocalDataSource extends CartDataSource {
 
   @override
   Future<AccountsModel> accountUpdate(UpdateAccount data) {
-    // TODO: implement accountUpdate
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AccountBalanceModel> accountBalance(String param) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> mergeAccount(MergeModel model) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<CheckOrderModel> checkOrder(String username) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<OrdersModel> orderId(String id) {
     throw UnimplementedError();
   }
 }

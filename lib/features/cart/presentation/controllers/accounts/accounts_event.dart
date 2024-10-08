@@ -13,17 +13,12 @@ class AccountsGet extends AccountsEvent {
   });
 }
 
-class AccountsUsernameEvent extends AccountsEvent {
+class AccountBalance extends AccountsEvent {
   final String username;
-  final VoidCallback onSucces;
-  final VoidCallback onError;
 
-  AccountsUsernameEvent({
-    required this.username,
-    required this.onSucces,
-    required this.onError,
-  });
+  AccountBalance({required this.username});
 }
+
 class CheckOrderEvent extends AccountsEvent {
   final String username;
   final VoidCallback onSucces;
@@ -37,6 +32,38 @@ class CheckOrderEvent extends AccountsEvent {
     required this.onSuccesOrder,
     required this.onError,
     required this.onErrorOrder,
+  });
+}
+
+class AccountsUsernameEvent extends AccountsEvent {
+  final String username;
+  final VoidCallback onSucces;
+  final VoidCallback onError;
+
+  AccountsUsernameEvent({
+    required this.username,
+    required this.onSucces,
+    required this.onError,
+  });
+}
+
+class GetAccountPhone extends AccountsEvent {
+  final String search;
+
+  GetAccountPhone({required this.search});
+}
+
+class MergeAccountEvent extends AccountsEvent {
+  final int mainId;
+  final List<int> users;
+  final VoidCallback onSucces;
+  final VoidCallback onError;
+
+  MergeAccountEvent({
+    required this.mainId,
+    required this.users,
+    required this.onSucces,
+    required this.onError,
   });
 }
 

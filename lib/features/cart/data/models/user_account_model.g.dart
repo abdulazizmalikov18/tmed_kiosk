@@ -15,8 +15,14 @@ UserAccountModel _$UserAccountModelFromJson(Map<String, dynamic> json) =>
       phone: json['phone'] as String? ?? "",
       gender: json['gender'] as String? ?? "",
       birthday: json['birthday'] as String? ?? "",
-      mainCat: json['main_cat'] as String? ?? "",
-      region: (json['region'] as num?)?.toInt() ?? 0,
+      mainCat: json['main_cat'] == null
+          ? const MainCatEntity()
+          : const MainCatConverter()
+              .fromJson(json['main_cat'] as Map<String, dynamic>?),
+      region: json['region'] == null
+          ? const ARegionEntity()
+          : const ARegionConverter()
+              .fromJson(json['region'] as Map<String, dynamic>?),
       qrcode: json['qrcode'] as String? ?? "",
       pinfl: json['pinfl'] as String? ?? "",
     );
@@ -30,8 +36,8 @@ Map<String, dynamic> _$UserAccountModelToJson(UserAccountModel instance) =>
       'phone': instance.phone,
       'gender': instance.gender,
       'birthday': instance.birthday,
-      'main_cat': instance.mainCat,
-      'region': instance.region,
+      'main_cat': const MainCatConverter().toJson(instance.mainCat),
+      'region': const ARegionConverter().toJson(instance.region),
       'qrcode': instance.qrcode,
       'pinfl': instance.pinfl,
     };

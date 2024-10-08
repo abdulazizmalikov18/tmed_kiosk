@@ -1,9 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:tmed_kiosk/features/cart/data/models/account_balance_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/check_user_model.dart';
+import 'package:tmed_kiosk/features/cart/data/models/merge_model.dart';
 import 'package:tmed_kiosk/features/cart/data/models/update_account.dart';
+import 'package:tmed_kiosk/features/cart/domain/usecase/account_balance_usecase.dart';
 import 'package:tmed_kiosk/features/cart/domain/usecase/account_update_usecase.dart';
 import 'package:tmed_kiosk/features/cart/domain/usecase/account_username_usecase.dart';
+import 'package:tmed_kiosk/features/cart/domain/usecase/check_order_usecase.dart';
 import 'package:tmed_kiosk/features/cart/domain/usecase/del_cupon_usecase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +30,8 @@ import 'package:tmed_kiosk/features/cart/domain/usecase/check_phone_usecae.dart'
 import 'package:tmed_kiosk/features/cart/domain/usecase/create_account_usecase.dart';
 import 'package:tmed_kiosk/features/cart/domain/usecase/cupon_usecase.dart';
 import 'package:tmed_kiosk/features/cart/domain/usecase/history_usecase.dart';
+import 'package:tmed_kiosk/features/cart/domain/usecase/merge_account_usecase.dart';
+import 'package:tmed_kiosk/features/cart/domain/usecase/order_id_usecase.dart';
 import 'package:tmed_kiosk/features/cart/domain/usecase/post_phone_usecase.dart';
 import 'package:tmed_kiosk/features/cart/domain/usecase/profession_usecase.dart';
 import 'package:tmed_kiosk/features/cart/domain/usecase/recommendation_usecase.dart';
@@ -53,12 +58,79 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
   DelCuponUseCase delCuponUseCase = DelCuponUseCase();
   AccountUsernameUseCase accountUsernameUseCase = AccountUsernameUseCase();
   AccountUpdateUseCase accountUpdateUseCase = AccountUpdateUseCase();
+  AccountBalanceUseCase accountBalanceUseCase = AccountBalanceUseCase();
+  MergeAccountUsecase mergeAccountUsecase = MergeAccountUsecase();
+  CheckOrderUseCase checkOrder = CheckOrderUseCase();
+  OrderIdUseCase orderId = OrderIdUseCase();
   AccountsBloc() : super(const AccountsState()) {
+    on<CheckOrderEvent>((event, emit) async {
+      emit(state.copyWith(statusOrder: FormzSubmissionStatus.inProgress));
+      final result = await checkOrder.call(event.username);
+      if (result.isRight) {
+        if (result.right.status == "fail") {
+          event.onSucces();
+          final result2 = await orderId.call(result.right.orders?.id ?? "");
+          if (result2.isRight) {
+            event.onSuccesOrder(result2.right);
+            emit(state.copyWith(statusOrder: FormzSubmissionStatus.success));
+          } else {
+            event.onErrorOrder();
+            emit(state.copyWith(statusOrder: FormzSubmissionStatus.failure));
+          }
+        } else {
+          event.onError();
+          emit(state.copyWith(statusOrder: FormzSubmissionStatus.failure));
+        }
+      } else {
+        emit(state.copyWith(statusOrder: FormzSubmissionStatus.failure));
+      }
+    });
+
+    on<MergeAccountEvent>((event, emit) async {
+      emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+      final model = MergeModel(mainUser: event.mainId, users: event.users);
+      final result = await mergeAccountUsecase.call(model);
+      if (result.isRight) {
+        add(AccountsUsernameEvent(
+          username: state.selectAccount.selectAccount.username,
+          onSucces: event.onSucces,
+          onError: event.onError,
+        ));
+      } else {
+        event.onError();
+        emit(state.copyWith(status: FormzSubmissionStatus.failure));
+      }
+    });
+
+    on<GetAccountPhone>((event, emit) async {
+      emit(state.copyWith(statusPhone: FormzSubmissionStatus.inProgress));
+      AccountsFilter filter = AccountsFilter(search: event.search);
+      final result = await accounts.call(filter);
+      if (result.isRight) {
+        emit(state.copyWith(
+          accountsPhone: result.right.results,
+          statusPhone: FormzSubmissionStatus.inProgress,
+        ));
+      } else {
+        emit(state.copyWith(statusPhone: FormzSubmissionStatus.failure));
+      }
+    });
+
     on<SelectionAccount>((event, emit) async {
       SelectionAccountEntity selectionA = SelectionAccountEntity(
         selectAccount: event.account,
       );
       emit(state.copyWith(selectAccount: selectionA));
+      add(AccountBalance(username: selectionA.selectAccount.username));
+    });
+
+    on<AccountBalance>((event, emit) async {
+      final result = await accountBalanceUseCase.call(event.username);
+      if (result.isRight) {
+        emit(state.copyWith(accountBalanceModel: result.right));
+      } else {
+        emit(state.copyWith(accountBalanceModel: const AccountBalanceModel()));
+      }
     });
 
     on<GetReccommendation>((event, emit) async {
@@ -102,14 +174,14 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
         cupons: state.selectAccount.cupons,
         selectCupon: event.isDisebled
             ? state.selectAccount.cupons.isEmpty
-                ? const CuponModel()
-                : state.selectAccount.cupons[event.id]
+            ? const CuponModel()
+            : state.selectAccount.cupons[event.id]
             : const CuponModel(),
       );
       event.onCupon(event.isDisebled
           ? state.selectAccount.cupons.isEmpty
-              ? const CuponModel()
-              : state.selectAccount.cupons[event.id]
+          ? const CuponModel()
+          : state.selectAccount.cupons[event.id]
           : const CuponModel());
       emit(state.copyWith(selectAccount: account));
     });
@@ -141,7 +213,7 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     on<RemCuponPost>((event, emit) async {
       emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
       final result =
-          await delCuponUseCase.call(CuSel(user: event.username, id: event.id));
+      await delCuponUseCase.call(CuSel(user: event.username, id: event.id));
       if (result.isRight) {
         List<CuponModel> listCupon = List.from(state.selectAccount.cupons);
         listCupon.removeWhere((element) => element.id == event.id);
@@ -162,9 +234,8 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
 
     on<GetHistory>((event, emit) async {
       emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
-      HFilter filter = HFilter(
-        username: state.selectAccount.selectAccount.username,
-      );
+      HFilter filter =
+      HFilter(username: state.selectAccount.selectAccount.username);
       final result = await historyUse.call(filter);
       if (result.isRight) {
         emit(state.copyWith(
@@ -201,7 +272,9 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
           SelectionAccountEntity account = SelectionAccountEntity(
             selectAccount: state.selectAccount.selectAccount,
             cupons: result.right.results,
-            selectCupon: state.selectAccount.selectCupon,
+            selectCupon: result.right.results.isEmpty
+                ? state.selectAccount.selectCupon
+                : result.right.results.first,
           );
           emit(state.copyWith(
             selectAccount: account,
@@ -218,14 +291,14 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     });
 
     on<DelSelectionAcccount>(
-      (event, emit) {
+          (event, emit) {
         emit(state.copyWith(selectAccount: const SelectionAccountEntity()));
         add(AccountsGet());
       },
     );
 
     on<IsFocused>(
-      (event, emit) => emit(state.copyWith(isFocused: event.isFocused)),
+          (event, emit) => emit(state.copyWith(isFocused: event.isFocused)),
     );
 
     on<AccountsUsernameEvent>((event, emit) async {
@@ -263,12 +336,12 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
             ? {"phone": event.phoneJshshr}
             : {"pinfl": event.phoneJshshr},
       );
-      emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+      emit(state.copyWith(statusPhone: FormzSubmissionStatus.inProgress));
       final result = await postPhone.call(phone);
       if (result.isRight) {
         if (result.right.status) {
           event.onError("Ushu raqam bilan user mavjud");
-          emit(state.copyWith(status: FormzSubmissionStatus.success));
+          emit(state.copyWith(statusPhone: FormzSubmissionStatus.success));
         } else {
           if (event.phoneJshshr[0] == '+') {
             add(CheckPhone(
@@ -276,7 +349,7 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
               onSuccess: event.onSuccess,
             ));
           } else {
-            emit(state.copyWith(status: FormzSubmissionStatus.success));
+            emit(state.copyWith(statusPhone: FormzSubmissionStatus.success));
             if (event.onSuccess != null) {
               final model = result.right.statusEXodim
                   ? Exodim.fromJson(result.right.exodim)
@@ -287,7 +360,7 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
         }
       } else {
         event.onError((result.left as ServerFailure).errorMessage);
-        emit(state.copyWith(status: FormzSubmissionStatus.failure));
+        emit(state.copyWith(statusPhone: FormzSubmissionStatus.failure));
       }
     });
 
@@ -371,6 +444,7 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
         }
       }
     });
+
     on<GetMoreAccounts>((event, emit) async {
       AccountsFilter filter = AccountsFilter(
         offset: state.accounts.length,
