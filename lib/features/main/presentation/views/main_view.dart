@@ -86,8 +86,8 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
   void _startTimer() {
     // Start a timer to navigate to the home page after 15 seconds of inactivity
     _timer = Timer(const Duration(seconds: 60), () {
-      // context.go(RoutsContact.infoView);
-      openTimer(context);
+      context.go(RoutsContact.infoView);
+      // openTimer(context);
     });
   }
 
