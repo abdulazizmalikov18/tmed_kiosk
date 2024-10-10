@@ -24,11 +24,11 @@ class _PrinterDialogState extends State<PrinterDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: context.color.backGroundColor,
-      insetPadding: Platform.isIOS || Platform.isAndroid
-          ? const EdgeInsets.all(16)
-          : null,
+      insetPadding: const EdgeInsets.all(16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      title: const DialogTitle(title: "Ro'yhat raqamingiz",),
+      title: const DialogTitle(
+        title: "Ro'yhat raqamingiz",
+      ),
       content: SizedBox(
         width: Platform.isIOS || Platform.isAndroid
             ? MediaQuery.of(context).size.width

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:tmed_kiosk/core/exceptions/context_extension.dart';
 import 'package:tmed_kiosk/core/utils/my_function.dart';
@@ -112,15 +110,18 @@ class _OrderStatusSelectionState extends State<OrderStatusSelection> {
                               color: context.color.white.withOpacity(0.1),
                             ),
                           ),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 12),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(color: contColor.withOpacity(.1)),
+                            borderSide:
+                                BorderSide(color: contColor.withOpacity(.1)),
                           ),
                         ),
                         borderRadius: BorderRadius.circular(12),
                         dropdownColor: context.color.contColor,
-                        items: state.processStatus.map((ProcessStatusEntity value) {
+                        items: state.processStatus
+                            .map((ProcessStatusEntity value) {
                           return DropdownMenuItem<ProcessStatusEntity>(
                             value: value,
                             child: SizedBox(
@@ -136,7 +137,9 @@ class _OrderStatusSelectionState extends State<OrderStatusSelection> {
                         }).toList(),
                         onChanged: (newValue) {
                           Log.w(newValue);
-                          context.read<CartBloc>().add(SelStatus(selStatus: newValue!));
+                          context
+                              .read<CartBloc>()
+                              .add(SelStatus(selStatus: newValue!));
                         },
                       );
                     },
@@ -150,8 +153,9 @@ class _OrderStatusSelectionState extends State<OrderStatusSelection> {
                   showDialog(
                     context: context,
                     builder: (_) => AlertDialog(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                      insetPadding: Platform.isAndroid || Platform.isIOS ? const EdgeInsets.symmetric(horizontal: 12) : null,
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 12),
+                      insetPadding: const EdgeInsets.symmetric(horizontal: 12),
                       title: const DialogTitle(title: "Status"),
                       actions: [
                         WButton(
@@ -170,10 +174,12 @@ class _OrderStatusSelectionState extends State<OrderStatusSelection> {
                           builder: (context, state) {
                             return ListView.builder(
                               shrinkWrap: true,
-                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
                               itemBuilder: (_, index) => CheckboxListTile(
                                 key: Key('$index'),
-                                controlAffinity: ListTileControlAffinity.leading,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
                                 title: Text(
                                   state.processStatusAll[index].name,
                                   style: AppTheme.bodyLarge.copyWith(
@@ -185,11 +191,14 @@ class _OrderStatusSelectionState extends State<OrderStatusSelection> {
                                 checkboxShape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(4),
                                 ),
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                                value: state.statusID.contains(state.processStatusAll[index].id),
+                                contentPadding:
+                                    const EdgeInsets.symmetric(horizontal: 0),
+                                value: state.statusID
+                                    .contains(state.processStatusAll[index].id),
                                 onChanged: (bool? value) {
                                   Log.w(value);
-                                  bloc.add(StatusActive(id: state.processStatusAll[index].id));
+                                  bloc.add(StatusActive(
+                                      id: state.processStatusAll[index].id));
                                 },
                               ),
                               itemCount: state.processStatusAll.length,
@@ -204,7 +213,10 @@ class _OrderStatusSelectionState extends State<OrderStatusSelection> {
                 color: context.color.contColor,
                 border: Border.all(color: context.color.white.withOpacity(0.1)),
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: const Icon(Icons.edit, color: greyText,),
+                child: const Icon(
+                  Icons.edit,
+                  color: greyText,
+                ),
               ),
             ],
           ),
@@ -212,6 +224,7 @@ class _OrderStatusSelectionState extends State<OrderStatusSelection> {
       ),
     );
   }
+
   Future<dynamic> chengeStatus({required BuildContext parentContext}) {
     final ValueNotifier<int?> activeCtr = ValueNotifier<int?>(null);
     return ModalBottomSheets.showSimpleBottomSheet(
@@ -235,7 +248,8 @@ class _OrderStatusSelectionState extends State<OrderStatusSelection> {
                     child: ListView.separated(
                       shrinkWrap: true,
                       itemCount: state.processStatus.length,
-                      separatorBuilder: (context, indexS) => const SizedBox(height: 12),
+                      separatorBuilder: (context, indexS) =>
+                          const SizedBox(height: 12),
                       itemBuilder: (context, indexS) => InkWell(
                         onTap: () {
                           activeCtr.value = indexS;
@@ -243,12 +257,16 @@ class _OrderStatusSelectionState extends State<OrderStatusSelection> {
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
-                            color: activeCtr.value == indexS ? blue : context.color.blue.withOpacity(.2),
+                            color: activeCtr.value == indexS
+                                ? blue
+                                : context.color.blue.withOpacity(.2),
                           ),
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 8),
                           child: Text(
                             state.processStatus[indexS].name,
-                            style: AppTheme.labelSmall.copyWith(color: context.color.white, fontSize: 16),
+                            style: AppTheme.labelSmall.copyWith(
+                                color: context.color.white, fontSize: 16),
                           ),
                         ),
                       ),
@@ -262,10 +280,14 @@ class _OrderStatusSelectionState extends State<OrderStatusSelection> {
                         isDisabled: value == null,
                         onTap: () {
                           final bloc = parentContext.read<CartBloc>();
-                          bloc.add(SelStatus(selStatus: bloc.state.processStatus[activeCtr.value!]));
+                          bloc.add(SelStatus(
+                              selStatus:
+                                  bloc.state.processStatus[activeCtr.value!]));
                           Navigator.pop(context);
                         },
-                        color:activeCtr.value != null ? blue :  context.color.blue.withOpacity(.2),
+                        color: activeCtr.value != null
+                            ? blue
+                            : context.color.blue.withOpacity(.2),
                         text: "choose".tr(),
                         textStyle: TextStyle(color: context.color.white),
                       );
