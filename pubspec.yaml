@@ -66,8 +66,8 @@ dependencies:
   html: ^0.15.4
   circular_countdown_timer: ^0.2.3
   kiosk_mode: 0.5.0+2
-  syncfusion_flutter_sliders: ^27.1.52
-  syncfusion_flutter_charts: ^27.1.52
+  syncfusion_flutter_sliders: 25.1.35
+  syncfusion_flutter_charts: 25.1.35
   # camera_windows:
   #   git:
   #     url: https://github.com/yushulx/flutter_camera_windows.git
