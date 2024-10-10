@@ -128,7 +128,6 @@ class _ProfileViewState extends State<ProfileView> {
                       final message = mode == null
                           ? 'Can\'t determine the mode'
                           : 'Current mode: $mode';
-
                       return ListTile(
                         leading: AppIcons.wallet.svg(),
                         title: Text(message),

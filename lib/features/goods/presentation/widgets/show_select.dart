@@ -44,7 +44,7 @@ class _ShowSelectState extends State<ShowSelect> {
   late DateTime mydate;
   int pricePercent = 0;
   bool selction = false;
-  CarouselController carouselController = CarouselController();
+  // CarouselController carouselController = CarouselController();
 
   @override
   void initState() {

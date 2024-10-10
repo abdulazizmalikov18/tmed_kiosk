@@ -49,7 +49,7 @@ class _SelectionSpecialDataState extends State<SelectionSpecialData> {
   bool weekDayEmpty = false;
   bool selction = false;
   int pricePercent = 0;
-  CarouselController carouselController = CarouselController();
+  // CarouselController carouselController = CarouselController();
 
   @override
   void initState() {

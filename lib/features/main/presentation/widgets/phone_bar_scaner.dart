@@ -96,7 +96,7 @@ class _ScannerPageState extends State<ScannerPage> {
         controller.stopCamera();
         playSound("notif.mp3");
         context.read<GoodsBloc>().add(PrBarCode(
-              result!.code ?? "",
+              result?.code ?? "",
               onSucces: (resaul) {
                 context
                     .read<CartBloc>()

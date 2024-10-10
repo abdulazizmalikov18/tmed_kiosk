@@ -6,10 +6,13 @@ mixin AddUserViweModel on State<AddUsetIteam> {
   DateTime selectedDate = DateTime.now();
   ValueNotifier isChanged = ValueNotifier(false);
 
-
   ValueNotifier<bool> isDis = ValueNotifier(false);
 
-  bool get isDisabled => widget.vm.name.text.isEmpty || widget.vm.gender.text.isEmpty || widget.vm.latname.text.isEmpty || widget.vm.age.text.isEmpty;
+  bool get isDisabled =>
+      widget.vm.name.text.isEmpty ||
+      widget.vm.gender.text.isEmpty ||
+      widget.vm.latname.text.isEmpty ||
+      widget.vm.age.text.isEmpty;
 
   @override
   void initState() {
@@ -18,7 +21,6 @@ mixin AddUserViweModel on State<AddUsetIteam> {
       changeInfo();
     }
   }
-
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -37,36 +39,45 @@ mixin AddUserViweModel on State<AddUsetIteam> {
 
   checkOrder(String username) {
     context.read<AccountsBloc>().add(
-      CheckOrderEvent(
-        username: username,
-        onSucces: () {},
-        onSuccesOrder: (entity) {
-          final bloc = context.read<CartBloc>();
-          final blocNav = context.read<MyNavigatorBloc>();
-          final blocAccount = context.read<AccountsBloc>();
-          final tashkilot = context.read<AuthenticationBloc>().state.listSpecial.where((element) => element.id == StorageRepository.getString(StorageKeys.SPID)).first.org.name;
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              backgroundColor: context.color.contColor,
-              content: ChechOrderDialog(
-                bloc: bloc,
-                tashkilot: tashkilot,
-                orders: entity,
-                blocAccount: blocAccount,
-                blocNavigator: blocNav,
-              ),
-            ),
-          );
-        },
-        onError: () {
-          context.read<MyNavigatorBloc>().add(NavId(0));
-        },
-        onErrorOrder: () {
-          context.read<MyNavigatorBloc>().add(NavId(0));
-        },
-      ),
-    );
+          CheckOrderEvent(
+            username: username,
+            onSucces: () {},
+            onSuccesOrder: (entity) {
+              final bloc = context.read<CartBloc>();
+              final blocNav = context.read<MyNavigatorBloc>();
+              final blocAccount = context.read<AccountsBloc>();
+              final tashkilot = context
+                  .read<AuthenticationBloc>()
+                  .state
+                  .listSpecial
+                  .where((element) =>
+                      element.id ==
+                      StorageRepository.getString(StorageKeys.SPID))
+                  .first
+                  .org
+                  .name;
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  backgroundColor: context.color.contColor,
+                  content: ChechOrderDialog(
+                    bloc: bloc,
+                    tashkilot: tashkilot,
+                    orders: entity,
+                    blocAccount: blocAccount,
+                    blocNavigator: blocNav,
+                  ),
+                ),
+              );
+            },
+            onError: () {
+              context.read<MyNavigatorBloc>().add(NavId(0));
+            },
+            onErrorOrder: () {
+              context.read<MyNavigatorBloc>().add(NavId(0));
+            },
+          ),
+        );
   }
 
   changeInfo() {
@@ -78,7 +89,9 @@ mixin AddUserViweModel on State<AddUsetIteam> {
 
   bool isToday(DateTime date) {
     DateTime now = DateTime.now();
-    return date.year == now.year && date.month == now.month && date.day == now.day;
+    return date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day;
   }
 
   updateAccount(String username) {
@@ -87,7 +100,9 @@ mixin AddUserViweModel on State<AddUsetIteam> {
       "surname": widget.vm.surname.text,
       "lastname": widget.vm.latname.text,
       "gender": widget.vm.gender.text,
-      "birthday": isToday(selectedDate) ? MyFunctions.formatDate2(widget.vm.age.text) : MyFunctions.ageDate(selectedDate),
+      "birthday": isToday(selectedDate)
+          ? MyFunctions.formatDate2(widget.vm.age.text)
+          : MyFunctions.ageDate(selectedDate),
       "nationality": widget.vm.nationality.text,
       "position": widget.vm.birthPlace.text,
       "current_place": widget.vm.currentPlace.text,
@@ -101,12 +116,12 @@ mixin AddUserViweModel on State<AddUsetIteam> {
     }
 
     context.read<AccountsBloc>().add(UpdateAccountEvent(
-      username: username,
-      data: data,
-      onSucces: (account) {
-        widget.vm.selectAccount(account, false);
-      },
-    ));
+          username: username,
+          data: data,
+          onSucces: (account) {
+            widget.vm.selectAccount(account, false);
+          },
+        ));
   }
 
   createUser() async {
@@ -114,67 +129,77 @@ mixin AddUserViweModel on State<AddUsetIteam> {
 
     FormData formData = widget.vm.phone.text[0] == "+"
         ? FormData.fromMap({
-      "name": widget.vm.name.text,
-      "surname": widget.vm.surname.text,
-      "lastname": widget.vm.latname.text,
-      "gender": widget.vm.gender.text,
-      "main_cat": widget.vm.professionEntity?.id,
-      "birthday": isToday(selectedDate) ? widget.vm.age.text.split('/').reversed.join('-') : MyFunctions.ageDate(selectedDate),
-      "region": widget.vm.regionEntity?.id,
-      "pvc": "000000",
-      "is_afgan": widget.vm.isAfgan.value,
-      "is_cherno": widget.vm.isCherno.value,
-      "is_invalid": widget.vm.isInvalid.value,
-      "is_uvu": widget.vm.isUvu.value,
-      "position": widget.vm.birthPlace.text,
-      "phone": widget.vm.phone.text.substring(1),
-      "nationality": widget.vm.nationality.text,
-      "current_place": widget.vm.currentPlace.text,
-      "education": MyFunctions.information(widget.vm.information.text),
-      "type": "user",
-      "avatar": images != null ? await MultipartFile.fromFile(images!.path) : images
-    })
+            "name": widget.vm.name.text,
+            "surname": widget.vm.surname.text,
+            "lastname": widget.vm.latname.text,
+            "gender": widget.vm.gender.text,
+            "main_cat": widget.vm.professionEntity?.id,
+            "birthday": isToday(selectedDate)
+                ? widget.vm.age.text.split('/').reversed.join('-')
+                : MyFunctions.ageDate(selectedDate),
+            "region": widget.vm.regionEntity?.id,
+            "pvc": "000000",
+            "is_afgan": widget.vm.isAfgan.value,
+            "is_cherno": widget.vm.isCherno.value,
+            "is_invalid": widget.vm.isInvalid.value,
+            "is_uvu": widget.vm.isUvu.value,
+            "position": widget.vm.birthPlace.text,
+            "phone": widget.vm.phone.text.substring(1),
+            "nationality": widget.vm.nationality.text,
+            "current_place": widget.vm.currentPlace.text,
+            "education": MyFunctions.information(widget.vm.information.text),
+            "type": "user",
+            "avatar": images != null
+                ? await MultipartFile.fromFile(images!.path)
+                : images
+          })
         : FormData.fromMap({
-      "name": widget.vm.name.text,
-      "surname": widget.vm.surname.text,
-      "lastname": widget.vm.latname.text,
-      "gender": widget.vm.gender.text,
-      "main_cat": widget.vm.professionEntity?.id,
-      "birthday": isToday(selectedDate) ? widget.vm.age.text.split('/').reversed.join('-') : MyFunctions.ageDate(selectedDate),
-      "region": widget.vm.regionEntity?.id,
-      "pvc": "000000",
-      "is_afgan": widget.vm.isAfgan.value,
-      "is_cherno": widget.vm.isCherno.value,
-      "is_invalid": widget.vm.isInvalid.value,
-      "is_uvu": widget.vm.isUvu.value,
-      "position": widget.vm.birthPlace.text,
-      "pinfl": widget.vm.phone.text,
-      "nationality": widget.vm.nationality.text,
-      "current_place": widget.vm.currentPlace.text,
-      "education": MyFunctions.information(widget.vm.information.text),
-      "type": "user",
-      "avatar": images != null ? await MultipartFile.fromFile(images!.path) : images
-    });
+            "name": widget.vm.name.text,
+            "surname": widget.vm.surname.text,
+            "lastname": widget.vm.latname.text,
+            "gender": widget.vm.gender.text,
+            "main_cat": widget.vm.professionEntity?.id,
+            "birthday": isToday(selectedDate)
+                ? widget.vm.age.text.split('/').reversed.join('-')
+                : MyFunctions.ageDate(selectedDate),
+            "region": widget.vm.regionEntity?.id,
+            "pvc": "000000",
+            "is_afgan": widget.vm.isAfgan.value,
+            "is_cherno": widget.vm.isCherno.value,
+            "is_invalid": widget.vm.isInvalid.value,
+            "is_uvu": widget.vm.isUvu.value,
+            "position": widget.vm.birthPlace.text,
+            "pinfl": widget.vm.phone.text,
+            "nationality": widget.vm.nationality.text,
+            "current_place": widget.vm.currentPlace.text,
+            "education": MyFunctions.information(widget.vm.information.text),
+            "type": "user",
+            "avatar": images != null
+                ? await MultipartFile.fromFile(images!.path)
+                : images
+          });
 
     // ignore: use_build_context_synchronously
     context.read<AccountsBloc>().add(
-      CreateAccount(
-        formData: formData,
-        onSucces: () {
-          widget.vm.isCreat = false;
-          context.read<ShowPopUpBloc>().add(ShowPopUp(
-            message: "User Yaratildi",
-            status: PopStatus.success,
-          ));
-          context.read<MyNavigatorBloc>().add(NavId(1));
-          widget.vm.controller.text = "${widget.vm.name.text} ${widget.vm.latname.text} ${widget.vm.age.text} ${widget.vm.gender.text}";
-          context.pop();
-        },
-        onError: () {
-          context.read<ShowPopUpBloc>().add(ShowPopUp(message: "User Yaratilmadi", status: PopStatus.error));
-        },
-      ),
-    );
+          CreateAccount(
+            formData: formData,
+            onSucces: () {
+              widget.vm.isCreat = false;
+              context.read<ShowPopUpBloc>().add(ShowPopUp(
+                    message: "User Yaratildi",
+                    status: PopStatus.success,
+                  ));
+              context.read<MyNavigatorBloc>().add(NavId(1));
+              widget.vm.controller.text =
+                  "${widget.vm.name.text} ${widget.vm.latname.text} ${widget.vm.age.text} ${widget.vm.gender.text}";
+              context.pop();
+            },
+            onError: () {
+              context.read<ShowPopUpBloc>().add(ShowPopUp(
+                  message: "User Yaratilmadi", status: PopStatus.error));
+            },
+          ),
+        );
   }
 
   cuponSelText(List<CuponModel> cupons) {
@@ -284,13 +309,14 @@ mixin AddUserViweModel on State<AddUsetIteam> {
     });
     setState(() {});
   }
+
   final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
   String errorMessage = '';
 
   void _onDateChanged(String value) {
     try {
       if (value.length == 10) {
-        DateTime inputDate = _dateFormat.parseStrict(value);
+        // DateTime inputDate = _dateFormat.parseStrict(value);
         setState(() {
           errorMessage = '';
         });
@@ -300,14 +326,14 @@ mixin AddUserViweModel on State<AddUsetIteam> {
       String formattedNow = _dateFormat.format(now);
       setState(() {
         widget.vm.age.text = formattedNow;
-        errorMessage = 'Noto\'g\'ri sana kiritildi. Hozirgi sana: $formattedNow';
+        errorMessage =
+            'Noto\'g\'ri sana kiritildi. Hozirgi sana: $formattedNow';
         widget.vm.age.selection = TextSelection.fromPosition(
           TextPosition(offset: widget.vm.age.text.length),
         );
       });
     }
   }
-
 
   DateTime? parseDate(String inputDate) {
     if (inputDate.isNotEmpty) {
