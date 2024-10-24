@@ -35,9 +35,7 @@ class GoodsViewModel {
           Navigator.of(context).push(fade(
               page: SelectionSpecialData(
             isProduct: !isProduct,
-            isDiscount: product.prices.isEmpty
-                ? false
-                : product.prices.first.discount > 0,
+            isDiscount: product.prices.isEmpty ? false : product.prices.first.discount > 0,
             product: product,
           )));
         } else {
@@ -52,9 +50,7 @@ class GoodsViewModel {
               title: DialogTitle(title: "special_parameters".tr()),
               content: ShowSelect(
                 isProduct: isProduct,
-                isDiscount: product.prices.isEmpty
-                    ? false
-                    : product.prices.first.discount > 0,
+                isDiscount: product.prices.isEmpty ? false : product.prices.first.discount > 0,
                 product: product,
                 isCart: isLiked,
                 isPrice: isPrice,

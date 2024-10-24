@@ -10,6 +10,7 @@ import 'package:tmed_kiosk/features/category/presentation/controllers/bloc/categ
 import 'package:tmed_kiosk/features/common/navigation/routs_contact.dart';
 import 'package:tmed_kiosk/features/common/view/error.dart';
 import 'package:tmed_kiosk/features/goods/presentation/controllers/bloc/goods_bloc.dart';
+import 'package:tmed_kiosk/features/goods/presentation/views/category_view.dart';
 import 'package:tmed_kiosk/features/goods/presentation/views/goods_view.dart';
 
 import 'package:tmed_kiosk/features/main/presentation/controllers/bloc/navigator_bloc.dart';
@@ -69,6 +70,10 @@ sealed class AppRouts {
               GoRoute(
                 path: RoutsContact.goods,
                 builder: (context, state) => const GoodsView(),
+              ),
+              GoRoute(
+                path: RoutsContact.category,
+                builder: (context, state) => const BottomCategoryList(),
               ),
               GoRoute(
                 path: RoutsContact.cart,

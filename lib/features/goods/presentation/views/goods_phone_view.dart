@@ -39,14 +39,14 @@ class _GoodsPhoneViewState extends State<GoodsPhoneView> {
       builder: (context, stateN) {
         return Scaffold(
           extendBody: true,
-          appBar: WAppBarPhone(
-            isQrcode: true,
-            vmC: widget.vmC,
-            onChanged: (value) {
-              context.read<GoodsBloc>().add(GetOrgProduct(search: value));
-            },
-            child: const BottomCategoryList(isPhone: true),
-          ),
+          // appBar: WAppBarPhone(
+          //   isQrcode: true,
+          //   vmC: widget.vmC,
+          //   onChanged: (value) {
+          //     context.read<GoodsBloc>().add(GetOrgProduct(search: value));
+          //   },
+          //   child: const BottomCategoryList(isPhone: true),
+          // ),
           body: BlocBuilder<GoodsBloc, GoodsState>(
             builder: (context, state) {
               if (state.statusProduct.isInProgress) {

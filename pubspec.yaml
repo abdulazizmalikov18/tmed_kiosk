@@ -60,7 +60,7 @@ dependencies:
   panorama_viewer: ^1.0.4
   http: ^1.2.1
   open_app_file: ^4.0.2
-  intl: ^0.18.1
+  intl: ^0.19.0
   connectivity_plus: ^6.0.3
   dio: ^5.5.0+1
   html: ^0.15.4

@@ -8,7 +8,7 @@ class MyNavigatorState extends Equatable {
 
   const MyNavigatorState({
     this.openCart = false,
-    this.isImage = false,
+    this.isImage = true,
     this.isImageC = false,
     this.navid = 0,
   });

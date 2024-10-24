@@ -8,6 +8,7 @@ import 'package:tmed_kiosk/features/common/controllers/price_bloc/price_bloc.dar
 import 'package:tmed_kiosk/features/common/navigation/routs_contact.dart';
 import 'package:tmed_kiosk/features/common/widgets/w_button.dart';
 import 'package:tmed_kiosk/features/goods/domain/entity/org_product_entity.dart';
+import 'package:tmed_kiosk/features/goods/presentation/views/category_view.dart';
 import 'package:tmed_kiosk/features/goods/presentation/views/goods_phone_view.dart';
 
 // import 'package:tmed_kiosk/features/common/controllers/show_pop_up/show_pop_up_bloc.dart';
@@ -59,34 +60,43 @@ class _GoodsViewState extends State<GoodsView> {
       builder: (context, stateN) {
         return Scaffold(
           backgroundColor: context.color.backGroundColor,
-          appBar: NewAppBar(
-            title: "product_category".tr(),
-            action: [
-              InkWell(
-                onTap: () {
-                  context.read<MyNavigatorBloc>().add(IsImage(!stateN.isImage));
-                },
-                child: SizedBox(
-                  height: 24,
-                  width: 24,
-                  child: AppIcons.size.svg(color: stateN.isImage ? null : context.color.white.withOpacity(.5)),
-                ),
-              ),
-            ],
-            child: Row(
-              children: [
-                const Expanded(child: BottomCategoryList()),
-                const SizedBox(width: 16),
-                WSearchButton(
-                  controller: searchController,
-                  onEditingComplete: () {
-                    context.read<GoodsBloc>().add(GetOrgProduct(search: searchController.text));
-                  },
-                  onChanged: (String value) {},
-                )
-              ],
+          appBar: AppBar(
+            leading: InkWell(
+              onTap: (){
+               context.go(RoutsContact.category);
+               // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const BottomCategoryList(),));
+              },
+              child: const Icon(Icons.arrow_back),
             ),
           ),
+          // appBar: NewAppBar(
+          //   title: "product_category".tr(),
+          // action: [
+          //   InkWell(
+          //     onTap: () {
+          //       context.read<MyNavigatorBloc>().add(IsImage(!stateN.isImage));
+          //     },
+          //     child: SizedBox(
+          //       height: 24,
+          //       width: 24,
+          //       child: AppIcons.size.svg(color: stateN.isImage ? null : context.color.white.withOpacity(.5)),
+          //     ),
+          //   ),
+          // ],
+          // child: Row(
+          //   children: [
+          //     const Expanded(child: BottomCategoryList()),
+          //     const SizedBox(width: 16),
+          //     WSearchButton(
+          //       controller: searchController,
+          //       onEditingComplete: () {
+          //         context.read<GoodsBloc>().add(GetOrgProduct(search: searchController.text));
+          //       },
+          //       onChanged: (String value) {},
+          //     )
+          //   ],
+          // ),
+          // ),
           body: BlocBuilder<PriceBloc, PriceState>(
             builder: (context, statePrice) {
               return BlocBuilder<GoodsBloc, GoodsState>(

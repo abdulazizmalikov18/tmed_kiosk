@@ -138,7 +138,7 @@ class _MyAppState extends State<MyApp> {
                     AppRouts.router.pushReplacement(RoutsContact.login);
                     break;
                   case AuthenticationStatus.authenticated:
-                    AppRouts.router.go(RoutsContact.goods);
+                    AppRouts.router.go(RoutsContact.category);
                     break;
                   case AuthenticationStatus.loading:
                   case AuthenticationStatus.cancelLoading:

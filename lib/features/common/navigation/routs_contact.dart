@@ -3,6 +3,7 @@ class RoutsContact {
   static const login = '/login';
   static const home = '/home';
   static const goods = '/goods';
+  static const category = '/category';
   static const main = '/main';
   static const profile = '/profile';
   static const userInfo = '/userInfo';

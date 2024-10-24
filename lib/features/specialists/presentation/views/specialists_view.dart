@@ -34,6 +34,7 @@ class SpecialistsView extends StatefulWidget {
 class _SpecialistsViewState extends State<SpecialistsView> {
   TTSControllerMixin controllerMixin = TTSControllerMixin();
   late TextEditingController controller;
+
   @override
   void initState() {
     controller = TextEditingController();
@@ -57,9 +58,7 @@ class _SpecialistsViewState extends State<SpecialistsView> {
             WSearchButton(
               controller: controller,
               onEditingComplete: () {
-                context
-                    .read<SpecialistsBloc>()
-                    .add(GetSpecialists(search: controller.text));
+                context.read<SpecialistsBloc>().add(GetSpecialists(search: controller.text));
               },
               onChanged: (String value) {},
             )
@@ -101,8 +100,7 @@ class _SpecialistsViewState extends State<SpecialistsView> {
                       maxCrossAxisExtent: stateN.openCart ? 700 : 440,
                     ),
                     itemCount: state.specialistsList.length,
-                    itemBuilder: (context, index) =>
-                        WUserItem(user: state.specialistsList[index]),
+                    itemBuilder: (context, index) => WUserItem(user: state.specialistsList[index]),
                     errorWidget: const SizedBox(),
                     fetchMoreFunction: () {
                       context.read<SpecialistsBloc>().add(GetMoreSpecialists());
@@ -117,14 +115,12 @@ class _SpecialistsViewState extends State<SpecialistsView> {
           );
         },
       ),
-      bottomNavigationBar:
-          BlocSelector<CartBloc, CartState, Map<int, OrgProductEntity>>(
+      bottomNavigationBar: BlocSelector<CartBloc, CartState, Map<int, OrgProductEntity>>(
         selector: (state) => state.cartMap,
         builder: (context, cartMap) {
           if (cartMap.isNotEmpty) {
             if (cartMap.length == 1) {
-              controllerMixin.speak(
-                  "Чтобы продолжить покупку пожалуйста нажмите в нижнем меню кнопку оформить");
+              controllerMixin.speak("Чтобы продолжить покупку пожалуйста нажмите в нижнем меню кнопку оформить");
             }
             return WButton(
               height: 80,

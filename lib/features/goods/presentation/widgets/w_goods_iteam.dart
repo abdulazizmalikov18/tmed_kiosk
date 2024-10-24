@@ -54,8 +54,7 @@ class _WGoodsItemState extends State<WGoodsItem> {
 
   @override
   Widget build(BuildContext context) {
-    isNull = widget.product.remains != 0 ||
-        widget.product.product.type.name != 'product';
+    isNull = widget.product.remains != 0 || widget.product.product.type.name != 'product';
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
@@ -105,23 +104,18 @@ class _WGoodsItemState extends State<WGoodsItem> {
                         SizedBox(
                           height: 20,
                           width: 20,
-                          child: AppIcons.shoppingCart
-                              .svg(color: widget.isLiked ? blue : greyText),
+                          child: AppIcons.shoppingCart.svg(color: widget.isLiked ? blue : greyText),
                         )
                       ],
                     ),
                   ),
                 ),
-                if (widget.isImage)
-                  Divider(
-                      color: context.color.white.withOpacity(.1), height: 16),
+                if (widget.isImage) Divider(color: context.color.white.withOpacity(.1), height: 16),
                 if (widget.isImage)
                   InkWell(
                     onTap: () {
                       if (widget.product.product.type.name != 'product') {
-                        context
-                            .read<GoodsBloc>()
-                            .add(GetPsp(widget.product.id));
+                        context.read<GoodsBloc>().add(GetPsp(widget.product.id));
                       }
                       showDialog(
                         context: context,
@@ -130,20 +124,21 @@ class _WGoodsItemState extends State<WGoodsItem> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          contentPadding: widget.isPhone
-                              ? const EdgeInsets.all(12)
-                              : const EdgeInsets.fromLTRB(24, 12, 24, 24),
+                          contentPadding: widget.isPhone ? const EdgeInsets.all(12) : const EdgeInsets.fromLTRB(24, 12, 24, 24),
                           insetPadding: const EdgeInsets.all(16),
-                          titlePadding: widget.isPhone
-                              ? const EdgeInsets.all(12)
-                              : const EdgeInsets.fromLTRB(24, 12, 24, 24),
+                          titlePadding: widget.isPhone ? const EdgeInsets.all(12) : const EdgeInsets.fromLTRB(24, 12, 24, 24),
                           title: DialogTitle(
                             title: "about_the_task".tr(),
                             isBottom: false,
                           ),
                           content: DescriptionDialog(
                             product: widget.product,
+                            isPhone: widget.isPhone,
+                            isLiked: widget.isLiked,
+                            isPrice: widget.isPrice,
                             bloc: widget.bloc,
+                            blocCart: widget.blocCart,
+                            vm: widget.vm,
                           ),
                         ),
                       );
@@ -157,10 +152,8 @@ class _WGoodsItemState extends State<WGoodsItem> {
                         color: whiteGrey,
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image:
-                              NetworkImage(widget.product.product.image.file),
-                          onError: (exception, stackTrace) =>
-                              Image.asset(AppImages.logo),
+                          image: NetworkImage(widget.product.product.image.file),
+                          onError: (exception, stackTrace) => Image.asset(AppImages.logo),
                         ),
                       ),
                     ),
@@ -171,15 +164,43 @@ class _WGoodsItemState extends State<WGoodsItem> {
           Divider(color: context.color.white.withOpacity(.1), height: 16),
           InkWell(
             onTap: () {
-              widget.vm.onSelectionCart(
-                context,
-                product: widget.product,
-                isPhone: widget.isPhone,
-                isLiked: widget.isLiked,
-                isPrice: widget.isPrice,
-                bloc: widget.bloc,
-                blocCart: widget.blocCart,
+              if (widget.product.product.type.name != 'product') {
+                context.read<GoodsBloc>().add(GetPsp(widget.product.id));
+              }
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  backgroundColor: context.color.backGroundColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  contentPadding: widget.isPhone ? const EdgeInsets.all(12) : const EdgeInsets.fromLTRB(24, 12, 24, 24),
+                  insetPadding: const EdgeInsets.all(16),
+                  titlePadding: widget.isPhone ? const EdgeInsets.all(12) : const EdgeInsets.fromLTRB(24, 12, 24, 24),
+                  title: DialogTitle(
+                    title: "about_the_task".tr(),
+                    isBottom: false,
+                  ),
+                  content: DescriptionDialog(
+                    product: widget.product,
+                    isPhone: widget.isPhone,
+                    isLiked: widget.isLiked,
+                    isPrice: widget.isPrice,
+                    bloc: widget.bloc,
+                    blocCart: widget.blocCart,
+                    vm: widget.vm,
+                  ),
+                ),
               );
+              // widget.vm.onSelectionCart(
+              //   context,
+              //   product: widget.product,
+              //   isPhone: widget.isPhone,
+              //   isLiked: widget.isLiked,
+              //   isPrice: widget.isPrice,
+              //   bloc: widget.bloc,
+              //   blocCart: widget.blocCart,
+              // );
             },
             child: Row(
               children: [
@@ -196,40 +217,29 @@ class _WGoodsItemState extends State<WGoodsItem> {
                           vm: CartViewModel(),
                         ),
                       if (widget.isPrice) const SizedBox(height: 4),
-                      if (widget.product.remains == 0 &&
-                          widget.product.product.type.name != "product")
+                      if (widget.product.remains == 0 && widget.product.product.type.name != "product")
                         Row(
                           children: [
                             Text(
                               "${LocaleKeys.offerpage_in_stock.tr()}: ",
-                              style: AppTheme.labelLarge.copyWith(
-                                  color: isNull
-                                      ? context.color.white.withOpacity(.5)
-                                      : context.color.white),
+                              style: AppTheme.labelLarge.copyWith(color: isNull ? context.color.white.withOpacity(.5) : context.color.white),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                             ),
-                            AppIcons.infinity
-                                .svg(height: 14, color: context.color.white)
+                            AppIcons.infinity.svg(height: 14, color: context.color.white)
                           ],
                         )
                       else
                         Text(
                           "${LocaleKeys.offerpage_in_stock.tr()}: ${widget.product.remains}",
-                          style: AppTheme.labelLarge.copyWith(
-                              color: isNull
-                                  ? context.color.white.withOpacity(.5)
-                                  : context.color.white),
+                          style: AppTheme.labelLarge.copyWith(color: isNull ? context.color.white.withOpacity(.5) : context.color.white),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
                       if (widget.product.product.type.name == "offering")
                         Text(
                           "${LocaleKeys.offerpage_duration.tr()}: ${widget.product.duration == 0 ? "-" : widget.product.duration}",
-                          style: AppTheme.labelLarge.copyWith(
-                              color: isNull
-                                  ? context.color.white.withOpacity(.5)
-                                  : context.color.white),
+                          style: AppTheme.labelLarge.copyWith(color: isNull ? context.color.white.withOpacity(.5) : context.color.white),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
@@ -241,37 +251,25 @@ class _WGoodsItemState extends State<WGoodsItem> {
                             if (widget.product.expiryDate.isNotEmpty)
                               Text(
                                 "${LocaleKeys.offerpage_expiration_date.tr()}: ${MyFunctions.parseDate(widget.product.expiryDate)}",
-                                style: AppTheme.labelLarge.copyWith(
-                                    color: isNull
-                                        ? context.color.white.withOpacity(.5)
-                                        : context.color.white),
+                                style: AppTheme.labelLarge.copyWith(color: isNull ? context.color.white.withOpacity(.5) : context.color.white),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                               ),
                             Text(
                               "${LocaleKeys.offerpage_manufacturer.tr()}: ${widget.product.product.manufacturer.name.isEmpty ? "-" : widget.product.product.manufacturer.name}",
-                              style: AppTheme.labelLarge.copyWith(
-                                  color: isNull
-                                      ? context.color.white.withOpacity(.5)
-                                      : context.color.white),
+                              style: AppTheme.labelLarge.copyWith(color: isNull ? context.color.white.withOpacity(.5) : context.color.white),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                             ),
                             Text(
                               "${LocaleKeys.offerpage_offer_place.tr()}: ${widget.product.placeDesc.isEmpty ? "-" : widget.product.placeDesc}",
-                              style: AppTheme.labelLarge.copyWith(
-                                  color: isNull
-                                      ? context.color.white.withOpacity(.5)
-                                      : context.color.white),
+                              style: AppTheme.labelLarge.copyWith(color: isNull ? context.color.white.withOpacity(.5) : context.color.white),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                             ),
                             Text(
                               "${LocaleKeys.expiry_date.tr()}: -",
-                              style: AppTheme.labelLarge.copyWith(
-                                  color: isNull
-                                      ? context.color.white.withOpacity(.5)
-                                      : context.color.white),
+                              style: AppTheme.labelLarge.copyWith(color: isNull ? context.color.white.withOpacity(.5) : context.color.white),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                             ),
@@ -285,8 +283,7 @@ class _WGoodsItemState extends State<WGoodsItem> {
                     onTap: () {
                       if (Platform.isAndroid || Platform.isIOS) {
                         Navigator.of(context).push(CupertinoPageRoute(
-                          builder: (context) =>
-                              PonaramaImageView(product: widget.product),
+                          builder: (context) => PonaramaImageView(product: widget.product),
                         ));
                       } else {
                         showDialog(
@@ -306,8 +303,7 @@ class _WGoodsItemState extends State<WGoodsItem> {
                                   child: PanoramaViewer(
                                     animSpeed: .1,
                                     sensorControl: SensorControl.orientation,
-                                    child:
-                                        Image.network(widget.product.image360),
+                                    child: Image.network(widget.product.image360),
                                   ),
                                 ),
                               ),
